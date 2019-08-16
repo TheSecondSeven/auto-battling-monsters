@@ -211,6 +211,7 @@ class UsersController extends AppController {
 			$this->User->saveField('gems', 25);
 			$this->User->saveField('active_monster_limit', 1);
 			
+			$this->User->query('DELETE FROM `monsters` WHERE `user_id` = '.$user['User']['id']);
 			$this->User->query('DELETE FROM `runes` WHERE `user_id` = '.$user['User']['id']);
 			$this->User->query('DELETE FROM `user_skills` WHERE `user_id` = '.$user['User']['id']);
 			$this->User->query('DELETE FROM `user_ultimates` WHERE `user_id` = '.$user['User']['id']);
