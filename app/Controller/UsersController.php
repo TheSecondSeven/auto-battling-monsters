@@ -195,6 +195,7 @@ class UsersController extends AppController {
 				}
 			}
 		}
+		exit;
 	}
 	
 	public function admin_reset_all() {
