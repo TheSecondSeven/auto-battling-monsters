@@ -1,0 +1,1 @@
+<?php if(!empty($gauntlet_run_with_rewards['GauntletRun']['id'])) { ?><div id="<?php echo h($key) ?>Message" class="message success"><?php echo h($message); ?> - <a href="/view-gauntlet-results/<?php echo $gauntlet_run_with_rewards['GauntletRun']['id']; ?>">Go to Rewards</a></div><?php } ?>
