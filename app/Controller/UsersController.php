@@ -195,7 +195,6 @@ class UsersController extends AppController {
 				}
 			}
 		}
-		exit;
 	}
 	
 	public function admin_reset_all() {
@@ -335,6 +334,7 @@ class UsersController extends AppController {
 			];
 			$this->UserUltimate->save($user_ultimate);
 		}
+		exit;
 	}
 	
 	public function login() {
