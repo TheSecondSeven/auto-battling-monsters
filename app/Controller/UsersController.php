@@ -197,6 +197,145 @@ class UsersController extends AppController {
 		}
 	}
 	
+	public function admin_reset_all() {
+		$users = $this->User->find('all', [
+			'conditions' => [
+				'User.type' => 'User'
+			]
+		]);
+		foreach($users as $user) {
+			
+			$this->User->id = $user['User']['id'];
+			$this->User->saveField('rune_shards', 5);
+			$this->User->saveField('gold', 0);
+			$this->User->saveField('gems', 25);
+			$this->User->saveField('active_monster_limit', 1);
+			
+			$this->User->query('DELETE FROM `runes` WHERE `user_id` = '.$user['User']['id']);
+			$this->User->query('DELETE FROM `user_skills` WHERE `user_id` = '.$user['User']['id']);
+			$this->User->query('DELETE FROM `user_ultimates` WHERE `user_id` = '.$user['User']['id']);
+			
+			
+			
+			$types = $this->Type->find('all');
+			$type_counts = [];
+			foreach($types as $type) {
+				$type_counts[$type['Type']['name']] = 0;
+			}
+			foreach($this->User->answer_values[$user['User']['favorite_dessert']] as $type) {
+				$type_counts[$type]++;
+			}
+			foreach($this->User->answer_values[$user['User']['favorite_power_ranger']] as $type) {
+				$type_counts[$type]++;
+			}
+			foreach($this->User->answer_values[$user['User']['favorite_nineties_cartoon']] as $type) {
+				$type_counts[$type]++;
+			}
+			foreach($this->User->answer_values[$user['User']['favorite_pizza_topping']] as $type) {
+				$type_counts[$type]++;
+			}
+			foreach($this->User->answer_values[$user['User']['favorite_day_of_the_week']] as $type) {
+				$type_counts[$type]++;
+			}
+			foreach($this->User->answer_values[$user['User']['favorite_rpg_class']] as $type) {
+				$type_counts[$type]++;
+			}
+			//disable flying for now
+			unset($type_counts['Flying']);
+			arsort($type_counts);
+			
+			
+			$type_name = array_keys($type_counts)[0];
+			$type_2_name = array_keys($type_counts)[1];
+			$type_id = 1;
+			$type_2_id = 2;
+			foreach($types as $type) {
+				if($type['Type']['name'] == $type_name) {
+					$type_id = $type['Type']['id'];
+				}
+				if($type['Type']['name'] == $type_2_name) {
+					$type_2_id = $type['Type']['id'];
+				}
+			}
+			
+			//find starting elo
+			/*
+			$lowest_monster = $this->Monster->find('first', [
+				'order' => [
+					'Monster.elo_rating ASC'
+				]
+			]);
+			
+			if(empty($lowest_monster['Monster']['elo_rating'])) {
+				$lowest_monster['Monster']['elo_rating'] = 2100;
+			}
+			*/
+			
+			//create monster 
+			$this->Monster->createMonster($user['User']['id'], $type_id, 2100);
+			//create second monster 
+			$this->Monster->createMonster($user['User']['id'], $type_2_id, 2100);
+			
+			//grant base skills
+			$base_skills = [
+				2,
+				56,
+				57,
+				58
+			];
+			foreach($base_skills as $base_skill_id) {
+				$this->UserSkill->create();
+				$user_skill['UserSkill'] = [
+					'id' => null,
+					'user_id' => $user['User']['id'],
+					'skill_id' => $base_skill_id
+				];
+				$this->UserSkill->save($user_skill);
+			}
+			foreach($types as $type) {
+				if($type['Type']['name'] != 'Neutral') {
+					//grant 1 skill of type_id
+					$random_common_skill = $this->Skill->find('first', [
+						'conditions' => [
+							'Skill.type_id' => $type['Type']['id'],
+							'Skill.rarity' => 'Uncommon'
+						],
+						'order' => [
+							'RAND()'
+						]
+					]);
+					if(!empty($random_common_skill)) {
+						$this->UserSkill->create();
+						$user_skill['UserSkill'] = [
+							'id' => null,
+							'user_id' => $user['User']['id'],
+							'skill_id' => $random_common_skill['Skill']['id']
+						];
+						$this->UserSkill->save($user_skill);
+					}
+				}
+			}
+			
+			//give hyperbeam
+			$this->UserUltimate->create();
+			$user_ultimate['UserUltimate'] = [
+				'id' => null,
+				'user_id' => $user['User']['id'],
+				'ultimate_id' => 1
+			];
+			$this->UserUltimate->save($user_ultimate);
+			
+			//give holy nova
+			$this->UserUltimate->create();
+			$user_ultimate['UserUltimate'] = [
+				'id' => null,
+				'user_id' => $user['User']['id'],
+				'ultimate_id' => 16
+			];
+			$this->UserUltimate->save($user_ultimate);
+		}
+	}
+	
 	public function login() {
 	    if ($this->request->is('post')) {
 	        if ($this->Auth->login()) {

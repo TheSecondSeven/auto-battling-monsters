@@ -124,7 +124,7 @@ class GauntletRunsController extends AppController {
 		}
 		$this->Monster->id = $monster['Monster']['id'];
 		$this->Monster->saveField('in_gauntlet_run', 1);
-		$in_gauntlet_run_until = date('Y-m-d H:i:s', time() + 60 * 30);
+		$in_gauntlet_run_until = date('Y-m-d H:i:s', time() + 60 * 5);
 		$this->Monster->saveField('in_gauntlet_run_until', $in_gauntlet_run_until);
 		$this->Flash->success(__($monster['Monster']['name'].' has started battling in the Gauntlet. It will be done at '.date('g:ia',strtotime($in_gauntlet_run_until)).' PST'));
 		return $this->redirect(['controller' => 'users', 'action' => 'my_monsters']);
@@ -215,7 +215,7 @@ class GauntletRunsController extends AppController {
 		$gauntlet_run_id = $this->GauntletRun->id;
 		$this->Monster->id = $monster['Monster']['id'];
 		$this->Monster->saveField('in_gauntlet_run', 0);
-		$resting_until = date('Y-m-d H:i:s', time() + 60 * 30);
+		$resting_until = date('Y-m-d H:i:s', time() + 60 * 5);
 		$this->Monster->saveField('resting_until', $resting_until);
 		
 		$already_fought_ids = [
