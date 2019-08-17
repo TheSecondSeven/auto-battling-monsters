@@ -55,7 +55,8 @@ class AppController extends Controller {
 	    ],
 	    'Combat',
 	    'Session',
-	    'Flash'
+	    'Flash',
+	    'RequestHandler'
 	];
 	public $uses = [
 		'GauntletRun',
