@@ -68,6 +68,9 @@ class AppController extends Controller {
         if (!empty($this->request->prefix) && $this->request->prefix == 'admin') {
             return (bool)($user['type'] === 'Admin');
         }
+        if (!empty($this->request->prefix) && $this->request->prefix == 'api') {
+            return true;
+        }
         if($user) {
         	return true;
 		}else{
