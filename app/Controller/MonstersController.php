@@ -632,32 +632,32 @@ class MonstersController extends AppController {
 				'Type',
 				'Skill1' => [
 					'Type',
-					'Effect' => [
-						'SecondaryEffect'
+					'SkillEffect' => [
+						'SecondarySkillEffect'
 					]
 				],
 				'Skill2' => [
 					'Type',
-					'Effect' => [
-						'SecondaryEffect'
+					'SkillEffect' => [
+						'SecondarySkillEffect'
 					]
 				],
 				'Skill3' => [
 					'Type',
-					'Effect' => [
-						'SecondaryEffect'
+					'SkillEffect' => [
+						'SecondarySkillEffect'
 					]
 				],
 				'Skill4' => [
 					'Type',
-					'Effect' => [
-						'SecondaryEffect'
+					'SkillEffect' => [
+						'SecondarySkillEffect'
 					]
 				],
 				'Ultimate' => [
 					'Type',
-					'Effect' => [
-						'SecondaryEffect'
+					'SkillEffect' => [
+						'SecondarySkillEffect'
 					]
 				],
 				'Rune1' => [
