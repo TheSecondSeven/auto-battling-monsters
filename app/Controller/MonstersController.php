@@ -671,11 +671,11 @@ class MonstersController extends AppController {
 				]
 			]
 		]);
-		$response['Monsters'] = [];
+		$response = [];
 		foreach($monsters as $monster) {
 			$monster['Monster']['resting_until'] = strtotime($monster['Monster']['resting_until']);
 			$monster['Monster']['in_gauntlet_run_until'] = strtotime($monster['Monster']['in_gauntlet_run_until']);
-			$response['Monsters'][] = $monster;
+			$response[] = $monster;
 		}
 		
 		$this->set(compact('response'));
