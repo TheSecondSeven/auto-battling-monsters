@@ -615,4 +615,70 @@ class MonstersController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+	
+	
+	public function api_list() {
+		$user_id = 2;
+		
+		$monsters = $this->Monster->find('all', [
+			'conditions' => [
+				'Monster.user_id' => $user_id
+			],
+			'order' => [
+				'Monster.elo_rating DESC',
+				'Monster.created ASC'
+			],
+			'contain' => [
+				'Type',
+				'Skill1' => [
+					'Type',
+					'Effect' => [
+						'SecondaryEffect'
+					]
+				],
+				'Skill2' => [
+					'Type',
+					'Effect' => [
+						'SecondaryEffect'
+					]
+				],
+				'Skill3' => [
+					'Type',
+					'Effect' => [
+						'SecondaryEffect'
+					]
+				],
+				'Skill4' => [
+					'Type',
+					'Effect' => [
+						'SecondaryEffect'
+					]
+				],
+				'Ultimate' => [
+					'Type',
+					'Effect' => [
+						'SecondaryEffect'
+					]
+				],
+				'Rune1' => [
+					'Type'
+				],
+				'Rune2' => [
+					'Type'
+				],
+				'Rune3' => [
+					'Type'
+				]
+			]
+		]);
+		
+		foreach($monsters as &$monster) {
+			$monster['Monster']['resting_until'] = strtotime($monster['Monster']['resting_until']);
+			$monster['Monster']['in_guantlet_run_until'] = strtotime($monster['Monster']['in_guantlet_run_until']);
+		}
+		
+		$this->set(compact('response'));
+		$this->set('_serialize', 'response');
+	}
+	
 }

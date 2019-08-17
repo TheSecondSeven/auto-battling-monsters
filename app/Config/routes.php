@@ -25,6 +25,12 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
+ 
+ 	
+	//versioned API routing
+	Router::connect('/api/:version/:controller', array('prefix' => 'api', 'api' => true, 'action' => 'index'), array('version' => '[0-9]+\.[0-9]+'));
+	Router::connect('/api/:version/:controller/:action/*', array('prefix' => 'api', 'api' => true), array('version' => '[0-9]+\.[0-9]+'));
+ 
 	Router::connect('/', array('controller' => 'users', 'action' => 'my_monsters'));
 	Router::connect('/register/*', array('controller' => 'users', 'action' => 'register'));
 	Router::connect('/my-monsters/*', array('controller' => 'users', 'action' => 'my_monsters'));
