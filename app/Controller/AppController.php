@@ -121,6 +121,9 @@ class AppController extends Controller {
 			    }
 		    }
 	    }*/
+	    if($this->isAuthorized($this->Auth->user())) {
+		    $this->Auth->allow();
+	    }
 	    
 	}
 }
