@@ -230,19 +230,3 @@ ServerRequest::addDetector('tablet', function ($request) {
 //\Cake\I18n\FrozenDate::setToStringFormat('dd.MM.yyyy');
 //\Cake\I18n\FrozenTime::setToStringFormat('dd.MM.yyyy HH:mm');
 
-define('GLOBAL_DOWN_TIME', 500);
-define('WETNESS_DURATION', 6000);
-define('BURN_DURATION', 3000);
-define('BURN_AMOUNT', 2);
-define('CC_IN_A_ROW_LIMIT', 2);
-define('ELO_CONSTANT', 32);
-define('RUNE_DAMAGE_INCREASE', 2.5);
-define('RUNE_HEALING_INCREASE', 5);
-define('RUNE_CRITICAL_CHANCE_INCREASE', 5);
-define('RUNE_CAST_AGAIN_INCREASE', 5);
-define('RUNE_HEALTH_INCREASE', 5);
-define('RUNE_CASTING_SPEED_INCREASE', 5);
-define('GAUNTLET_WAIT_TIME', '+1 second');
-define('GAUNTLET_REST_TIME', '+1 second');
-define('SINGLE_TYPE_MONSTER_COST', 250);
-define('DUAL_TYPE_MONSTER_COST', 1000);
