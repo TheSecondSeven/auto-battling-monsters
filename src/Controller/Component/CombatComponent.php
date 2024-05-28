@@ -515,7 +515,7 @@ class CombatComponent extends Component
 	
 	private function processStatusHealingOverTime($time, &$action_message, $monster) {
 		if($this->monsters[$monster->id]->buffs->healing_over_time->next_tick <= $time) {
-			$healing = min($this->healingDampening($time, rand($this->monsters[$monster->id]->buffs->healing_over_time->amount_min, $this->monsters[$monster->id]->buffs->healing_over_time->amount_max)), $this->monsters[$monster->id]->max_health - $this->monsters[$monster->id]->current_health);
+			$healing = min($this->healingDampening($time, rand((int)$this->monsters[$monster->id]->buffs->healing_over_time->amount_min, (int)$this->monsters[$monster->id]->buffs->healing_over_time->amount_max)), $this->monsters[$monster->id]->max_health - $this->monsters[$monster->id]->current_health);
 			if(!empty($this->monsters[$monster->id]->debuffs->infected)) {
 				$this->addActionMessage($action_message, 'healing_over_time', 'Healing Over Time for '.$this->monsters[$monster->id]->name.' prevented by Infection.');
 				$this->useInfect($time, $action_message, $monster);
@@ -537,7 +537,7 @@ class CombatComponent extends Component
 	
 	private function processStatusPoisoned($time, &$action_message, $monster) {
 		if($this->monsters[$monster->id]->debuffs->poisoned->next_tick <= $time) {
-			$damage = rand($this->monsters[$monster->id]->debuffs->poisoned->amount_min, $this->monsters[$monster->id]->debuffs->poisoned->amount_max);
+			$damage = rand((int)$this->monsters[$monster->id]->debuffs->poisoned->amount_min, (int)$this->monsters[$monster->id]->debuffs->poisoned->amount_max);
 			$this->takeDamage($time, $action_message, $monster, $monster, 'Poison', $damage, false, $action_type = 'damage_over_time');
 		}
 		if(!empty($this->monsters[$monster->id]->debuffs->poisoned) && $this->monsters[$monster->id]->debuffs->poisoned->next_tick <= $time) {
@@ -1481,7 +1481,7 @@ class CombatComponent extends Component
 		}elseif($skill_effect->effect == 'Cleanse') {
 			foreach($targets as $target) {
 				if(!empty($this->monsters[$target->id]->debuffs)) {
-					$cleanse_count = rand($skill_effect->amount_min,$skill_effect->amount_max);
+					$cleanse_count = rand((int)$skill_effect->amount_min,(int)$skill_effect->amount_max);
 					$count = 0;
 					while($cleanse_count > 0 && count(get_object_vars($this->monsters[$target->id]->debuffs)) > 0) {
 						$count++;
@@ -1498,7 +1498,7 @@ class CombatComponent extends Component
 		}elseif($skill_effect->effect == 'Purge') {
 			foreach($targets as $target) {
 				if(!empty($this->monsters[$target->id]->buffs)) {
-					$purge_count = rand($skill_effect->amount_min,$skill_effect->amount_max);
+					$purge_count = rand((int)$skill_effect->amount_min,(int)$skill_effect->amount_max);
 					$count = 0;
 					while($purge_count > 0 && count(get_object_vars($this->monsters[$target->id]->buffs)) > 0) {
 						$count++;
@@ -1907,7 +1907,7 @@ class CombatComponent extends Component
 		//get higher rolls from luck
 		$highest_amount_found = false;
 		while($highest_amount_found == false) {
-			$amount = max($amount,rand($skill_effect->amount_min,$skill_effect->amount_max));
+			$amount = max($amount,rand((int)$skill_effect->amount_min,(int)$skill_effect->amount_max));
 			if(rand(1,100) > (100 * $this->monsters[$caster->id]->stats->rerollChance) || $skill_effect->amount_min == $skill_effect->amount_max)
 				$highest_amount_found = true;
 		}
@@ -2044,11 +2044,11 @@ class CombatComponent extends Component
 	private function applyInfect($time, &$action_message, $skill_effect, $monster) {
 		//see if already infected
 		if(!empty($this->monsters[$monster->id]->debuffs->infected)) {
-			$this->monsters[$monster->id]->debuffs->infected->stacks += rand($skill_effect->amount_min, $skill_effect->amount_max);
+			$this->monsters[$monster->id]->debuffs->infected->stacks += rand((int)$skill_effect->amount_min, (int)$skill_effect->amount_max);
 			$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is Infected('.$this->monsters[$monster->id]->debuffs->infected->stacks.').');
 		}else{
 			$this->monsters[$monster->id]->debuffs->infected = (object)[
-				'stacks' => rand($skill_effect->amount_min, $skill_effect->amount_max)
+				'stacks' => rand((int)$skill_effect->amount_min, (int)$skill_effect->amount_max)
 			];
 			if($this->monsters[$monster->id]->debuffs->infected->stacks == 1) {
 				$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is Infected.');
@@ -2171,7 +2171,7 @@ class CombatComponent extends Component
 	
 	private function applyDelay($time, &$action_message, $skill_effect, $monster) {
 		$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' stutters.');
-		$amount = rand($skill_effect->amount_min * 1000, $skill_effect->amount_max * 1000) / 1000;
+		$amount = rand((int)$skill_effect->amount_min * 1000, (int)$skill_effect->amount_max * 1000) / 1000;
 		$this->monsters[$monster->id]->next_action_time += $amount;
 	}
 	
