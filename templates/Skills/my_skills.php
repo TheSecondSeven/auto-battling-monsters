@@ -29,7 +29,7 @@
                     if(!empty($skill->monster3[0])) echo $this->Html->link($skill->monster3[0]->name, ['controller' => 'monsters', 'action' => 'edit-move-set', $skill->monster3[0]->id], ['class'=>'btn btn-success']);
                     if(!empty($skill->monster4[0])) echo $this->Html->link($skill->monster4[0]->name, ['controller' => 'monsters', 'action' => 'edit-move-set', $skill->monster4[0]->id], ['class'=>'btn btn-success']);
                     
-                    if(empty($skill->monster1) && empty($skill->monster2) && empty($skill->monster3) && empty($skill->monster4)) {
+                    if(empty($skill->monster1) && empty($skill->monster2) && empty($skill->monster3) && empty($skill->monster4) && $skill->rarity != 'Common') {
                         echo $this->Html->link('Transmute', ['controller' => 'skills', 'action' => 'transmute', $skill->id], ['class'=>'btn btn-info', 'data-bs-toggle'=>"tooltip", 'data-bs-placement' => "top", 'title' => "Transmutate this Skill into a different ".$skill->rarity." Skill"]);
                     } ?>
                 </td>
