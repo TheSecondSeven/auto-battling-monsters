@@ -102,9 +102,15 @@ class GauntletRunsController extends AppController
 			throw new NotFoundException(__('Invalid monster'));
 		}
 		$monster->in_gauntlet_run = 1;
-		$monster->in_gauntlet_run_until = new DateTime(GAUNTLET_WAIT_TIME);
-		$this->GauntletRuns->Monsters->save($monster);
+		if($monster->new) {
+			$monster->new = 0;
+			$monster->in_gauntlet_run_until = new DateTime();
+		$this->Flash->success(__($monster->name.' has started battling in the Gauntlet. Because it was it\'s first run, it immediately completed it. Future runs will take '.GAUNTLET_WAIT_TIME.'.'));
+		}else{
+			$monster->in_gauntlet_run_until = new DateTime(GAUNTLET_WAIT_TIME);
 		$this->Flash->success(__($monster->name.' has started battling in the Gauntlet. It will be done at '.$monster->in_gauntlet_run_until->format('g:ia').' PST'));
+		}
+		$this->GauntletRuns->Monsters->save($monster);
 		return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
 	}
 	
