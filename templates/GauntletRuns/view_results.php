@@ -1,4 +1,4 @@
-<?php $this->extend('../layout/TwitterBootstrap/dashboard'); ?>
+<?php $this->extend('../layout/dashboard'); ?>
 <style>
 	.reward {
 		width: 200px;
@@ -62,7 +62,7 @@
 <?php endforeach; ?>
 	</tbody>
 </table>
-<a href="/view-gauntlet-battles/<?php echo $gauntlet_run->id; ?>">Watch the Battles</a>
+<a href="/view-gauntlet-battles/<?php echo $gauntlet_run->id; ?>" class="btn btn-primary">Watch the Battles</a>
 </div>
 </div>
 
@@ -70,12 +70,10 @@
 </div>
 <div class="rewards">
 <div style="width: 500px; display: inline-block;">
-	<h2><?php echo __('Rewards'); ?></h2>
-	<h3>Winning at least 5 guarantees a Rare, 7 an Epic, and all 10 guarantees you a Legendary!</h3>
-	<table class="table table-striped" width="500px">
+	<table class="table" width="500px">
 	<thead>
 	<tr>
-		<th style="text-align: center;">Reward</th>
+		<th style="text-align: center;">Rewards</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -99,6 +97,8 @@
     <?php endforeach; ?>
 	</tbody>
 </table>
+
+	<em>Winning at least 5 guarantees a Rare, 7 an Epic, and all 10 guarantees you a Legendary!</em>
 </div>
 </div>
 </div>

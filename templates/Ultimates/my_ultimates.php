@@ -1,10 +1,10 @@
-<?php $this->extend('../layout/TwitterBootstrap/dashboard'); ?>
+<?php $this->extend('../layout/dashboard'); ?>
 <div class="skills index">
 	<h2><?php echo __('My Ultimates'); ?></h2>
 	<table class="table table-striped">
         <thead>
             <tr>
-                <th>Used By</th>
+                <th>In Use By</th>
                 <th><?php echo $this->Paginator->sort('rarity'); ?></th>
                 <th><?php echo $this->Paginator->sort('name'); ?></th>
                 <th><?php echo $this->Paginator->sort('type_id'); ?></th>

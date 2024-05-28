@@ -36,6 +36,9 @@ class UserSkillsTable extends Table
         $random_skill = $this->Skills
             ->find()
             ->where($conditions)
+            ->notMatching('UserSkills', function ($q) use ($user_id) {
+                return $q->where(['UserSkills.user_id' => $user_id]);
+            })
             ->order([
                 'RAND()'
             ])
@@ -50,6 +53,6 @@ class UserSkillsTable extends Table
 			['validate' => false]
 		);
 		$this->save($user_skill);
-		return $user_skill->id;
+		return $random_skill;
 	}
 }

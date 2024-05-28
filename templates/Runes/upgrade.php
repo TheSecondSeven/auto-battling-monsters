@@ -1,7 +1,7 @@
-<?php $this->extend('../layout/TwitterBootstrap/dashboard'); ?>
+<?php $this->extend('../layout/dashboard'); ?>
 <div class="runes form">
-    <legend><?php echo __('Upgrade Rune'); ?></legend>
-    <h3>Each subsequent upgrade for a category increases that category's cost.</h3>
+    <h3>Upgrade Rune</h3>
+    <p>Each subsequent upgrade for a category increases that category's cost.</p>
 	<?= $this->Form->create($rune) ?>
 	<?= $this->Form->control('id'); ?>
 	<?= $this->Form->control('upgrade', ['options' => $upgrade_options]); ?>

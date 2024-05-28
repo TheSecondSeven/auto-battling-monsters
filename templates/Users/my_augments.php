@@ -1,4 +1,4 @@
-<?php $this->extend('../layout/TwitterBootstrap/dashboard'); ?>
+<?php $this->extend('../layout/dashboard'); ?>
 <div class="skills index">
 	<h2><?php echo __('My Runes'); ?></h2>
 	<table class="table table-striped">

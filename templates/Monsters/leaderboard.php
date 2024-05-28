@@ -1,4 +1,4 @@
-<?php $this->extend('../layout/TwitterBootstrap/dashboard'); ?>
+<?php $this->extend('../layout/dashboard'); ?>
 <div class="monsters form">
 	<h2><?php echo __('Monster Leaderboard'); ?></h2>
 	<table class="table table-striped">

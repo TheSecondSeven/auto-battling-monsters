@@ -44,6 +44,7 @@ class UltimatesController extends AppController
 	}
 	
 	public function view($id = null) {
+		$user_id = $this->user->id;
         $ultimate = $this->Ultimates
             ->find()
             ->where([
@@ -56,6 +57,12 @@ class UltimatesController extends AppController
                     'SecondarySkillEffects'
                 ]
             ])
+			->contain('UserUltimates', function (SelectQuery $q) use ($user_id) {
+                return $q
+                    ->where([
+                        'UserUltimates.user_id' => $user_id
+                    ]);
+            })
             ->firstOrFail();
 		$this->set('ultimate', $ultimate);
         $status_effects = $this->fetchTable('Statuses')

@@ -8,6 +8,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\View\Exception\MissingTemplateException;
 use Cake\Event\EventInterface;
+use Cake\ORM\Query\SelectQuery;
 
 /**
  * Static content controller
@@ -185,7 +186,8 @@ class MonstersController extends AppController
 								'in_use_by_monster_id' => $monster->id
 							],
 							[
-								'id IN' => $rune_ids
+								'id IN' => $rune_ids,
+								'user_id' => $this->user->id
 							]
 						);
 					}
@@ -357,7 +359,7 @@ class MonstersController extends AppController
 		}
 	}
 	*/
-	public function editSkills($id = null) {
+	public function editMoveSet($id = null) {
         $monster = $this->Monsters
             ->find()
             ->where([
@@ -444,7 +446,8 @@ class MonstersController extends AppController
 								'in_use_by_monster_id' => $monster->id
 							],
 							[
-								'skill_id IN' => $skill_ids
+								'skill_id IN' => $skill_ids,
+								'user_id' => $this->user->id
 							]
 						);
 					}
@@ -462,7 +465,8 @@ class MonstersController extends AppController
 								'in_use_by_monster_id' => $monster->id
 							],
 							[
-								'ultimate_id' => $monster->ultimate_id
+								'ultimate_id' => $monster->ultimate_id,
+								'user_id' => $this->user->id
 							]
 						);
 					}
@@ -550,6 +554,82 @@ class MonstersController extends AppController
 			$ultimate_options = [0 => 'Select an Ultimate'] + $ultimate_options;
 		}
 		$this->set('ultimate_options', $ultimate_options);
-		$this->set('monster', $monster);
+
+		$all_skills = $this->fetchTable('Skills')
+			->find()
+			->where([
+				'Skills.rarity !=' => 'Admin Only',
+				'Skills.type_id IN' => $availableTypes
+			])
+			->contain('UserSkills', function (SelectQuery $q) use ($user_id) {
+                    return $q
+                        ->where([
+                            'UserSkills.user_id' => $user_id
+                        ]);
+                })
+			->contain([
+				'Types'
+			])
+			->order([
+				'Skills.rarity DESC'
+			])
+			->all()
+			->toList();
+
+		$all_ultimates = $this->fetchTable('Ultimates')
+			->find()
+			->where([
+				'Ultimates.rarity !=' => 'Admin Only',
+				'OR' => [
+					'Ultimates.type_id IN' => $availableTypes,
+					'Ultimates.secondary_type_id IN' => $availableTypes
+				]
+			])
+			->contain([
+				'Types',
+				'SecondaryTypes'
+			])
+			->contain('UserUltimates', function (SelectQuery $q) use ($user_id) {
+                    return $q
+                        ->where([
+                            'UserUltimates.user_id' => $user_id
+                        ]);
+                })
+			->order([
+				'Ultimates.rarity DESC'
+			])
+			->all()
+			->toList();
+		$all_moves = $all_ultimates + $all_skills;
+		usort($all_moves, [$this, 'sort_by_rarity']);
+		usort($all_moves, [$this, 'sort_by_owned']);
+		
+		$this->set(compact(['monster','all_moves']));
 	}
+
+
+
+	function sort_by_owned($a, $b)
+	{
+		if ($a->owned == $b->owned) {
+			return 0;
+		}
+		return ($a->owned > $b->owned) ? -1 : 1;
+	}
+
+	function sort_by_rarity($a, $b)
+	{
+		$rarities = [
+			'Common' => 1,
+			'Uncommon' => 2,
+			'Rare' => 3,
+			'Epic' => 4,
+			'Legendary' => 5
+		];
+		if ($a->rarity == $b->rarity) {
+			return 0;
+		}
+		return ($rarities[$a->rarity] > $rarities[$b->rarity]) ? -1 : 1;
+	}
+	
 }

@@ -6,6 +6,9 @@
 	var time = 0;
 	var interval = null;
 
+	var statusDescriptions = {<?php foreach($statuses as $index => $status) { if($index > 0) echo ','; echo $status->class.': "'.$status->description.'"'; } ?>};
+
+
 	function previousBattle() {
 		if(battleIndex > 0) {
 			battleIndex = battleIndex - 1;
@@ -80,22 +83,25 @@
 		$('.status-key ul').html('');
 		var runData = JSON.parse(originalRunData);
 		var data = runData[battleIndex];
-		console.log(data);
 		if (typeof data.used_buffs != "undefined") {
 			for(statusKey in data.used_buffs) {
-				$('.status-key ul').append('<li class="list-group-item"><div class="buff '+statusKey+'"></div><div>'+data.used_buffs[statusKey]+'</div></li>');
+				$('.status-key ul').append('<li data-bs-toggle="tooltip" data-bs-placement="top" title="'+statusDescriptions[statusKey]+'" class="list-group-item"><div class="buff '+statusKey+'"></div><div>'+data.used_buffs[statusKey]+'</div></li>');
 			}
 		}
 		if (typeof data.used_debuffs != "undefined") {
 			for(statusKey in data.used_debuffs) {
-				$('.status-key ul').append('<li class="list-group-item"><div class="debuff '+statusKey+'"></div><div>'+data.used_debuffs[statusKey]+'</div></li>');
+				$('.status-key ul').append('<li data-bs-toggle="tooltip" data-bs-placement="top" title="'+statusDescriptions[statusKey]+'" class="list-group-item"><div class="debuff '+statusKey+'"></div><div>'+data.used_debuffs[statusKey]+'</div></li>');
 			}
 		}
 		if (typeof data.used_statuses != "undefined") {
 			for(statusKey in data.used_statuses) {
-				$('.status-key ul').append('<li class="list-group-item"><div class="status '+statusKey+'"></div><div>'+data.used_statuses[statusKey]+'</div></li>');
+				$('.status-key ul').append('<li data-bs-toggle="tooltip" data-bs-placement="top" title="'+statusDescriptions[statusKey]+'" class="list-group-item"><div class="status '+statusKey+'"></div><div>'+data.used_statuses[statusKey]+'</div></li>');
 			}
 		}
+		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+			return new bootstrap.Tooltip(tooltipTriggerEl)
+		});
 	}
 	
 	function updateScene(currentTime, battleData) {
@@ -143,23 +149,23 @@
 		var statuses = '';
 		for(status in state.statuses) {
 			if(typeof state.statuses[status].stacks != null && parseInt(state.statuses[status].stacks) > 1) {
-				statuses += '<div data-bs-toggle="tooltip" data-bs-placement="top" title="'+status+'" class="status '+status+'">'+state.statuses[status].stacks+'</div>';
+				statuses += '<div class="status '+status+'">'+state.statuses[status].stacks+'</div>';
 			}else{
-				statuses += '<div data-bs-toggle="tooltip" data-bs-placement="top" title="'+status+'" class="status '+status+'"></div>';
+				statuses += '<div class="status '+status+'"></div>';
 			}
 		}
 		for(status in state.buffs) {
 			if(typeof state.buffs[status].stacks != null && parseInt(state.buffs[status].stacks) > 1) {
-				statuses += '<div data-bs-toggle="tooltip" data-bs-placement="top" title="'+status+'" class="buff '+status+'">'+state.buffs[status].stacks+'</div>';
+				statuses += '<div class="buff '+status+'">'+state.buffs[status].stacks+'</div>';
 			}else{
-				statuses += '<div data-bs-toggle="tooltip" data-bs-placement="top" title="'+status+'" class="buff '+status+'"></div>';
+				statuses += '<div class="buff '+status+'"></div>';
 			}
 		}
 		for(status in state.debuffs) {
 			if(typeof state.debuffs[status].stacks != null && parseInt(state.debuffs[status].stacks) > 1) {
-				statuses += '<div data-bs-toggle="tooltip" data-bs-placement="top" title="'+status+'" class="debuff '+status+'">'+state.debuffs[status].stacks+'</div>';
+				statuses += '<div class="debuff '+status+'">'+state.debuffs[status].stacks+'</div>';
 			}else{
-				statuses += '<div data-bs-toggle="tooltip" data-bs-placement="top" title="'+status+'" class="debuff '+status+'"></div>';
+				statuses += '<div class="debuff '+status+'"></div>';
 			}
 		}
 		$('.statuses', monsterDiv).html(statuses);
@@ -177,7 +183,7 @@
 						hasMessage = true;
 						logHTML += '<li>'+monsterActionLog[i][j].text+'</li>';
 						<?php }else{ ?>
-						if(!['debuff_lost','buff_lost','begin_cast','skill_use','healing_over_time','damage_over_time','burn_damage','damage','healing','debuff_gained','buff_gained'].includes(type)) {
+						if(!['debuff_lost','buff_lost','begin_cast','skill_use','healing_over_time','damage_over_time','burn_damage','damage','healing'].includes(type)) {
 							hasMessage = true;
 							logHTML += '<li>'+monsterActionLog[i][j].text+'</li>';
 						}

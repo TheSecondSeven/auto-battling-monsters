@@ -1,3 +1,6 @@
 
 config/app_local.php
 config/app.php
+tmp/
+logs/error.log
+tmp/debug_kit.sqlite

@@ -1,4 +1,4 @@
-<?php $this->extend('../layout/TwitterBootstrap/dashboard'); ?>
+<?php $this->extend('../layout/dashboard'); ?>
 <div class="gauntlet_runs index">
 	<h2><?php echo __('Completed Gauntlet Runs'); ?></h2>
 	<table  class="table table-striped">
@@ -21,9 +21,9 @@
 		<td style="text-align: center;"><?php echo $gauntlet_run->losses; ?>&nbsp;</td>
 		<td style="text-align: center;"><?php echo $gauntlet_run->ties; ?>&nbsp;</td>
 		<td style="text-align: center;"><?php echo $gauntlet_run->created->format('F jS, Y g:ia'); ?></td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('View Battles'), array('controller' => 'gauntlet_runs', 'action' => 'view_battles', $gauntlet_run->id, 'admin' => false)); ?>
-			<?php echo $this->Html->link(__('View Results'), array('controller' => 'gauntlet_runs', 'action' => 'view_results', $gauntlet_run->id, 'admin' => false)); ?>
+		<td class="actions" style="text-align:right;">
+			<?php echo $this->Html->link(__('Watch Battles'), ['controller' => 'gauntlet_runs', 'action' => 'view_battles', $gauntlet_run->id, 'admin' => false], ['class' => 'btn btn-primary']); ?>
+			<?php echo $this->Html->link(__('View Results'), ['controller' => 'gauntlet_runs', 'action' => 'view_results', $gauntlet_run->id, 'admin' => false], ['class' => 'btn btn-primary']); ?>
 		</td>
 	</tr>
     <?php if(!empty($gauntlet_run->skill1->id)) { ?>

@@ -1,4 +1,4 @@
-<?php $this->extend('../layout/TwitterBootstrap/dashboard'); ?>
+<?php $this->extend('../layout/dashboard'); ?>
 <div class="skills index">
 	<h2><?php echo __('My Runes'); ?></h2>
 	<?php echo $this->Html->link('Create Rune', ['controller' => 'runes', 'action' => 'create'],['class' => 'btn btn-primary']); ?>

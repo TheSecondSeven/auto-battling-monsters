@@ -1,4 +1,4 @@
-<?php $this->extend('../layout/TwitterBootstrap/dashboard'); ?>
+<?php $this->extend('../layout/dashboard'); ?>
 <div class="monsters form">
     <h3>Edit Monster Skills</h3>
     <?php if($monster->rune_level < 3) {

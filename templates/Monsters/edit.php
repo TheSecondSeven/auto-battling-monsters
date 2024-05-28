@@ -1,4 +1,4 @@
-<?php $this->extend('../layout/TwitterBootstrap/dashboard'); ?>
+<?php $this->extend('../layout/dashboard'); ?>
 <div class="monsters form">
     <h3>Edit Monster</h3>
 	<?= $this->Form->create($monster) ?>

@@ -1,4 +1,4 @@
-<?php $this->extend('../layout/TwitterBootstrap/dashboard'); ?>
+<?php $this->extend('../layout/dashboard'); ?>
 <div class="monsters index">
 	<h2><?php echo __('Monsters'); ?></h2>
 	<table  class="table table-striped">
@@ -132,7 +132,7 @@
 								echo '<li><span class="dropdown-item">You cannot edit your monster<br>while it is resting from Battle.</span></li>';
 							}else{
 								echo $this->Html->link(__('Edit Name'), ['controller' => 'monsters', 'action' => 'edit', $monster->id], ['class'=>'dropdown-item']);
-								echo $this->Html->link(__('Edit Skills'), ['controller' => 'monsters', 'action' => 'edit-skills', $monster->id], ['class'=>'dropdown-item']);
+								echo $this->Html->link(__('Edit Move Set'), ['controller' => 'monsters', 'action' => 'edit-move-set', $monster->id], ['class'=>'dropdown-item']);
 								echo $this->Html->link(__('Edit Runes'), ['controller' => 'monsters', 'action' => 'edit-runes', $monster->id], ['class'=>'dropdown-item']);
 							}
 							

@@ -1,64 +1,45 @@
-<?php $this->extend('../layout/TwitterBootstrap/dashboard'); ?>
+<?php $this->extend('../layout/dashboard'); ?>
 <div class="ultimate form">
-<h2><?php echo __('Ultimate'); ?></h2>
-	<dl>
-		<dt><?php echo __('Name'); ?></dt>
-		<dd>
-			<?php echo h($ultimate->name); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Type'); ?></dt>
-		<dd>
-			<?php echo $ultimate->type->name; ?><?php if(!empty($ultimate->secondary_type->id)) echo '/'.$ultimate->secondary_type->name; ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Description'); ?></dt>
-		<dd>
-			<?php echo h($ultimate->description); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Passive?'); ?></dt>
-		<dd>
-			<?php echo ($ultimate->passive ? 'Yes' : 'No'); ?>
-			&nbsp;
-		</dd>
-        <?php if(!$ultimate->passive) { ?>
-        
-		<dt><?php echo __('Starting Charges'); ?></dt>
-		<dd>
-			<?php echo $ultimate->starting_charges; ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Charges Needed'); ?></dt>
-		<dd>
-			<?php echo $ultimate->charges_needed; ?>
-			&nbsp;
-		</dd>
-        <?php } ?>
-		<dt><?php echo __('Cast Time'); ?></dt>
-		<dd>
-			<?php if($ultimate->cast_time == 0.00) { echo 'Instant'; }else{ echo h($ultimate->cast_time); } ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Down Time'); ?></dt>
-		<dd>
-			<?php if($ultimate->down_time == 0.00) { echo 'None'; }else{ echo h($ultimate->down_time); } ?>
-			&nbsp;
-		</dd>
-	</dl>
+	<h2><?php echo __('Ultimate'); ?></h2>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Type</th>
+				<th>Description</th>
+				<th>Passive or Charging</th>
+				<th>Cast Time</th>
+				<th>Down Time</th>
+				<th>Owned</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><?= $ultimate->name ?></td>
+				<td><?= $ultimate->type->name ?><?php if(!empty($ultimate->secondary_type->id) && $ultimate->type->id != $ultimate->secondary_type->id) echo '/'.$ultimate->secondary_type->name; ?></td>
+				<td><?= $ultimate->description ?></td>
+                <td><?php if($ultimate->passive) { echo 'Passive'; }else{ echo 'Starts with '.$ultimate->starting_charges.'/'.$ultimate->charges_needed.' Charge'.($ultimate->charges_needed == 1 ? '' : 's').' Needed'; } ?></td>
+				<td><?= $ultimate->cast_time ?></td>
+				<td><?= $ultimate->down_time ?></td>
+				<td><?= ($ultimate->owned ? 'Yes' : 'No') ?></td>
+			</tr>
+		</tbody>
+	</table>
 	<?php if (!empty($ultimate->skill_effects)): ?>
 	<br>
 	<br>
-<div class="related">
 	<h3><?php echo __('Effects'); ?></h3>
-	<table class="table table-striped">
-	<tr>
-		<th colspan="2"><?php echo __('Effect'); ?></th>
-		<th><?php echo __('Chance'); ?></th>
-		<th><?php echo __('Amount'); ?></th>
-		<th><?php echo __('Targets'); ?></th>
-		<th><?php echo __('Duration'); ?></th>
-	</tr>
+	<table class="table">
+		<thead>
+			<tr>
+				<th colspan="2"><?php echo __('Effect'); ?></th>
+				<th><?php echo __('Chance'); ?></th>
+				<th><?php echo __('Amount'); ?></th>
+				<th><?php echo __('Targets'); ?></th>
+				<th><?php echo __('Duration'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
 	<?php foreach ($ultimate->skill_effects as $skillEffect):
 		if($skillEffect->effect != 'Random Amount') {
 	?>
@@ -92,7 +73,7 @@
 		<?php
 		}
 		endforeach; ?>
+		</tbody>
 	</table>
-</div>
 <?php endif; ?>
 </div>
