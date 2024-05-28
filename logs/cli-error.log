@@ -1,0 +1,37 @@
+2024-05-23 19:53:40 error: [Cake\Database\Exception\MissingConnectionException] Connection to Mysql could not be established: SQLSTATE[HY000] [2002] No such file or directory in /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Driver.php on line 192
+Exception Attributes: array (
+  'driver' => 'Mysql',
+  'reason' => 'SQLSTATE[HY000] [2002] No such file or directory',
+)
+Stack Trace:
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Driver/Mysql.php:151
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Schema/SchemaDialect.php:51
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Driver/Mysql.php:179
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Schema/Collection.php:53
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Connection.php:362
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/bake/src/Command/ModelCommand.php:92
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/bake/src/Command/AllCommand.php:115
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Console/BaseCommand.php:192
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Console/CommandRunner.php:327
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Console/CommandRunner.php:168
+- /Users/michaelstratford/Documents/dymtab/bin/cake.php:10
+- [main]:
+
+Caused by: [PDOException] SQLSTATE[HY000] [2002] No such file or directory in /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Driver.php on line 181
+Stack Trace:
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Driver.php:181
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Core/Retry/CommandRetry.php:71
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Driver.php:190
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Driver/Mysql.php:151
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Schema/SchemaDialect.php:51
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Driver/Mysql.php:179
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Schema/Collection.php:53
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Database/Connection.php:362
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/bake/src/Command/ModelCommand.php:92
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/bake/src/Command/AllCommand.php:115
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Console/BaseCommand.php:192
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Console/CommandRunner.php:327
+- /Users/michaelstratford/Documents/dymtab/vendor/cakephp/cakephp/src/Console/CommandRunner.php:168
+- /Users/michaelstratford/Documents/dymtab/bin/cake.php:10
+- [main]:
+
