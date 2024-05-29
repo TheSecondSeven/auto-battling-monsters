@@ -2277,7 +2277,6 @@ class CombatComponent extends Component
 			];
 			return $totem;	
 		}elseif($rand == 2) {
-			
 			$totem = (object)[
 				'type' => (object)[
 					'name' => 'Water'
@@ -2292,7 +2291,7 @@ class CombatComponent extends Component
 				'agility' => 1,
 				'dexterity' => 1,
 				'intelligence' => 1,
-				'luck' => 1,
+				'luck' => 1, 
 				'vitality' => 1,
 				'cc_count' => 0,
 				'skills' => [
@@ -2323,7 +2322,6 @@ class CombatComponent extends Component
 			];
 			return $totem;	
 		}elseif($rand == 3) {
-			
 			$totem = (object)[
 				'type' => (object)[
 					'name' => 'Earth'
