@@ -183,7 +183,7 @@
 						hasMessage = true;
 						logHTML += '<li>'+monsterActionLog[i][j].text+'</li>';
 						<?php }else{ ?>
-						if(!['debuff_lost','buff_lost','begin_cast','skill_use','healing_over_time','damage_over_time','burn_damage','damage','healing'].includes(type)) {
+						if(!['debuff_lost','buff_lost','begin_cast','skill_use','healing_over_time','damage_over_time','burn_damage'].includes(type)) {
 							hasMessage = true;
 							logHTML += '<li>'+monsterActionLog[i][j].text+'</li>';
 						}

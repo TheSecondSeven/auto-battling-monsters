@@ -1975,7 +1975,7 @@ class CombatComponent extends Component
 	}
 	
 	private function healingDampening($time, $amount) {
-		return floor($amount * (1 - 1 / 5 * floor($time / 10000)));
+		return max(1,floor($amount * (1 - 1 / 5 * floor($time / 10000))));
 	}
 	
 	private function directHit($time, &$action_message, $monster) {
@@ -2230,15 +2230,15 @@ class CombatComponent extends Component
 	}
 
 	private function randomTotem(&$action_message) {
-		$rand = rand(1,2);
+		$rand = rand(1,3);
 		if($rand == 1) {
 			$totem = (object)[
 				'type' => (object)[
 					'name' => 'Fire'
 				],
 				'name' => 'Searing Totem',
-				'current_health' => 6,
-				'max_health' => 6,
+				'current_health' => 1,
+				'max_health' => 1,
 				'statuses' => (object)[],
 				'debuffs' => (object)[],
 				'buffs' => (object)[],
@@ -2283,8 +2283,8 @@ class CombatComponent extends Component
 					'name' => 'Water'
 				],
 				'name' => 'Healing Totem',
-				'current_health' => 6,
-				'max_health' => 6,
+				'current_health' => 1,
+				'max_health' => 1,
 				'statuses' => [],
 				'debuffs' => [],
 				'buffs' => [],
@@ -2309,6 +2309,52 @@ class CombatComponent extends Component
 								'amount_min' => 1,
 								'amount_max' => 1,
 								'duration' => 0,
+								'chance' => 100,
+								'targets' => 'All Allies',
+								'secondary_skill_effects' => []
+							]
+						]
+					]
+				]
+			];
+			$action_message[] = [
+				'type' => 'skill_result',
+				'text' => 'Healing Totem is Summoned.'
+			];
+			return $totem;	
+		}elseif($rand == 3) {
+			
+			$totem = (object)[
+				'type' => (object)[
+					'name' => 'Earth'
+				],
+				'name' => 'Stone Totem',
+				'current_health' => 1,
+				'max_health' => 1,
+				'statuses' => [],
+				'debuffs' => [],
+				'buffs' => [],
+				'strength' => 1,
+				'agility' => 1,
+				'dexterity' => 1,
+				'intelligence' => 1,
+				'luck' => 1,
+				'vitality' => 1,
+				'cc_count' => 0,
+				'skills' => [
+					(object)[
+						'type' => (object)[
+							'name' => 'Earth'
+						],
+						'name' => 'Fortify',
+						'cast_time' => 1,
+						'down_time' => 0,
+						'skill_effects' => [
+							(object)[
+								'effect' => 'Defense Up',
+								'amount_min' => 15,
+								'amount_max' => 15,
+								'duration' => 1,
 								'chance' => 100,
 								'targets' => 'All Allies',
 								'secondary_skill_effects' => []
