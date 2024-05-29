@@ -392,6 +392,9 @@ class SkillsController extends AppController
 		if(in_array($skill_effect->targets,['Self','All Allies']) && in_array($skill_effect->effect, ['Physical Damage','Magical Damage','True Damage','Leech','Poison','Infect','Burn','Stun','Sleep','Freeze','Attack Down','Defense Down','Speed Down','Evade Down','Wet','Delay'])) {
 			$total_points *= -0.8;
 		}
+		if(in_array($skill_effect->targets,['Everyone']) && in_array($skill_effect->effect, ['Physical Damage','Magical Damage','True Damage','Leech','Poison','Infect','Burn','Stun','Sleep','Freeze','Attack Down','Defense Down','Speed Down','Evade Down','Wet','Delay'])) {
+			$total_points *= 0;
+		}
 		if(in_array($skill_effect->targets,['Single Enemy','All Enemies']) && !in_array($skill_effect->effect, ['Physical Damage','Magical Damage','True Damage','Leech','Poison','Infect','Burn','Stun','Sleep','Freeze','Attack Down','Defense Down','Speed Down','Evade Down','Wet','Delay'])) {
 			$total_points *= -0.8;
 		}
