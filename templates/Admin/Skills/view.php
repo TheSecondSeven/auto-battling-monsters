@@ -47,9 +47,7 @@
 		<th><?php echo __('Duration'); ?></th>
 		<th>Actions</th>
 	</tr>
-	<?php foreach ($skill->skill_effects as $skill_effect):
-		if($skill_effect->effect != 'Random Amount') {
-	?>
+	<?php foreach ($skill->skill_effects as $skill_effect):?>
 		<tr>
 			<td colspan="2"><?php echo $skill_effect->effect; if($skill_effect->effect == 'Consume') { echo ' Status: '.$status_options[$skill_effect->status]; } ?></td>
 			<td><?php echo $skill_effect->chance; ?>%</td>
@@ -72,7 +70,6 @@
 			</td>
 		</tr>
 	<?php 
-		} //end not random amount
 		if(!empty($skill_effect->secondary_skill_effects)) {
 			if($skill_effect->effect == 'Random Amount') {
 				echo '<tr><td></td><td colspan="6">Will do the following '.$skill_effect->amount_min.' - '.$skill_effect->amount_max.' times:</td></tr>';

@@ -1840,7 +1840,7 @@ class CombatComponent extends Component
 				$chanceToHit += 60000;
 			}
 			if($skill_effect->effect == 'Freeze') {
-				$chanceToHit += 60000;
+				$chanceToHit += 80000;
 			}
 		}elseif(!empty($defender->statuses->soaked)) {
 			if($type == 'Electric') {
@@ -1854,7 +1854,7 @@ class CombatComponent extends Component
 				$chanceToHit += 20000;
 			}
 			if($skill_effect->effect == 'Freeze') {
-				$chanceToHit += 60000;
+				$chanceToHit += 40000;
 			}
 		}
 		$evade_status_modifier = 0;
