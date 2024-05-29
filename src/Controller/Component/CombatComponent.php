@@ -1941,9 +1941,9 @@ class CombatComponent extends Component
 			$defender_status_modifier = pow(2, $defender_status_modifier_amount / 100);
 			
 			if($skill_effect->effect == 'Physical Damage') {
-				$amount = round($amount * $this->monsters[$caster->id]->stats->physicalAttackModifier * $attack_status_modifier / $this->monsters[$target->id]->stats->physicalDefenseModifier * $defender_status_modifier);
+				$amount = round($amount * $this->monsters[$caster->id]->stats->physicalAttackModifier * $attack_status_modifier / $this->monsters[$target->id]->stats->physicalDefenseModifier / $defender_status_modifier);
 			}elseif($skill_effect->effect == 'Magical Damage' || $skill_effect->effect == 'Leech') {
-				$amount = round($amount * $this->monsters[$caster->id]->stats->magicalAttackModifier * $attack_status_modifier / $this->monsters[$target->id]->stats->magicalDefenseModifier * $defender_status_modifier);
+				$amount = round($amount * $this->monsters[$caster->id]->stats->magicalAttackModifier * $attack_status_modifier / $this->monsters[$target->id]->stats->magicalDefenseModifier / $defender_status_modifier);
 			}
 		}elseif($skill_effect->effect == 'True Damage') {
 			$amount = round($amount);
