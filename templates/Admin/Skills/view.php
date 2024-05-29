@@ -72,7 +72,7 @@
 	<?php 
 		if(!empty($skill_effect->secondary_skill_effects)) {
 			if($skill_effect->effect == 'Random Amount') {
-				echo '<tr><td></td><td colspan="6">Will do the following '.$skill_effect->amount_min.' - '.$skill_effect->amount_max.' times:</td></tr>';
+				echo '<tr><td></td><td colspan="6">Will do the following '.round($skill_effect->amount_min).' - '.round($skill_effect->amount_max).' times:</td></tr>';
 			}elseif($skill_effect->effect == 'Consume') {
 				echo '<tr><td></td><td colspan="6">For each stack consumed:</td></tr>';
 			}else{
