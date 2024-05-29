@@ -1,38 +1,31 @@
 <?php $this->extend('../layout/dashboard'); ?>
 <div class="skills form">
 <h2><?php echo __('Skill'); ?></h2>
-	<dl>
-		<dt><?php echo __('Name'); ?></dt>
-		<dd>
-			<?php echo h($skill->name); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Value'); ?></dt>
-		<dd>
-			<?php echo $skill->value; ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Type'); ?></dt>
-		<dd>
-			<?php echo $skill->type->name; ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Description'); ?></dt>
-		<dd>
-			<?php echo h($skill->description); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Cast Time'); ?></dt>
-		<dd>
-			<?php if($skill->cast_time == 0.00) { echo 'Instant'; }else{ echo h($skill->cast_time); } ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Down Time'); ?></dt>
-		<dd>
-			<?php if($skill->down_time == 0.00) { echo 'None'; }else{ echo h($skill->down_time); } ?>
-			&nbsp;
-		</dd>
-	</dl>
+    <div class="mb-3">
+		<?= $this->Html->link(__('Update Skill'), ['action' => 'update', $skill->id], ['class'=>'btn btn-primary']); ?>
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Value</th>
+				<th>Type</th>
+				<th>Description</th>
+				<th>Cast Time</th>
+				<th>Down Time</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><?= $skill->name ?></td>
+				<td><?= $skill->value ?></td>
+				<td><?= $skill->type->name ?></td>
+				<td><?= $skill->description ?></td>
+				<td><?= $skill->cast_time ?></td>
+				<td><?= $skill->down_time ?></td>
+			</tr>
+		</tbody>
+	</table>
 	<br>
 	<br>
 <div class="related">
