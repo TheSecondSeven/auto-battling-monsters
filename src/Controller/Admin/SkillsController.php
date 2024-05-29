@@ -324,11 +324,13 @@ class SkillsController extends AppController
 		return ($skill_effect->amount_min + $skill_effect->amount_max) / 2;
 	}
 	
-	private function skillEffectValue($skill_effect) {
+	private function skillEffectValue($skill_effect, $primary_skill_effect = null) {
+		if(!empty($primary_skill_effect) && $skill_effect->targets == 'Same as Primary Effect')
+			$skill_effect->targets = $primary_skill_effect->targets;
 		if($skill_effect->effect == 'Random Amount') {
 			$secondary_value = 0;
 			foreach($skill_effect->secondary_skill_effects as $secondary_skill_effect) {
-				$secondary_value += $this->skillEffectValue($secondary_skill_effect);
+				$secondary_value += $this->skillEffectValue($secondary_skill_effect, $skill_effect);
 			}
 			return $secondary_value * $this->skillEffectTargetValue($skill_effect) * $this->skillEffectChance($skill_effect) * $this->skillEffectAverageAmount($skill_effect);
 		}elseif($skill_effect->effect == 'Physical Damage') {
