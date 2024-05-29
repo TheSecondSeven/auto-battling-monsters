@@ -3,6 +3,7 @@
 		<?= $this->Html->link('Skills', ['controller' => 'skills', 'action' => 'index'], ['class'=>'list-group-item list-group-item-action']); ?>
 		<?= $this->Html->link('Ultimates', ['controller' => 'ultimates', 'action' => 'index'], ['class'=>'list-group-item list-group-item-action']); ?> </li>
 		<?= $this->Html->link('Statuses', ['controller' => 'statuses', 'action' => 'index'], ['class'=>'list-group-item list-group-item-action']); ?>
+		<?= $this->Html->link('Leaderboard', ['controller' => 'monsters', 'action' => 'leaderboard'], ['class'=>'list-group-item list-group-item-action']); ?> </li>
 	</div>
 	<br>
 	<div class="list-group">
@@ -12,13 +13,8 @@
 		<?= $this->Html->link('My Runes', ['controller' => 'runes', 'action' => 'my-runes'], ['class'=>'list-group-item list-group-item-action']); ?> </li>
 		<br>
 		<?= $this->Html->link('Completed Gauntlet Runs', ['controller' => 'gauntlet-runs', 'action' => 'completed'], ['class'=>'list-group-item list-group-item-action']); ?> </li>
-		<br>
-		<?= $this->Html->link('Leaderboard', ['controller' => 'monsters', 'action' => 'leaderboard'], ['class'=>'list-group-item list-group-item-action']); ?> </li>
-		<?php if($user->role == 'Admin') { ?>
-		<br>
-		<?= $this->Html->link('Leaderboard', ['controller' => 'monsters', 'action' => 'leaderboard'], ['class'=>'list-group-item list-group-item-action']); ?> </li>
-		<?php } ?>
 	</ul>
+	<br>
 	<ul class="list-group">
 		<li class="list-group-item">
 			Purchase Random<br>Single Type Monster</br>
