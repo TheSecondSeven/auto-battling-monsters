@@ -24,7 +24,7 @@
 			<?php
 			$can_practice = true;
 			if(empty($monster->skill1->id) || empty($monster->skill2->id) || empty($monster->skill3->id) || empty($monster->skill4->id) || empty($monster->ultimate->id)) {
-				echo $this->Html->link(__('Setup abilities to battle in the Gauntlet.'), ['controller' => 'monsters', 'action' => 'edit-skills', $monster->id], ['class' => 'btn btn-danger']);
+				echo $this->Html->link(__('Setup abilities to battle in the Gauntlet.'), ['controller' => 'monsters', 'action' => 'edit-move-set', $monster->id], ['class' => 'btn btn-danger']);
 				
 				$can_practice = false;
 			}elseif($monster->in_gauntlet_run) {
