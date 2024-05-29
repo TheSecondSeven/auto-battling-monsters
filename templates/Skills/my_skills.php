@@ -1,6 +1,6 @@
 <?php $this->extend('../layout/dashboard'); ?>
 <div class="skills index">
-	<h2><?php echo __('My Skills'); ?><?= $this->Html->link(__('View All Skills'), ['action' => 'index'], ['class'=>'btn btn-primary','style' => 'float:right;']); ?></h2>
+	<h2><?php echo __('My Skills'); ?></h2>
 	 <?php 
     $filter_count = 0;
     foreach($this->request->getQueryParams() as $key=>$value) {
@@ -8,10 +8,11 @@
     }
     ?>
     <div class="mb-3">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filters">
-        Filter
-        <?= $filter_count ? $this->Html->tag('li', $filter_count, ['class' => 'badge rounded-pill bg-secondary']) : '' ?>
-    </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filters">
+            Filter
+            <?= $filter_count ? $this->Html->tag('li', $filter_count, ['class' => 'badge rounded-pill bg-secondary']) : '' ?>
+        </button>
+        <?= $this->Html->link(__('View All Skills'), ['action' => 'index'], ['class'=>'btn btn-primary']); ?>
     </div>
     <div id="filters" class="modal fade" tabindex="-1">
     <div class="modal-dialog">
