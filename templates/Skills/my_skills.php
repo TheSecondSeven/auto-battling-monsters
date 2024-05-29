@@ -1,7 +1,53 @@
 <?php $this->extend('../layout/dashboard'); ?>
 <div class="skills index">
 	<h2><?php echo __('My Skills'); ?><?= $this->Html->link(__('View All Skills'), ['action' => 'index'], ['class'=>'btn btn-primary','style' => 'float:right;']); ?></h2>
-	<table class="table table-striped" style="table-layout:fixed;">
+	 <?php 
+    $filter_count = 0;
+    foreach($this->request->getQueryParams() as $key=>$value) {
+      if(!in_array($key,['sort','direction']) && !empty($value)) $filter_count++;
+    }
+    ?>
+    <div class="mb-3">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filters">
+        Filter
+        <?= $filter_count ? $this->Html->tag('li', $filter_count, ['class' => 'badge rounded-pill bg-secondary']) : '' ?>
+    </button>
+    </div>
+    <div id="filters" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Filters</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <?php
+            echo $this->Form->create(null, [
+            'type' => 'get',
+            'valueSources' => 'query']);
+            echo $this->Form->control('rarity', [
+                'class' => 'form-control',
+                'options' => $rarities,
+                'empty' => true]);
+            echo $this->Form->control('type_id', [
+                'class' => 'form-control',
+                'options' => $types,
+                'empty' => true]);
+            echo $this->Form->control('name', [
+                'class' => 'form-control',
+                'empty' => true]);
+            echo $this->Form->button('Go', [
+            'class' => 'btn btn-primary',
+            'escapeTitle' => false]);
+            echo $this->Form->end();
+            ?>
+        </div>
+        </div>
+    </div>
+    </div>
+    <table class="table table-striped">
         <thead>
         <tr>
             <th><?php echo $this->Paginator->sort('rarity'); ?></th>
@@ -20,7 +66,7 @@
                 <td><?php echo h($skill->rarity); ?>&nbsp;</td>
                 <td><?php echo h($skill->name); ?>&nbsp;</td>
                 <td><?php echo $skill->type->name; ?>&nbsp;</td>
-                <td style="white-space: nowrap; overflow: hidden; text-overflow:ellipsis;"><?php echo h($skill->description); ?>&nbsp;</td>
+                <td class="description"><?php echo h($skill->description); ?>&nbsp;</td>
                 <td><?php if($skill->cast_time == 0.00) { echo 'Instant'; }else{ echo h($skill->cast_time); } ?>&nbsp;</td>
                 <td><?php if($skill->down_time == 0.00) { echo 'None'; }else{ echo h($skill->down_time); } ?>&nbsp;</td>
                 <td><?php 

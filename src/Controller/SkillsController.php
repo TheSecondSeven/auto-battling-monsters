@@ -63,9 +63,18 @@ class SkillsController extends AppController
 
 
     public function mySkills() {
+        $rarity = $this->request->getQuery('rarity');
+        $type_id = $this->request->getQuery('type_id');
+        $name = $this->request->getQuery('name');
+        $where = [];
+        $where['Skills.rarity !='] = 'Admin Only';
+        if(!empty($rarity)) $where['Skills.rarity'] = $rarity;
+        if(!empty($type_id)) $where['Skills.type_id'] = $type_id;
+        if(!empty($name)) $where['Skills.name LIKE'] = '%'.$name.'%';
         $user_id = $this->user->id;
-		$this->set('skills', $this->paginate($this->Skills
+		$skills = $this->paginate($this->Skills
             ->find()
+            ->where($where)
             ->matching('UserSkills', function ($q) use ($user_id) {
                 return $q->where(['UserSkills.user_id' => $user_id]);
             })
@@ -88,7 +97,13 @@ class SkillsController extends AppController
                 return $q
                     ->where(['Monster4.user_id' => $user_id]);
             })
-        ));
+        );
+        $rarities = $this->Skills->rarities();
+
+		$types = $this->Skills->Types->find('list')
+            ->where([])
+            ->all();
+        $this->set(compact(['skills','rarities','types']));
 	}
 	
 	public function view($id = null) {
