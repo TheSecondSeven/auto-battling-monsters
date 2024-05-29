@@ -32,6 +32,7 @@ class SkillsController extends AppController
         $type_id = $this->request->getQuery('type_id');
         $name = $this->request->getQuery('name');
         $where = [];
+        $where['Skills.rarity !='] = 'Admin Only';
         if(!empty($rarity)) $where['Skills.rarity'] = $rarity;
         if(!empty($type_id)) $where['Skills.type_id'] = $type_id;
         if(!empty($name)) $where['Skills.name LIKE'] = '%'.$name.'%';

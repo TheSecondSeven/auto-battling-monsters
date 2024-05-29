@@ -24,6 +24,48 @@ class UltimatesController extends AppController
         parent::beforeFilter($event);
         $this->Authentication->addUnauthenticatedActions([]);
     }
+
+    public function index() {
+
+
+        $rarity = $this->request->getQuery('rarity');
+        $type_id = $this->request->getQuery('type_id');
+        $name = $this->request->getQuery('name');
+        $where = [];
+        $where['Ultimates.rarity !='] = 'Admin Only';
+        if(!empty($rarity)) $where['Ultimates.rarity'] = $rarity;
+        if(!empty($type_id)) {
+            $where['OR'] = [];
+            $where['OR']['Ultimates.type_id'] = $type_id;
+            $where['OR']['Ultimates.secondary_type_id'] = $type_id;
+        }
+        if(!empty($name)) $where['Skills.name LIKE'] = '%'.$name.'%';
+
+		$this->paginate = [
+			'Ultimates' => [
+				'order' => [
+					'rarity' => 'DESC',
+					'type_id' => 'ASC',
+					'secondary_type_id' => 'ASC',
+					'value' => 'DESC'
+				],
+			]
+		];
+		$ultimates = $this->paginate($this->Ultimates
+            ->find()
+            ->where($where)
+			->contain([
+				'Types',
+                'SecondaryTypes'
+			])
+        );
+        $rarities = $this->fetchTable('Skills')->rarities();
+
+		$types = $this->Ultimates->Types->find('list')
+            ->where([])
+            ->all();
+        $this->set(compact(['ultimates','rarities','types']));
+	}
 	
 	public function myUltimates() {
         $user_id = $this->user->id;

@@ -2,10 +2,11 @@
 <div class="skills index">
 	<h2><?php echo __('Skills'); ?><?= $this->Html->link(__('Create Skill'), ['action' => 'create'], ['class'=>'btn btn-primary','style' => 'float:right;']); ?></h2>
     <?php 
-        $filter_count = array_reduce(
-            $this->request->getQueryParams(),
-            function ($carry, $item) { if (!empty($item)) { $carry++; } return $carry; }
-        );
+        
+        $filter_count = 0;
+        foreach($this->request->getQueryParams() as $key=>$value) {
+        if(!in_array($key,['sort','direction']) && !empty($value)) $filter_count++;
+        }
     ?>
     <div class="mb-3">
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filters">
