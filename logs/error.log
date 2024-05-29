@@ -4551,3 +4551,61 @@ Stack Trace:
 
 Request URL: /admin/ultimates/view/2
 Referer URL: http://dymtab:8888/admin/ultimates?sort=rarity&direction=desc
+2024-05-29 00:24:18 warning: Undefined variable $rarities
+Request URL: /admin/skills
+Trace:
+/Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/View/View.php /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/View/View.php, line 1188
+Cake\View\View->_evaluate() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/View/View.php, line 1145
+Cake\View\View->_render() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/View/View.php, line 785
+Cake\View\View->render() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Controller/Controller.php, line 705
+Cake\Controller\Controller->render() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Controller/Controller.php, line 509
+Cake\Controller\Controller->invokeAction() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Controller/ControllerFactory.php, line 139
+Cake\Controller\ControllerFactory->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Controller/ControllerFactory.php, line 114
+Cake\Controller\ControllerFactory->invoke() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/BaseApplication.php, line 332
+Cake\Http\BaseApplication->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 86
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/authentication/src/Middleware/AuthenticationMiddleware.php, line 87
+Authentication\Middleware\AuthenticationMiddleware->process() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 82
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Middleware/BodyParserMiddleware.php, line 157
+Cake\Http\Middleware\BodyParserMiddleware->process() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 82
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Routing/Middleware/RoutingMiddleware.php, line 118
+Cake\Routing\Middleware\RoutingMiddleware->process() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 82
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Routing/Middleware/AssetMiddleware.php, line 69
+Cake\Routing\Middleware\AssetMiddleware->process() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 82
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Error/Middleware/ErrorHandlerMiddleware.php, line 115
+Cake\Error\Middleware\ErrorHandlerMiddleware->process() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 82
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/debug_kit/src/Middleware/DebugKitMiddleware.php, line 60
+DebugKit\Middleware\DebugKitMiddleware->process() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 82
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 67
+Cake\Http\Runner->run() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Server.php, line 103
+Cake\Http\Server->run() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/webroot/index.php, line 37
+[main]
+
+2024-05-29 00:24:18 warning: Undefined variable $types
+Request URL: /admin/skills
+Trace:
+/Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/View/View.php /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/View/View.php, line 1188
+Cake\View\View->_evaluate() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/View/View.php, line 1145
+Cake\View\View->_render() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/View/View.php, line 785
+Cake\View\View->render() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Controller/Controller.php, line 705
+Cake\Controller\Controller->render() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Controller/Controller.php, line 509
+Cake\Controller\Controller->invokeAction() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Controller/ControllerFactory.php, line 139
+Cake\Controller\ControllerFactory->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Controller/ControllerFactory.php, line 114
+Cake\Controller\ControllerFactory->invoke() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/BaseApplication.php, line 332
+Cake\Http\BaseApplication->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 86
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/authentication/src/Middleware/AuthenticationMiddleware.php, line 87
+Authentication\Middleware\AuthenticationMiddleware->process() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 82
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Middleware/BodyParserMiddleware.php, line 157
+Cake\Http\Middleware\BodyParserMiddleware->process() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 82
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Routing/Middleware/RoutingMiddleware.php, line 118
+Cake\Routing\Middleware\RoutingMiddleware->process() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 82
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Routing/Middleware/AssetMiddleware.php, line 69
+Cake\Routing\Middleware\AssetMiddleware->process() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 82
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Error/Middleware/ErrorHandlerMiddleware.php, line 115
+Cake\Error\Middleware\ErrorHandlerMiddleware->process() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 82
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/debug_kit/src/Middleware/DebugKitMiddleware.php, line 60
+DebugKit\Middleware\DebugKitMiddleware->process() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 82
+Cake\Http\Runner->handle() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Runner.php, line 67
+Cake\Http\Runner->run() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/vendor/cakephp/cakephp/src/Http/Server.php, line 103
+Cake\Http\Server->run() /Users/michaelstratford/Documents/GitHub/auto-battling-monsters/webroot/index.php, line 37
+[main]
+

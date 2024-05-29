@@ -29,6 +29,13 @@ class SkillsController extends AppController
     }
 
     public function index() {
+        $rarity = $this->request->getQuery('rarity');
+        $type_id = $this->request->getQuery('type_id');
+        $name = $this->request->getQuery('name');
+        $where = [];
+        if(!empty($rarity)) $where['Skills.rarity'] = $rarity;
+        if(!empty($type_id)) $where['Skills.type_id'] = $type_id;
+        if(!empty($name)) $where['Skills.name LIKE'] = '%'.$name.'%';
 		$this->paginate = [
 			'Skills' => [
 				'order' => [
@@ -38,12 +45,19 @@ class SkillsController extends AppController
 				],
 			]
 		];
-		$this->set('skills', $this->paginate($this->Skills
+		$skills = $this->paginate($this->Skills
             ->find()
+			->where($where)
 			->contain([
 				'Types'
 			])
-        ));
+        );
+        $rarities = $this->Skills->rarities();
+
+		$types = $this->Skills->Types->find('list')
+            ->where([])
+            ->all();
+        $this->set(compact(['skills','rarities','types']));
 	}
 
 	public function view($id = null) {

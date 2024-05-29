@@ -1,7 +1,53 @@
 <?php $this->extend('../layout/dashboard'); ?>
 <div class="skills index">
 	<h2><?php echo __('Skills'); ?><?= $this->Html->link(__('Create Skill'), ['action' => 'create'], ['class'=>'btn btn-primary','style' => 'float:right;']); ?></h2>
-	<table class="table table-striped">
+    <?php 
+        $filter_count = array_reduce(
+            $this->request->getQueryParams(),
+            function ($carry, $item) { if (!empty($item)) { $carry++; } return $carry; }
+        );
+    ?>
+    <div class="mb-3">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filters">
+        Filter
+        <?= $filter_count ? $this->Html->tag('li', $filter_count, ['class' => 'badge rounded-pill bg-secondary']) : '' ?>
+    </button>
+    </div>
+    <div id="filters" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Filters</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <?php
+            echo $this->Form->create(null, [
+            'type' => 'get',
+            'valueSources' => 'query']);
+            echo $this->Form->control('rarity', [
+                'class' => 'form-control',
+                'options' => $rarities,
+                'empty' => true]);
+            echo $this->Form->control('type_id', [
+                'class' => 'form-control',
+                'options' => $types,
+                'empty' => true]);
+            echo $this->Form->control('name', [
+                'class' => 'form-control',
+                'empty' => true]);
+            echo $this->Form->button('Go', [
+            'class' => 'btn btn-primary',
+            'escapeTitle' => false]);
+            echo $this->Form->end();
+            ?>
+        </div>
+        </div>
+    </div>
+    </div>	
+    <table class="table table-striped">
         <thead>
             <tr>
                     <th><?php echo $this->Paginator->sort('rarity'); ?></th>

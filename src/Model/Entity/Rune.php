@@ -7,7 +7,7 @@ class Rune extends Entity
 {
     public static function upgrades() {
 		$upgrades =  [
-			'unlock_type' => 'Unlock Type',
+			'unlock_type' => 'Unlock Skills for Type',
 			'damage_level' => 'Damage Increase',
 			'healing_level' => 'Healing Increase',
 			'critical_chance_level' => 'Critical Chance Increase',
