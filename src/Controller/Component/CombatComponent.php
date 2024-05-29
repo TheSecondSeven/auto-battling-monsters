@@ -1190,18 +1190,19 @@ class CombatComponent extends Component
 	
 	private function getCastTime($cast_time, $monster) {
 		//speed modifiers
-		$speed_status_modifier = 1;
+		$speed_status_modifier_amount = 0;
 		if(!empty($caster->buffs->speed_up)) {
 			foreach($caster->buffs->speed_up as $speed_up_buff) {
-				$speed_status_modifier *= (1 + $attack_up_buff->amount / 100);
+				$speed_status_modifier_amount -= $speed_up_buff->amount;
 			}
 		}
 		if(!empty($caster->debuffs->speed_down)) {
 			foreach($caster->debuffs->speed_down as $speed_down_buff) {
-				$speed_status_modifier *= (1 - $speed_down_buff->amount / 100);
+				$speed_status_modifier_amount += $speed_down_buff->amount;
 			}
 		}
-		return round($cast_time / $this->monsters[$monster->id]->stats->speed * 1000 / $speed_status_modifier);
+		$speed_status_modifier = pow(2, $speed_status_modifier_amount / 100);
+		return round($cast_time / $this->monsters[$monster->id]->stats->speed * 1000 * $speed_status_modifier);
 	}
 	
 	private function useSkill($time, $monster, $skill) {
@@ -1914,36 +1915,35 @@ class CombatComponent extends Component
 		if($skill_effect->effect == 'Physical Damage' || $skill_effect->effect == 'Magical Damage' || $skill_effect->effect == 'Leech') {
 			
 			//calcuate attack modifier
-			$attack_status_modifier = 1;
+			$attack_status_modifier_amount = 0;
 			if(!empty($this->monsters[$caster->id]->buffs->attack_up)) {
 				foreach($this->monsters[$caster->id]->buffs->attack_up as $attack_up_buff) {
-					$attack_status_modifier *= (1 + $attack_up_buff->amount / 100);
+					$attack_status_modifier_amount += $attack_up_buff->amount;
 				}
 			}
 			if(!empty($this->monsters[$caster->id]->debuffs->attack_down)) {
 				foreach($this->monsters[$caster->id]->debuffs->attack_down as $attack_down_buff) {
-					$attack_status_modifier *= (1 - $attack_down_buff->amount / 100);
+					$attack_status_modifier_amount -= $attack_down_buff->amount;
 				}
 			}
-			$defender_status_modifier = 1;
+			$defender_status_modifier_amount = 0;
 			if(!empty($this->monsters[$target->id]->buffs->defense_up)) {
 				foreach($this->monsters[$target->id]->buffs->defense_up as $defense_up_buff) {
-					$defender_status_modifier *= (1 + $defense_up_buff->amount / 100);
+					$defender_status_modifier_amount += $defense_up_buff->amount;
 				}
 			}
 			if(!empty($this->monsters[$target->id]->debuffs->defense_down)) {
 				foreach($this->monsters[$target->id]->debuffs->defense_down as $defense_down_buff) {
-					$defender_status_modifier *= (1 - $defense_down_buff->amount / 100);
+					$defender_status_modifier_amount -= $defense_down_buff->amount;
 				}
 			}
-			//dont divide by zero!
-			if($this->monsters[$target->id]->stats->physicalDefenseModifier == 0 || $defender_status_modifier == 0)
-				$amount = 1000000000;
+			$attack_status_modifier = pow(2, $attack_status_modifier_amount / 100);
+			$defender_status_modifier = pow(2, $defender_status_modifier_amount / 100);
 			
 			if($skill_effect->effect == 'Physical Damage') {
-				$amount = round($amount * $this->monsters[$caster->id]->stats->physicalAttackModifier * $attack_status_modifier / $this->monsters[$target->id]->stats->physicalDefenseModifier / $defender_status_modifier);
+				$amount = round($amount * $this->monsters[$caster->id]->stats->physicalAttackModifier * $attack_status_modifier / $this->monsters[$target->id]->stats->physicalDefenseModifier * $defender_status_modifier);
 			}elseif($skill_effect->effect == 'Magical Damage' || $skill_effect->effect == 'Leech') {
-				$amount = round($amount * $this->monsters[$caster->id]->stats->magicalAttackModifier * $attack_status_modifier / $this->monsters[$target->id]->stats->magicalDefenseModifier / $defender_status_modifier);
+				$amount = round($amount * $this->monsters[$caster->id]->stats->magicalAttackModifier * $attack_status_modifier / $this->monsters[$target->id]->stats->magicalDefenseModifier * $defender_status_modifier);
 			}
 		}elseif($skill_effect->effect == 'True Damage') {
 			$amount = round($amount);
@@ -2177,16 +2177,16 @@ class CombatComponent extends Component
 	
 	private function createStats($monster) {
 		$stats = (object) [];
-		$stats->physicalAttackModifier = 1 + 0.05 * ($monster->strength - 5);
-		$stats->physicalDefenseModifier = 1 + 0.025 * ($monster->strength - 5);
-		$stats->evadeModifier = 0.01 + 0.01 * ($monster->agility - 0) + 0.01 * ($monster->dexterity - 0);
+		$stats->physicalAttackModifier = 1 + 0.05 * ($monster->strength - 1);
+		$stats->physicalDefenseModifier = 1 + 0.025 * ($monster->strength - 1);
+		$stats->evadeModifier = 0.01 + 0.01 * ($monster->agility - 1) + 0.01 * ($monster->dexterity - 1);
 		$stats->speed = 1.0 + 0.03 * ($monster->agility - 1);
-		$stats->hitModifier = 0.01 + 0.01 * ($monster->dexterity - 0);
-		$stats->magicalAttackModifier = 1 + 0.05 * ($monster->intelligence - 5);
-		$stats->magicalDefenseModifier = 1 + 0.025 * ($monster->intelligence - 5);
+		$stats->hitModifier = 0.00 + 0.01 * ($monster->dexterity - 1);
+		$stats->magicalAttackModifier = 1 + 0.05 * ($monster->intelligence - 1);
+		$stats->magicalDefenseModifier = 1 + 0.025 * ($monster->intelligence - 1);
 		$stats->criticalChance = 0.01 + 0.02 * ($monster->luck - 1);
 		$stats->rerollChance = 0.00 + 0.03 * ($monster->luck - 1);
-		$stats->health = 98.0 + 2.0 * ($monster->vitality - 0);
+		$stats->health = 100.0 + 2.0 * ($monster->vitality - 1);
 		return $stats;
 	}
 	
