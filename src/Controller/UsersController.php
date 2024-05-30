@@ -168,11 +168,27 @@ class UsersController extends AppController
 			return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
 		}
         $this->user->dreaming_since = null;
-		$this->user->gold += $this->user->dreamt_gold;
-		$this->user->rune_shards += $this->user->dreamt_rune_shards;
-        $this->Users->save($this->user);
+        $dreamt_gold = 0;
         if($this->user->dreamt_gold > 0) {
-		    $this->Flash->success(__('Your monsters came back from their dreams with '.$this->user->dreamt_gold.' gold'.($this->user->dreamt_rune_shards > 0 ? ' and '.$this->user->dreamt_rune_shards.' rune shard'.($this->user->dreamt_rune_shards == 1 ? '' : 's') : '' ).'!'));
+            $dreamt_gold = $this->user->dreamt_gold;
+		    $this->user->gold += $this->user->dreamt_gold;
+            $this->user->dreamt_gold = 0;
+        }
+        $dreamt_rune_shards = 0;
+        if($this->user->dreamt_rune_shards > 0) {
+            $dreamt_rune_shards = $this->user->dreamt_rune_shards;
+		    $this->user->rune_shards += $this->user->dreamt_rune_shards;
+            $this->user->dreamt_rune_shards = 0;
+        }
+        $dreamt_gems = 0;
+        if($this->user->dreamt_gems > 0) {
+            $dreamt_gems = $this->user->dreamt_gems;
+		    $this->user->gems += $this->user->dreamt_gems;
+            $this->user->dreamt_gems = 0;
+        }
+        if($dreamt_gold > 0 || $dreamt_rune_shards > 0 || $dreamt_gems > 0) {
+            $this->Users->save($this->user);
+		    $this->Flash->success(__('Your monsters came back from their dreams with'.($dreamt_gold > 0 ? ' '.$dreamt_gold.' gold' : '').($dreamt_rune_shards > 0 ? ($dreamt_gold > 0 ? ' and' : '').' '.$dreamt_rune_shards.' rune shard'.($dreamt_rune_shards == 1 ? '' : 's') : '' ).($dreamt_gems > 0 ? ' and '.$dreamt_gems.' rune shard'.($dreamt_gems == 1 ? '' : 's') : '' ).'!'));
         }else{
 		    $this->Flash->success(__('Your monsters stopped dreaming.'));
         }

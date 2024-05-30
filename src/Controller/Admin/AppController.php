@@ -77,17 +77,6 @@ class AppController extends Controller
                 ])
                 ->all()
                 ->count() + count($this->user->monsters);
-            if(!empty($this->user->dreaming_since)) {
-                $unix = (int)$this->user->dreaming_since->toUnixString();
-                $difference = time() - $unix - 2 * 3600;
-                //we have rested for 2 hours, time to start earning gold.
-                if($difference > 0) {
-                    if($difference > 48 * 3600) $difference = 48 * 3600;
-                    $this->user->dreamt_gold = round(DREAMT_GOLD_PER_HOUR * ($difference / 3600));
-                    $active_slots = $this->user->active_monster_limit - count($this->user->monsters);
-                    if($active_slots > 0) $this->user->dreamt_rune_shards = round(DREAMT_RUNE_SHARDS_PER_HOUR_PER_ACTIVE_MONSTER_SLOT * $active_slots * ($difference / 3600));
-                }
-            }
             $this->set('user', $this->user);
         }
     }
