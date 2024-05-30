@@ -1859,14 +1859,14 @@ class CombatComponent extends Component
 			}
 		}
 		$evade_status_modifier = 0;
-		if(!empty($caster->buffs->evade_up)) {
-			foreach($caster->buffs->evade_up as $evade_up_buff) {
+		if(!empty($defender->buffs->evade_up)) {
+			foreach($defender->buffs->evade_up as $evade_up_buff) {
 				$evade_status_modifier += $evade_up_buff->amount * 1000;
 			}
 		}
 	
-		if(!empty($caster->debuffs->evade_down)) {
-			foreach($caster->debuffs->evade_down as $evade_down_buff) {
+		if(!empty($defender->debuffs->evade_down)) {
+			foreach($defender->debuffs->evade_down as $evade_down_buff) {
 				$evade_status_modifier -= $evade_down_buff->amount * 1000;
 			}
 		}
