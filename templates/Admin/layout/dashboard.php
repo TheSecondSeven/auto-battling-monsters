@@ -29,6 +29,7 @@ $this->start('tb_body_start');
             <span class="navbar-toggler-icon"></span>
         </button>
         <ul class="list-group list-group-horizontal">
+            <li class="list-group-item">Gauntlet Runs Completed Today: <?= $user->total_gauntlet_runs_today.'/'.($user->active_monster_limit * DAILY_GAUNTLET_LIMIT_PER_ACTIVE_MONSTER) ?></li>
             <li class="list-group-item">Active Monsters: <?= count($user->monsters).'/'.$user->active_monster_limit ?></li>
             <li class="list-group-item">Gold: <?= $user->gold ?></li>
             <li class="list-group-item">Gems: <?= $user->gems ?></li>

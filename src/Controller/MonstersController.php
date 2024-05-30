@@ -86,8 +86,7 @@ class MonstersController extends AppController
 		}else{
 			$battle_available = true;
 		}
-		$this->set('battle_available', $battle_available);
-		$this->set('monsters', $monsters);
+		$this->set(compact(['monsters','battle_available']));
     }
 
 	public function view($id = null) {

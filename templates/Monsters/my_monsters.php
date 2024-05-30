@@ -1,6 +1,43 @@
 <?php $this->extend('../layout/dashboard'); ?>
 <div class="monsters index">
 	<h2><?php echo __('Monsters'); ?></h2>
+	<?php if($user->total_gauntlet_runs_today >= $user->active_monster_limit * DAILY_GAUNTLET_LIMIT_PER_ACTIVE_MONSTER) { ?>
+	<div class="mb-3">
+		You have completed your daily limit of Gauntlet Runs.
+		<br>This limit is your "Active Monster Limit" x <?= DAILY_GAUNTLET_LIMIT_PER_ACTIVE_MONSTER ?> and resets at midnight PST.
+		<?php if(empty($user->dreaming_since)) { ?><br>Feel free to enter Dream Mode to passively earn gold until you want to start battling again tomorrow.<?php } ?>
+	</div>
+	<?php } ?>
+	<?php if(empty($user->dreaming_since)) { ?>
+	<div class="mb-3">
+		<?= $this->Html->link('Enter Dream Mode', ['controller' => 'users', 'action' => 'enter-dream-mode'], ['class'=>'btn btn-success', 'data-bs-toggle' => "tooltip", 'data-bs-placement' => "top", 'title' =>'What is Dream Mode? Click the button to read details. There\'s no downside.']); ?>					
+	</div>
+	<?php }else{ ?>
+	<div class="mb-3">
+		Your monsters have been dreaming for <?php $now = new DateTime();
+					$past_date = $user->dreaming_since;
+					
+					$interval = $now->diff($past_date);
+					if($interval->d > 0) {
+						echo $interval->d.' day'.($interval->d == 1 ? '' : 's');
+					}elseif($interval->h > 0) {
+						echo $interval->h.' hour'.($interval->h == 1 ? '' : 's');
+					}elseif($interval->i > 0) {
+						echo $interval->i.' minute'.($interval->i == 1 ? '' : 's');
+					}elseif($interval->s > 0) {
+						echo $interval->s.' second'.($interval->s == 1 ? '' : 's');
+					}else{
+						echo '1 second';
+					}
+					if($user->dreamt_gold > 0) echo ' and have collected '.$user->dreamt_gold.' gold';
+					if($user->dreamt_rune_shards > 0) echo ' and '.$user->dreamt_rune_shards.' rune shard'.($user->dreamt_rune_shards  == 1 ? '' : 's'); ?>.
+		<br>After the first hour, your monsters start collecting gold for you. Earnings stop after 48 hours.
+		<br>Each unused active monster slot will also earn rune shards.
+		<br>You can not start start new Gauntlet Runs while dreaming.
+		<br>
+		<?= $this->Html->link('Exit Dream Mode', ['controller' => 'users', 'action' => 'exit-dream-mode'], ['class'=>'btn btn-success']); ?>					
+	</div>
+	<?php } ?>
 	<table  class="table table-striped">
 	<thead>
 	<tr>
@@ -23,7 +60,11 @@
 		<td>
 			<?php
 			$can_practice = true;
-			if(empty($monster->skill1->id) || empty($monster->skill2->id) || empty($monster->skill3->id) || empty($monster->skill4->id) || empty($monster->ultimate->id)) {
+			if(!empty($user->dreaming_since)) {
+
+			}elseif($user->total_gauntlet_runs_today >= $user->active_monster_limit * DAILY_GAUNTLET_LIMIT_PER_ACTIVE_MONSTER) {
+
+			}elseif(empty($monster->skill1->id) || empty($monster->skill2->id) || empty($monster->skill3->id) || empty($monster->skill4->id) || empty($monster->ultimate->id)) {
 				echo $this->Html->link(__('Setup abilities to battle in the Gauntlet.'), ['controller' => 'monsters', 'action' => 'edit-move-set', $monster->id], ['class' => 'btn btn-danger']);
 				
 				$can_practice = false;

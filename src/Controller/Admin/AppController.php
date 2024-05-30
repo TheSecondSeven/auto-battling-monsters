@@ -68,6 +68,14 @@ class AppController extends Controller
                         ]);
                 })
                 ->first();
+            $this->user->total_gauntlet_runs_today = $this->fetchTable('GauntletRuns')
+                ->find()
+                ->where([
+                    'GauntletRuns.user_id' => $this->user->id,
+                    'GauntletRuns.created >=' => date('Y-m-d 00:00:00')
+                ])
+                ->all()
+                ->count();
             $this->set('user', $this->user);
         }
     }
