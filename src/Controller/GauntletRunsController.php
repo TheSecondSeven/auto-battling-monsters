@@ -61,7 +61,7 @@ class GauntletRunsController extends AppController
 			$this->Flash->error(__('You can not start a gauntlet run while in Dream Mode.'));
 			return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
 		}
-		if($this->user->total_gauntlet_runs_today >= $user->active_monster_limit * DAILY_GAUNTLET_LIMIT_PER_ACTIVE_MONSTER) {
+		if($this->user->total_gauntlet_runs_today >= $this->user->active_monster_limit * DAILY_GAUNTLET_LIMIT_PER_ACTIVE_MONSTER) {
 			$this->Flash->error(__('You can not start any more gauntlet runs today.'));
 			return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
 		}
