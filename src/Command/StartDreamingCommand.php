@@ -9,7 +9,7 @@ use Cake\ORM\Query;
 use Cake\ORM\Query\SelectQuery;
 use Cake\I18n\DateTime;
 
-class DreamingCommand extends Command {
+class StartDreamingCommand extends Command {
 
     protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser {
         return $parser;
