@@ -769,7 +769,7 @@ class CombatComponent extends Component
 									];
 									$this->useSkill($time, $monster, $skill);
 								}else{
-									$cast_time = $this->getCastTime($skill->cast_time, $monster);
+									$cast_time = $this->getCastTime($skill, $monster);
 									$action_message = [];
 									$this->addActionMessage($action_message, 'begin_cast', $this->monsters[$monster->id]->name.' is casting '.$skill->name.'.');
 									$this->action_log[$time]['casting']['monster-'.$this->monsters[$monster->id]->id] = [
@@ -1121,7 +1121,7 @@ class CombatComponent extends Component
 				if(!empty($action_message))
 					$this->action_log[$time]['messages']['monster-'.$this->monsters[$monster->id]->id][] = $action_message;
 			}else{
-				$cast_time = $this->getCastTime($ultimate->cast_time, $monster);
+				$cast_time = $this->getCastTime($ultimate, $monster);
 				$action_message = [];
 				$this->addActionMessage($action_message, 'begin_cast', $this->monsters[$monster->id]->name.' is casting '.$ultimate->name.'.');
 				$this->action_log[$time]['casting']['monster-'.$this->monsters[$monster->id]->id] = [
@@ -1188,9 +1188,12 @@ class CombatComponent extends Component
 		}
 	}
 	
-	private function getCastTime($cast_time, $caster) {
+	private function getCastTime($skill, $caster) {
+		$cast_time = $skill->cast_time;
 		//speed modifiers
 		$speed_status_modifier_amount = 0;
+		if(!empty($skill->casting_speed_increase))
+			$speed_status_modifier_amount += $skill->casting_speed_increase;
 		if(!empty($caster->buffs->speed_up)) {
 			foreach($caster->buffs->speed_up as $speed_up_buff) {
 				$speed_status_modifier_amount -= $speed_up_buff->amount;
