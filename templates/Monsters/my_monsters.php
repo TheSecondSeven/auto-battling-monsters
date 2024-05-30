@@ -31,7 +31,7 @@
 					}
 					if($user->dreamt_gold > 0) echo ' and have collected '.$user->dreamt_gold.' gold';
 					if($user->dreamt_rune_shards > 0) echo ' and '.$user->dreamt_rune_shards.' rune shard'.($user->dreamt_rune_shards  == 1 ? '' : 's'); ?>.
-		<br>After the first hour, your monsters start collecting gold for you. Earnings stop after 48 hours.
+		<br>After 2 hours, your monsters start collecting gold for you. Earnings stop after 48 hours.
 		<br>Each unused active monster slot will also earn rune shards.
 		<br>You can not start start new Gauntlet Runs while dreaming.
 		<br>

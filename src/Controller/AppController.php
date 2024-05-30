@@ -79,8 +79,8 @@ class AppController extends Controller
                 ->count() + count($this->user->monsters);
             if(!empty($this->user->dreaming_since)) {
                 $unix = (int)$this->user->dreaming_since->toUnixString();
-                $difference = time() - $unix - 3600;
-                //we have rested for an hour, time to start earning gold.
+                $difference = time() - $unix - 2 * 3600;
+                //we have rested for 2 hours, time to start earning gold.
                 if($difference > 0) {
                     if($difference > 48 * 3600) $difference = 48 * 3600;
                     $this->user->dreamt_gold = round(DREAMT_GOLD_PER_HOUR * ($difference / 3600));
