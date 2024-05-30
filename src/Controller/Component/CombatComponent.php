@@ -1188,7 +1188,7 @@ class CombatComponent extends Component
 		}
 	}
 	
-	private function getCastTime($cast_time, $monster) {
+	private function getCastTime($cast_time, $caster) {
 		//speed modifiers
 		$speed_status_modifier_amount = 0;
 		if(!empty($caster->buffs->speed_up)) {
@@ -1202,7 +1202,7 @@ class CombatComponent extends Component
 			}
 		}
 		$speed_status_modifier = pow(2, $speed_status_modifier_amount / 100);
-		return round($cast_time / $this->monsters[$monster->id]->stats->speed * 1000 * $speed_status_modifier);
+		return round($cast_time / $this->monsters[$caster->id]->stats->speed * 1000 * $speed_status_modifier);
 	}
 	
 	private function useSkill($time, $monster, $skill) {
