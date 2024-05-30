@@ -70,6 +70,7 @@
 		$('#battleInfo div').hide();
 		$('#battleInfo #headline-info-'+battleIndex).show();
 		var runData = JSON.parse(originalRunData);
+		console.log(runData);
 		battleData = Object.assign({}, runData[battleIndex]);
 		setupStatusKey();
 		time = 0;

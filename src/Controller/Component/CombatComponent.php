@@ -292,7 +292,7 @@ class CombatComponent extends Component
 							if(empty($this->monsters[$monster->id]->$skill_object->casting_speed_increase)) {
 								$this->monsters[$monster->id]->$skill_object->casting_speed_increase = 0;
 							}
-							$this->monsters[$monster->id]->$skill_object->casting_speed_increase += $increase_amount;
+							$this->monsters[$monster->id]->$skill_object->casting_speed_increase += $increase_amount * 100;
 						}
 					}
 				}
