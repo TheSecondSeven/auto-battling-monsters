@@ -1193,7 +1193,7 @@ class CombatComponent extends Component
 		//speed modifiers
 		$speed_status_modifier_amount = 0;
 		if(!empty($skill->casting_speed_increase))
-			$speed_status_modifier_amount += $skill->casting_speed_increase;
+			$speed_status_modifier_amount -= $skill->casting_speed_increase;
 		if(!empty($caster->buffs->speed_up)) {
 			foreach($caster->buffs->speed_up as $speed_up_buff) {
 				$speed_status_modifier_amount -= $speed_up_buff->amount;
