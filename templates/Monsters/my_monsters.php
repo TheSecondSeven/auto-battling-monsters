@@ -60,14 +60,22 @@
 		<td>
 			<?php
 			$can_practice = true;
-			if(!empty($user->dreaming_since)) {
-
-			}elseif($user->total_gauntlet_runs_today >= $user->active_monster_limit * DAILY_GAUNTLET_LIMIT_PER_ACTIVE_MONSTER) {
-
-			}elseif(empty($monster->skill1->id) || empty($monster->skill2->id) || empty($monster->skill3->id) || empty($monster->skill4->id) || empty($monster->ultimate->id)) {
-				echo $this->Html->link(__('Setup abilities to battle in the Gauntlet.'), ['controller' => 'monsters', 'action' => 'edit-move-set', $monster->id], ['class' => 'btn btn-danger']);
+			if($monster->resting_until && (int)$monster->resting_until->toUnixString() > time()) {
+				$now = new DateTime();
+				$future_date = $monster->resting_until;
 				
-				$can_practice = false;
+				$interval = $future_date->diff($now);
+				echo 'Resting from Battle for ';
+				if($interval->h > 0) {
+					echo $interval->h.' hour'.($interval->h == 1 ? '' : 's');
+				}elseif($interval->i > 0) {
+					echo $interval->i.' minute'.($interval->i == 1 ? '' : 's');
+				}elseif($interval->s > 0) {
+					echo $interval->s.' second'.($interval->s == 1 ? '' : 's');
+				}else{
+					echo '1 second';
+				}
+				echo '.';
 			}elseif($monster->in_gauntlet_run) {
 				if((int)$monster->in_gauntlet_run_until->toUnixString() <= time()) {
 					echo $this->Html->link(__('View Results'), ['controller' => 'gauntlet_runs', 'action' => 'complete-run', $monster->id], ['class' => 'btn btn-success']);
@@ -88,22 +96,14 @@
 					}
 					echo '.';
 				}
-			}elseif($monster->resting_until && (int)$monster->resting_until->toUnixString() > time()) {
-				$now = new DateTime();
-				$future_date = $monster->resting_until;
+			}elseif(!empty($user->dreaming_since)) {
+
+			}elseif($user->total_gauntlet_runs_today >= $user->active_monster_limit * DAILY_GAUNTLET_LIMIT_PER_ACTIVE_MONSTER) {
+
+			}elseif(empty($monster->skill1->id) || empty($monster->skill2->id) || empty($monster->skill3->id) || empty($monster->skill4->id) || empty($monster->ultimate->id)) {
+				echo $this->Html->link(__('Setup abilities to battle in the Gauntlet.'), ['controller' => 'monsters', 'action' => 'edit-move-set', $monster->id], ['class' => 'btn btn-danger']);
 				
-				$interval = $future_date->diff($now);
-				echo 'Resting from Battle for ';
-				if($interval->h > 0) {
-					echo $interval->h.' hour'.($interval->h == 1 ? '' : 's');
-				}elseif($interval->i > 0) {
-					echo $interval->i.' minute'.($interval->i == 1 ? '' : 's');
-				}elseif($interval->s > 0) {
-					echo $interval->s.' second'.($interval->s == 1 ? '' : 's');
-				}else{
-					echo '1 second';
-				}
-				echo '.';
+				$can_practice = false;
 			}else{
 				if($battle_available) {
 					echo $this->Html->link(__('Battle in the Gauntlet!'), array('controller' => 'gauntlet-runs', 'action' => 'start-run', $monster->id), ['class' => 'btn btn-primary']);
