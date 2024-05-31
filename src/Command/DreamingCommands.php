@@ -16,7 +16,6 @@ class DreamingCommand extends Command
 
     public function execute(Arguments $args, ConsoleIo $io): int
     {
-        $this->loadModel('Users');
         $users = $this->fetchTable('Users')
             ->find()
             ->where([
