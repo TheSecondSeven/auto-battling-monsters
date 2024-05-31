@@ -20,8 +20,8 @@ use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
-use App\Command\UserCommand;
-use App\Command\VersionCommand;
+use App\Command\StartDreamingCommand;
+use App\Command\DreamingCommand;
 use Cake\Console\CommandCollection;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
@@ -52,10 +52,10 @@ class Application extends BaseApplication
     public function console(CommandCollection $commands): CommandCollection
     {
         // Add by classname
-        $commands->add('user', UserCommand::class);
+        $commands->add('dreaming', DreamingCommand::class);
 
         // Add instance
-        $commands->add('version', new VersionCommand());
+        $commands->add('start_dreaming', new StartDreamingCommand());
 
         return $commands;
     }
