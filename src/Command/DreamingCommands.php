@@ -16,6 +16,7 @@ class DreamingCommand extends Command
 
     public function execute(Arguments $args, ConsoleIo $io): int
     {
+        $io->out('Finding Users Dreaming since '.date('Y-m-d H:i:s',strtotime(('+2 hours'))).' - '.date('Y-m-d H:i:s',strtotime(('+26 hours'))));
         $users = $this->fetchTable('Users')
             ->find()
             ->where([
@@ -29,6 +30,7 @@ class DreamingCommand extends Command
                     ]);
             })
             ->all();
+        
         foreach($users as $user) {
             $io->out($user->username.' May Earn Rewards');
             //chance to earn gold
