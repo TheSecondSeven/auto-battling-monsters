@@ -190,6 +190,7 @@ class UsersController extends AppController
             $this->Users->save($this->user);
 		    $this->Flash->success(__('Your monsters came back from their dreams with'.($dreamt_gold > 0 ? ' '.$dreamt_gold.' gold' : '').($dreamt_rune_shards > 0 ? ($dreamt_gold > 0 ? ' and' : '').' '.$dreamt_rune_shards.' rune shard'.($dreamt_rune_shards == 1 ? '' : 's') : '' ).($dreamt_gems > 0 ? ' and '.$dreamt_gems.' rune shard'.($dreamt_gems == 1 ? '' : 's') : '' ).'!'));
         }else{
+            $this->Users->save($this->user);
 		    $this->Flash->success(__('Your monsters stopped dreaming.'));
         }
         return $this->redirect(['controller' => 'monsters','action' => 'my-monsters']);
