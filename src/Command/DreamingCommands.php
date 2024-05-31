@@ -16,12 +16,12 @@ class DreamingCommand extends Command
 
     public function execute(Arguments $args, ConsoleIo $io): int
     {
-        $io->out('Finding Users Dreaming since '.date('Y-m-d H:i:s',strtotime(('+2 hours'))).' - '.date('Y-m-d H:i:s',strtotime(('+26 hours'))));
+        $io->out('Finding Users Dreaming since '.date('Y-m-d H:i:s',strtotime('+2 hours')).' - '.date('Y-m-d H:i:s',strtotime('+26 hours')));
         $users = $this->fetchTable('Users')
             ->find()
             ->where([
-                'Users.dreaming_since >' => date('Y-m-d H:i:s',strtotime(('+2 hours'))),
-                'Users.dreaming_since <=' => date('Y-m-d H:i:s',strtotime(('+26 hours')))
+                'Users.dreaming_since >' => date('Y-m-d H:i:s',strtotime('+2 hours')),
+                'Users.dreaming_since <=' => date('Y-m-d H:i:s',strtotime('+26 hours'))
             ])
             ->contain('Monsters', function (SelectQuery $q) {
                 return $q
