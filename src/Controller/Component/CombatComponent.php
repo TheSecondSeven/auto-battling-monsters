@@ -908,17 +908,17 @@ class CombatComponent extends Component
 							$this->applyWet($time, $action_message, $a_monster);
 						}
 					}
-					if(empty($this->environment->whirlpool)) {
+					if(empty($this->environment['statuses']['whirlpool'])) {
 						$this->addActionMessage($action_message, 'event', 'A Whirlpool appears.');
 						$this->addActionMessage($action_message, 'environment_change', 'Water type skills do 20% more damage.');
-						$this->environment->whirlpool = [
+						$this->environment['statuses']['whirlpool'] = [
 							'stacks' => 1,
 							'ends' => 0
 						];
 					}else{
-						$this->environment->whirlpool->stacks++;
+						$this->environment['statuses']['whirlpool']['stacks']++;
 						$this->addActionMessage($action_message, 'event', 'The Whirlpool grows in size.');
-						$this->addActionMessage($action_message, 'environment_change', 'Water type skills do '.($this->environment->whirlpool->stacks * 20).'% more damage.');
+						$this->addActionMessage($action_message, 'environment_change', 'Water type skills do '.($this->environment['statuses']['whirlpool']['stacks'] * 20).'% more damage.');
 					}
 				}
 				
@@ -2121,7 +2121,7 @@ class CombatComponent extends Component
 		if(!empty($this->monsters[$monster->id]->statuses['drenched'])) {
 			$this->monsters[$monster->id]->statuses['drenched'] = ['ends' => $time + WETNESS_DURATION];
 			$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' continues to be Drenched in Water.');
-		}elseif(!empty($this->monsters[$monster->id]->statuses['soaked']) || (!empty($this->environment->status->whirlpool) && $desired_wetness == null) || $desired_wetness == 'Drenched') {
+		}elseif(!empty($this->monsters[$monster->id]->statuses['soaked']) || (!empty($this->environment['statuses']['whirlpool']) && $desired_wetness == null) || $desired_wetness == 'Drenched') {
 			if(!empty($this->monsters[$monster->id]->statuses['soaked']))
 				unset($this->monsters[$monster->id]->statuses['soaked']);
 			if(!empty($this->monsters[$monster->id]->statuses['wet']))
