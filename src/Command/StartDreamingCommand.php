@@ -25,6 +25,7 @@ class StartDreamingCommand extends Command
             ])
             ->all();
         foreach($users as $user) {
+            $io->out($user->username.' Entered Dream Mode');
 		    $user->dreaming_since = new DateTime();
             $this->fetchTable('Users')->save($user);
         }

@@ -30,6 +30,7 @@ class DreamingCommand extends Command
             })
             ->all();
         foreach($users as $user) {
+            $io->out($user->username.' May Earn Rewards');
             //chance to earn gold
             if(rand(1,600) <= 10) {
                 //they earned gold!
