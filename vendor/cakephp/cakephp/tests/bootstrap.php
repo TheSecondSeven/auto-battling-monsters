@@ -114,6 +114,9 @@ if (env('CAKE_TEST_AUTOQUOTE')) {
 
 Configure::write('Session', [
     'defaults' => 'php',
+    'ini' => [
+        'session.cookie_secure' => false
+    ]
 ]);
 Configure::write('Debugger.exportFormatter', TextFormatter::class);
 

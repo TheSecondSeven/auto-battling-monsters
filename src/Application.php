@@ -109,7 +109,7 @@ class Application extends BaseApplication
             ->add(new BodyParserMiddleware())
             ->add(new EncryptedCookieMiddleware(
                 // Names of cookies to protect
-                ['CookieAuth', 'secrets', 'protected'],
+                ['CookieAuth'],
                 Configure::read('Security.cookieKey')
             ))
             ->add(new AuthenticationMiddleware($this));
@@ -146,14 +146,15 @@ class Application extends BaseApplication
 
         // Load the authenticators, you want session first
         $authenticationService->loadAuthenticator('Authentication.Session');
+
+        $authenticationService->loadAuthenticator('Authentication.Cookie', [
+            'fields' => $fields,
+            'loginUrl' => Router::url('/login')
+        ]);
         // Configure form data check to pick email and password
         $authenticationService->loadAuthenticator('Authentication.Form', [
             'fields' => $fields,
-            'loginUrl' => Router::url('/login'),
-        ]);
-        $authenticationService->loadAuthenticator('Authentication.Cookie', [
-            'fields' => $fields,
-            'loginUrl' => '/accounts/login',
+            'loginUrl' => Router::url('/login')
         ]);
 
         return $authenticationService;
