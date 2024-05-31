@@ -446,7 +446,7 @@ class CombatComponent extends Component
 					$this->action_log[$time]['messages']['monster-'.$this->monsters[$monster->id]->id][] = $action_message;
 			}
 			foreach($this->environment['statuses'] as $index => $environment_status) {
-				if($environment_status->ends != 0 && $environment_status->ends <= $time) {
+				if($environment_status['ends'] != 0 && $environment_status['ends'] <= $time) {
 					unset($this->environment['statuses'][$index]);
 				}
 			}
