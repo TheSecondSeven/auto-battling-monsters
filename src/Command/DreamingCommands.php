@@ -5,6 +5,7 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use Cake\ORM\Query\SelectQuery;
 
 class DreamingCommand extends Command
 {
