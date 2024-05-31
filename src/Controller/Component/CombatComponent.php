@@ -1635,12 +1635,14 @@ class CombatComponent extends Component
 								$secondary_targets = $this->getTargets($monster, $secondary_skill_effect->targets);
 							}
 							if($secondary_skill_effect->duration > 0) {
-								$secondary_skill_effect->duration *= $stack_count;
-								$this->processEffect($time, $action_message, $monster, $ability_name, $type, $secondary_skill_effect, $secondary_targets, true);
+								$cloned_effect = clone $secondary_skill_effect;
+								$cloned_effect->duration *= $stack_count;
+								$this->processEffect($time, $action_message, $monster, $ability_name, $type, $cloned_effect, $secondary_targets, true);
 							}else{
-								$secondary_skill_effect->amount_min *= $stack_count;
-								$secondary_skill_effect->amount_max *= $stack_count;
-								$this->processEffect($time, $action_message, $monster, $ability_name, $type, $secondary_skill_effect, $secondary_targets, true);
+								$cloned_effect = clone $secondary_skill_effect;
+								$cloned_effect->amount_min *= $stack_count;
+								$cloned_effect->amount_max *= $stack_count;
+								$this->processEffect($time, $action_message, $monster, $ability_name, $type, $cloned_effect, $secondary_targets, true);
 							}
 						}
 					}else{
@@ -1971,7 +1973,7 @@ class CombatComponent extends Component
 			$amount = round($amount * 1.5);
 		}
 		if($effect != 'Heal') {
-			floor($amount * (1 + 0.1 * floor($time / 15000)));
+			$amount = floor($amount * (1 + 0.1 * floor($time / 15000)));
 		}
 		
 		return $amount;
