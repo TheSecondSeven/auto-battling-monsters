@@ -46,7 +46,7 @@ class DreamingCommand extends Command
                     $user->dreamt_rune_shards += DREAMT_RUNE_SHARDS_PER_HOUR_PER_ACTIVE_MONSTER_SLOT;
                 }
             }
-            $this->Users->save($user);
+            $this->fetchTable('Users')->save($user);
         }
     }
 }

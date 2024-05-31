@@ -16,8 +16,6 @@ class StartDreamingCommand extends Command
 
     public function execute(Arguments $args, ConsoleIo $io): int
     {
-        
-        $this->loadModel('Users');
         $users = $this->fetchTable('Users')
             ->find()
             ->where([
@@ -27,7 +25,7 @@ class StartDreamingCommand extends Command
             ->all();
         foreach($users as $user) {
 		    $user->dreaming_since = new DateTime();
-            $this->Users->save($user);
+            $this->fetchTable('Users')->save($user);
         }
         return true;
     }
