@@ -48,7 +48,7 @@ class BattleController extends AppController
 				'Monsters.ultimate_id != 0'
 			];
 			if($elo_threshold < 10) {
-				$elo_threshold_amount = $elo_threshold * 50;
+				$elo_threshold_amount = $elo_threshold * 200;
 				$where['Monsters.elo_rating >='] = $monster->elo_rating - $elo_threshold_amount;
 				$where['Monsters.elo_rating <='] = $monster->elo_rating + $elo_threshold_amount;
 			}
