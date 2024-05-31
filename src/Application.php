@@ -36,6 +36,8 @@ use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Cake\Routing\Router;
 use Psr\Http\Message\ServerRequestInterface;
+use Cake\Http\Middleware\EncryptedCookieMiddleware;
+use Cake\I18n\DateTime;
 
 /**
  * Application setup class.
@@ -105,6 +107,11 @@ class Application extends BaseApplication
             // available as array through $request->getData()
             // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
             ->add(new BodyParserMiddleware())
+            ->add(new EncryptedCookieMiddleware(
+                // Names of cookies to protect
+                ['CookieAuth', 'secrets', 'protected'],
+                Configure::read('Security.cookieKey')
+            ))
             ->add(new AuthenticationMiddleware($this));
 
         return $middlewareQueue;
@@ -127,23 +134,26 @@ class Application extends BaseApplication
             'queryParam' => 'redirect',
         ]);
 
+        $fields = [
+            'username' => 'email',
+            'password' => 'password'
+        ];
+
         // Load identifiers, ensure we check email and password fields
         $authenticationService->loadIdentifier('Authentication.Password', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password',
-            ],
+            'fields' => $fields,
         ]);
 
         // Load the authenticators, you want session first
         $authenticationService->loadAuthenticator('Authentication.Session');
         // Configure form data check to pick email and password
         $authenticationService->loadAuthenticator('Authentication.Form', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password',
-            ],
+            'fields' => $fields,
             'loginUrl' => Router::url('/login'),
+        ]);
+        $authenticationService->loadAuthenticator('Authentication.Cookie', [
+            'fields' => $fields,
+            'loginUrl' => '/accounts/login',
         ]);
 
         return $authenticationService;

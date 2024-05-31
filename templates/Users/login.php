@@ -20,6 +20,7 @@ $this->extend('../layout/TwitterBootstrap/signin'); ?>
     <?= $this->Form->create() ?>
     <?= $this->Form->control('email', ['required' => true]) ?>
     <?= $this->Form->control('password', ['required' => true]) ?>
+    <?= $this->Form->control('remember_me', ['type' => 'checkbox']);?>
     <?= $this->Form->submit(__('Login'),['class'=>'btn btn-primary']); ?>
     <br>
     <?= $this->Html->link('Register', ['action' => 'register'],['class'=>'btn btn-secondary']) ?>
