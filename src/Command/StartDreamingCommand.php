@@ -14,7 +14,7 @@ class StartDreamingCommand extends Command
         return $parser;
     }
 
-    public function execute(Arguments $args, ConsoleIo $io): int
+    public function execute(Arguments $args, ConsoleIo $io)
     {
         $users = $this->fetchTable('Users')
             ->find()
