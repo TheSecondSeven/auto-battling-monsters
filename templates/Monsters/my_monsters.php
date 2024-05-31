@@ -14,7 +14,9 @@
 	</div>
 	<?php }else{ ?>
 	<div class="mb-3">
-		Your monsters have been dreaming for <?php $now = new DateTime();
+		After 2 hours, your monsters start dreaming of gold for you. Earnings stop after 26 hours.
+		<br>Each unused active monster slot will also add chances to earn rune shards or gems!
+		<br>Your monsters have been dreaming for <?php $now = new DateTime();
 					$past_date = $user->dreaming_since;
 					
 					$interval = $now->diff($past_date);
@@ -52,8 +54,6 @@
 						}
 						echo ' '.$user->dreamt_gems.' gem'.($user->dreamt_gems  == 1 ? '' : 's');
 					} ?>!
-		<br>After 2 hours, your monsters start dreaming of gold for you. Earnings stop after 24 hours.
-		<br>Each unused active monster slot will also add chances to earn rune shards or gems!
 		<br>You can't start new Gauntlet Runs while in Dream Mode.
 		<br>
 		<?= $this->Html->link('Exit Dream Mode', ['controller' => 'users', 'action' => 'exit-dream-mode'], ['class'=>'btn btn-success']); ?>					
