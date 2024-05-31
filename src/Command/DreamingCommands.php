@@ -47,7 +47,7 @@ class DreamingCommand extends Command
             }
             $this->fetchTable('Users')->save($user);
         }
-        return 1;
+        return static::CODE_SUCCESS;
     }
 }
 ?>

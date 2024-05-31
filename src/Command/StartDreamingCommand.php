@@ -28,6 +28,6 @@ class StartDreamingCommand extends Command
 		    $user->dreaming_since = new DateTime();
             $this->fetchTable('Users')->save($user);
         }
-        return 1;
+        return static::CODE_SUCCESS;
     }
 }
