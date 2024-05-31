@@ -15,7 +15,7 @@ class StartDreamingCommand extends Command
         return $parser;
     }
 
-    public function execute(Arguments $args, ConsoleIo $io): bool
+    public function execute(Arguments $args, ConsoleIo $io): int
     {
         $users = $this->fetchTable('Users')
             ->find()
@@ -28,6 +28,6 @@ class StartDreamingCommand extends Command
 		    $user->dreaming_since = new DateTime();
             $this->fetchTable('Users')->save($user);
         }
-        return true;
+        return 1;
     }
 }
