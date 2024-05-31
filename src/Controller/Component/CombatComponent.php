@@ -29,7 +29,7 @@ class CombatComponent extends Component
 	}
 	
 	public function twoTeamCombat($monster, $opponent) {
-		$this->environment = (object) ['statuses' => []];
+		$this->environment = ['statuses' => []];
 		$this->monsters = [];
 		$monster->id = $this->getMonsterID();
 		$monster->team = 1;
@@ -56,7 +56,7 @@ class CombatComponent extends Component
 			
 			if(!empty($this->action_log[$time])) {
 				foreach($this->monsters as $monster) {
-					$snapshot = clone $monster;
+					$snapshot = clone($monster);
 					$this->action_log[$time]['state']['monster-'.$snapshot->id] = [
 						'name' => (string)$snapshot->name,
 						'max_health' => (int)$snapshot->max_health,
@@ -139,7 +139,7 @@ class CombatComponent extends Component
 		$statuses = [];
 		$buffs = [];
 		$debuffs = [];
-		foreach($this->action_log as $time_log) {
+		foreach($this->action_log as $time=>$time_log) {
 			if(!empty($time_log['state'])) {
 				foreach($time_log['state'] as $monster_state) {
 					foreach($monster_state['statuses'] as $status_key => $status) {
@@ -309,9 +309,9 @@ class CombatComponent extends Component
 	private function setupMonster($monster, $time) {
 		
 		$this->monsters[$monster->id]->stats = $this->createStats($this->monsters[$monster->id]);
-		$this->monsters[$monster->id]->statuses = (object)[];
-		$this->monsters[$monster->id]->debuffs = (object)[];
-		$this->monsters[$monster->id]->buffs = (object)[];
+		$this->monsters[$monster->id]->statuses = [];
+		$this->monsters[$monster->id]->debuffs = [];
+		$this->monsters[$monster->id]->buffs = [];
 		if(empty($this->monsters[$monster->id]->max_health)) {
 			$this->monsters[$monster->id]->max_health = $this->monsters[$monster->id]->stats->health;
 			$this->monsters[$monster->id]->current_health = $this->monsters[$monster->id]->stats->health;
@@ -334,15 +334,15 @@ class CombatComponent extends Component
 			$this->applyRunes($monster);
 			if(!empty($this->monsters[$monster->id]->skill1->id)) {
 				$this->monsters[$monster->id]->skills = [
-					clone $this->monsters[$monster->id]->skill1,
-					clone $this->monsters[$monster->id]->skill2,
-					clone $this->monsters[$monster->id]->skill3,
-					clone $this->monsters[$monster->id]->skill4
+					clone($this->monsters[$monster->id]->skill1),
+					clone($this->monsters[$monster->id]->skill2),
+					clone($this->monsters[$monster->id]->skill3),
+					clone($this->monsters[$monster->id]->skill4)
 				];
 			}
 			if(!$this->monsters[$monster->id]->ultimate->passive) {
 				$this->monsters[$monster->id]->ultimate->ultimate = 1;
-				$this->monsters[$monster->id]->skills[] = clone $this->monsters[$monster->id]->ultimate;
+				$this->monsters[$monster->id]->skills[] = clone($this->monsters[$monster->id]->ultimate);
 			}
 			$this->setupPassiveUltimate($monster);
 		}
@@ -350,24 +350,24 @@ class CombatComponent extends Component
 	
 	private function setupPassiveUltimate($monster) {
 		if($this->monsters[$monster->id]->ultimate->id == 11) {
-			if(empty($this->monsters[$monster->id]->statuses->discharge)) {
-				$this->monsters[$monster->id]->statuses->discharge = (object) ['stacks' => 0];
+			if(empty($this->monsters[$monster->id]->statuses['discharge'])) {
+				$this->monsters[$monster->id]->statuses['discharge'] = ['stacks' => 0];
 			}else{
-				$this->monsters[$monster->id]->statuses->discharge->stacks = 0;
+				$this->monsters[$monster->id]->statuses['discharge']['stacks'] = 0;
 			}
 		}
 		if($this->monsters[$monster->id]->ultimate->id == 13) {
-			if(empty($this->monsters[$monster->id]->statuses->discharge)) {
-				$this->monsters[$monster->id]->statuses->phoenix = (object) ['stacks' => 1];
+			if(empty($this->monsters[$monster->id]->statuses['discharge'])) {
+				$this->monsters[$monster->id]->statuses['phoenix'] = ['stacks' => 1];
 			}else{
-				$this->monsters[$monster->id]->statuses->phoenix->stacks = 1;
+				$this->monsters[$monster->id]->statuses['phoenix']['stacks'] = 1;
 			}
 		}
 		if($this->monsters[$monster->id]->ultimate->id == 15) {
-			$this->monsters[$monster->id]->statuses->white_belt = true;
+			$this->monsters[$monster->id]->statuses['white_belt'] = true;
 		}
 		if($this->monsters[$monster->id]->ultimate->id == 19) {
-			$this->monsters[$monster->id]->statuses->living_flesh = true;
+			$this->monsters[$monster->id]->statuses['living_flesh'] = true;
 		}
 	}
 	
@@ -413,41 +413,41 @@ class CombatComponent extends Component
 			//$hasEnemies = true;
 			if($this->monsters[$monster->id]->current_health > 0 && $hasEnemies) {
 				$action_message = [];
-				if(!empty($this->monsters[$monster->id]->buffs->healing_over_time)) {
+				if(!empty($this->monsters[$monster->id]->buffs['healing_over_time'])) {
 					$this->processStatusHealingOverTime($time, $action_message, $monster);
 				}
-				if(!empty($this->monsters[$monster->id]->debuffs->poisoned)) {
+				if(!empty($this->monsters[$monster->id]->debuffs['poisoned'])) {
 					$this->processStatusPoisoned($time, $action_message, $monster);
 				}
-				if(!empty($this->monsters[$monster->id]->debuffs->stunned)) {
+				if(!empty($this->monsters[$monster->id]->debuffs['stunned'])) {
 					$this->processStatusStunned($time, $action_message, $monster);
 				}
-				if(!empty($this->monsters[$monster->id]->debuffs->asleep)) {
+				if(!empty($this->monsters[$monster->id]->debuffs['asleep'])) {
 					$this->processStatusAsleep($time, $action_message, $monster);
 				}
-				if(!empty($this->monsters[$monster->id]->debuffs->frozen)) {
+				if(!empty($this->monsters[$monster->id]->debuffs['frozen'])) {
 					$this->processStatusFrozen($time, $action_message, $monster, false);
 				}
-				if(!empty($this->monsters[$monster->id]->debuffs->confused)) {
+				if(!empty($this->monsters[$monster->id]->debuffs['confused'])) {
 					$this->processStatusConfused($time, $action_message, $monster);
 				}
-				if(!empty($this->monsters[$monster->id]->debuffs->burned)) {
+				if(!empty($this->monsters[$monster->id]->debuffs['burned'])) {
 					$this->processStatusBurned($time, $action_message, $monster);
 				}
 				$this->processStatusWetness($time, $action_message, $monster);
 				
-				if(!empty($this->monsters[$monster->id]->statuses->phoenix_reborn)) {
+				if(!empty($this->monsters[$monster->id]->statuses['phoenix_reborn'])) {
 					$this->processStatusPhoenixReborn($time, $action_message, $monster);
 				}
-				if(!empty($this->monsters[$monster->id]->statuses->rotting)) {
+				if(!empty($this->monsters[$monster->id]->statuses['rotting'])) {
 					$this->processStatusRotting($time, $action_message, $monster);
 				}
 				if(!empty($action_message))
 					$this->action_log[$time]['messages']['monster-'.$this->monsters[$monster->id]->id][] = $action_message;
 			}
-			foreach($this->environment->statuses as $index => $environment_status) {
+			foreach($this->environment['statuses'] as $index => $environment_status) {
 				if($environment_status->ends != 0 && $environment_status->ends <= $time) {
-					unset($this->environment->statuses[$index]);
+					unset($this->environment['statuses'][$index]);
 				}
 			}
 		}
@@ -463,24 +463,24 @@ class CombatComponent extends Component
 		];
 		foreach($buffs as $key=>$buff) {
 			
-			if(isset($this->monsters[$monster->id]->buffs->$key->number_of_turns)) {
-				if($this->monsters[$monster->id]->buffs->$key->number_of_turns == 0) {
-						unset($this->monsters[$monster->id]->buffs->$key);
+			if(isset($this->monsters[$monster->id]->buffs[$key]['number_of_turns'])) {
+				if($this->monsters[$monster->id]->buffs[$key]['number_of_turns'] == 0) {
+						unset($this->monsters[$monster->id]->buffs[$key]);
 						$this->addActionMessage($action_message, 'buff_lost',$this->monsters[$monster->id]->name.' no longer '.$buff.'.');
 				}else{
-					$this->monsters[$monster->id]->buffs->$key->number_of_turns--;
+					$this->monsters[$monster->id]->buffs[$key]['number_of_turns']--;
 				}
-			}elseif(!empty($this->monsters[$monster->id]->buffs->$key) && is_array($this->monsters[$monster->id]->buffs->$key)) {
-				foreach($this->monsters[$monster->id]->buffs->$key as $index=>$details) {
-					if($this->monsters[$monster->id]->buffs->$key[$index]->number_of_turns == 0) {
-						unset($this->monsters[$monster->id]->buffs->$key[$index]);
+			}elseif(!empty($this->monsters[$monster->id]->buffs[$key]) && is_array($this->monsters[$monster->id]->buffs[$key])) {
+				foreach($this->monsters[$monster->id]->buffs[$key] as $index=>$details) {
+					if($this->monsters[$monster->id]->buffs[$key][$index]['number_of_turns'] == 0) {
+						unset($this->monsters[$monster->id]->buffs[$key][$index]);
 						$this->addActionMessage($action_message, 'buff_lost',$this->monsters[$monster->id]->name.' no longer '.$buff.'.');
 					}else{
-						$this->monsters[$monster->id]->buffs->$key[$index]->number_of_turns--;
+						$this->monsters[$monster->id]->buffs[$key][$index]['number_of_turns']--;
 					}
 				}
-				if(empty($this->monsters[$monster->id]->buffs->$key))
-					unset($this->monsters[$monster->id]->buffs->$key);
+				if(empty($this->monsters[$monster->id]->buffs[$key]))
+					unset($this->monsters[$monster->id]->buffs[$key]);
 			}
 		}
 		$debuffs = [
@@ -491,32 +491,32 @@ class CombatComponent extends Component
 		];
 		foreach($debuffs as $key=>$debuff) {
 			
-			if(isset($this->monsters[$monster->id]->debuffs->$key->number_of_turns)) {
-				if($this->monsters[$monster->id]->debuffs->$key->number_of_turns == 0) {
-						unset($this->monsters[$monster->id]->debuffs->$key);
+			if(isset($this->monsters[$monster->id]->debuffs[$key]['number_of_turns'])) {
+				if($this->monsters[$monster->id]->debuffs[$key]['number_of_turns'] == 0) {
+						unset($this->monsters[$monster->id]->debuffs[$key]);
 						$this->addActionMessage($action_message, 'debuff_lost',$this->monsters[$monster->id]->name.' no longer '.$debuff.'.');
 				}else{
-					$this->monsters[$monster->id]->debuffs->$key->number_of_turns--;
+					$this->monsters[$monster->id]->debuffs[$key]['number_of_turns']--;
 				}
-			}elseif(!empty($this->monsters[$monster->id]->debuffs->$key) && is_array($this->monsters[$monster->id]->debuffs->$key)) {
-				foreach($this->monsters[$monster->id]->debuffs->$key as $index=>$details) {
-					if($details->number_of_turns == 0) {
-						unset($this->monsters[$monster->id]->debuffs->$key[$index]);
+			}elseif(!empty($this->monsters[$monster->id]->debuffs[$key]) && is_array($this->monsters[$monster->id]->debuffs[$key])) {
+				foreach($this->monsters[$monster->id]->debuffs[$key] as $index=>$details) {
+					if($details['number_of_turns'] == 0) {
+						unset($this->monsters[$monster->id]->debuffs[$key][$index]);
 						$this->addActionMessage($action_message, 'debuff_lost',$this->monsters[$monster->id]->name.' no longer '.$debuff.'.');
 					}else{
-						$this->monsters[$monster->id]->debuffs->$key[$index]->number_of_turns--;
+						$this->monsters[$monster->id]->debuffs[$key][$index]['number_of_turns']--;
 					}
 				}
-				if(empty($this->monsters[$monster->id]->debuffs->$key))
-					unset($this->monsters[$monster->id]->debuffs->$key);
+				if(empty($this->monsters[$monster->id]->debuffs[$key]))
+					unset($this->monsters[$monster->id]->debuffs[$key]);
 			}
 		}
 	}
 	
 	private function processStatusHealingOverTime($time, &$action_message, $monster) {
-		if($this->monsters[$monster->id]->buffs->healing_over_time->next_tick <= $time) {
-			$healing = min($this->healingDampening($time, rand((int)$this->monsters[$monster->id]->buffs->healing_over_time->amount_min, (int)$this->monsters[$monster->id]->buffs->healing_over_time->amount_max)), $this->monsters[$monster->id]->max_health - $this->monsters[$monster->id]->current_health);
-			if(!empty($this->monsters[$monster->id]->debuffs->infected)) {
+		if($this->monsters[$monster->id]->buffs['healing_over_time']['next_tick'] <= $time) {
+			$healing = min($this->healingDampening($time, rand((int)$this->monsters[$monster->id]->buffs['healing_over_time']['amount_min'], (int)$this->monsters[$monster->id]->buffs['healing_over_time']['amount_max'])), $this->monsters[$monster->id]->max_health - $this->monsters[$monster->id]->current_health);
+			if(!empty($this->monsters[$monster->id]->debuffs['infected'])) {
 				$this->addActionMessage($action_message, 'healing_over_time', 'Healing Over Time for '.$this->monsters[$monster->id]->name.' prevented by Infection.');
 				$this->useInfect($time, $action_message, $monster);
 			}elseif($healing > 0) {
@@ -525,48 +525,48 @@ class CombatComponent extends Component
 				$this->addHealthChangeLog($time, $monster, 'Healing', $healing);
 			}
 		}
-		if(!empty($this->monsters[$monster->id]->buffs->healing_over_time) && $this->monsters[$monster->id]->buffs->healing_over_time->next_tick <= $time) {
-			if($this->monsters[$monster->id]->buffs->healing_over_time->ends > $time) {
-				$this->monsters[$monster->id]->buffs->healing_over_time->next_tick += 1000;
-			}elseif($this->monsters[$monster->id]->buffs->healing_over_time->ends <= $time) {
-				unset($this->monsters[$monster->id]->buffs->healing_over_time);
+		if(!empty($this->monsters[$monster->id]->buffs['healing_over_time']) && $this->monsters[$monster->id]->buffs['healing_over_time']['next_tick'] <= $time) {
+			if($this->monsters[$monster->id]->buffs['healing_over_time']['ends'] > $time) {
+				$this->monsters[$monster->id]->buffs['healing_over_time']['next_tick'] += 1000;
+			}elseif($this->monsters[$monster->id]->buffs['healing_over_time']['ends'] <= $time) {
+				unset($this->monsters[$monster->id]->buffs['healing_over_time']);
 				$this->addActionMessage($action_message, 'buff_lost', $this->monsters[$monster->id]->name.' is no longer Healing Over Time.');
 			}
 		}
 	}
 	
 	private function processStatusPoisoned($time, &$action_message, $monster) {
-		if($this->monsters[$monster->id]->debuffs->poisoned->next_tick <= $time) {
-			$damage = rand((int)$this->monsters[$monster->id]->debuffs->poisoned->amount_min, (int)$this->monsters[$monster->id]->debuffs->poisoned->amount_max);
+		if($this->monsters[$monster->id]->debuffs['poisoned']['next_tick'] <= $time) {
+			$damage = rand((int)$this->monsters[$monster->id]->debuffs['poisoned']['amount_min'], (int)$this->monsters[$monster->id]->debuffs['poisoned']['amount_max']);
 			$this->takeDamage($time, $action_message, $monster, $monster, 'Poison', $damage, false, $action_type = 'damage_over_time');
 		}
-		if(!empty($this->monsters[$monster->id]->debuffs->poisoned) && $this->monsters[$monster->id]->debuffs->poisoned->next_tick <= $time) {
-			if($this->monsters[$monster->id]->debuffs->poisoned->ends > $time) {
-				$this->monsters[$monster->id]->debuffs->poisoned->next_tick += 1000;
-			}elseif($this->monsters[$monster->id]->debuffs->poisoned->ends <= $time) {
-				unset($this->monsters[$monster->id]->debuffs->poisoned);
+		if(!empty($this->monsters[$monster->id]->debuffs['poisoned']) && $this->monsters[$monster->id]->debuffs['poisoned']['next_tick'] <= $time) {
+			if($this->monsters[$monster->id]->debuffs['poisoned']['ends'] > $time) {
+				$this->monsters[$monster->id]->debuffs['poisoned']['next_tick'] += 1000;
+			}elseif($this->monsters[$monster->id]->debuffs['poisoned']['ends'] <= $time) {
+				unset($this->monsters[$monster->id]->debuffs['poisoned']);
 				$this->addActionMessage($action_message, 'debuff_lost', $this->monsters[$monster->id]->name.' is no longer Poisoned.');
 			}
 		}
 	}
 	
 	private function processStatusStunned($time, &$action_message, $monster) {
-		if($this->monsters[$monster->id]->debuffs->stunned->ends <= $time) {
-			unset($this->monsters[$monster->id]->debuffs->stunned);
+		if($this->monsters[$monster->id]->debuffs['stunned']['ends'] <= $time) {
+			unset($this->monsters[$monster->id]->debuffs['stunned']);
 			$this->addActionMessage($action_message, 'debuff_lost', $this->monsters[$monster->id]->name.' is no longer Stunned.');
 		}
 	}
 	
 	private function processStatusAsleep($time, &$action_message, $monster) {
-		if($this->monsters[$monster->id]->debuffs->asleep->ends <= $time) {
-			unset($this->monsters[$monster->id]->debuffs->asleep);
+		if($this->monsters[$monster->id]->debuffs['asleep']['ends'] <= $time) {
+			unset($this->monsters[$monster->id]->debuffs['asleep']);
 			$this->addActionMessage($action_message, 'debuff_lost', $this->monsters[$monster->id]->name.' woke up.');
 			$this->monsters[$monster->id]->next_action_time = $time;
 		}
 	}
 	private function processStatusFrozen($time, &$action_message, $monster, $shattered = false) {
-		if($this->monsters[$monster->id]->debuffs->frozen->ends <= $time) {
-			unset($this->monsters[$monster->id]->debuffs->frozen);
+		if($this->monsters[$monster->id]->debuffs['frozen']['ends'] <= $time) {
+			unset($this->monsters[$monster->id]->debuffs['frozen']);
 			if($shattered) {
 				$this->addActionMessage($action_message, 'event', $this->monsters[$monster->id]->name.' shattered free.');
 			}else{
@@ -576,54 +576,54 @@ class CombatComponent extends Component
 		}
 	}
 	private function processStatusConfused($time, &$action_message, $monster) {
-		if($this->monsters[$monster->id]->debuffs->confused->ends <= $time) {
-			unset($this->monsters[$monster->id]->debuffs->confused);
+		if($this->monsters[$monster->id]->debuffs['confused']['ends'] <= $time) {
+			unset($this->monsters[$monster->id]->debuffs['confused']);
 			$this->addActionMessage($action_message, 'debuff_lost', $this->monsters[$monster->id]->name.' is no longer confused.');
 		}
 	}
 	
 	private function processStatusWetness($time, &$action_message, $monster) {
 		
-		if(!empty($this->monsters[$monster->id]->statuses->drenched->ends) && $this->monsters[$monster->id]->statuses->drenched->ends <= $time) {
+		if(!empty($this->monsters[$monster->id]->statuses['drenched']['ends']) && $this->monsters[$monster->id]->statuses['drenched']['ends'] <= $time) {
 			$this->addActionMessage($action_message, 'debuff_lost', $this->monsters[$monster->id]->name.' dried up a little.');
-			unset($this->monsters[$monster->id]->statuses->drenched);
+			unset($this->monsters[$monster->id]->statuses['drenched']);
 			$this->applyWet($time, $action_message, $monster, 'Soaked');
-		}elseif(!empty($this->monsters[$monster->id]->statuses->soaked->ends) && $this->monsters[$monster->id]->statuses->soaked->ends <= $time) {
+		}elseif(!empty($this->monsters[$monster->id]->statuses['soaked']['ends']) && $this->monsters[$monster->id]->statuses['soaked']['ends'] <= $time) {
 			$this->addActionMessage($action_message, 'debuff_lost', $this->monsters[$monster->id]->name.' dried up a little.');
-			unset($this->monsters[$monster->id]->statuses->soaked);
+			unset($this->monsters[$monster->id]->statuses['soaked']);
 			$this->applyWet($time, $action_message, $monster, 'Wet');
-		}elseif(!empty($this->monsters[$monster->id]->statuses->wet->ends) && $this->monsters[$monster->id]->statuses->wet->ends <= $time) {
+		}elseif(!empty($this->monsters[$monster->id]->statuses['wet']['ends']) && $this->monsters[$monster->id]->statuses['wet']['ends'] <= $time) {
 			$this->addActionMessage($action_message, 'debuff_lost', $this->monsters[$monster->id]->name.' dried up.');
-			unset($this->monsters[$monster->id]->statuses->wet);
+			unset($this->monsters[$monster->id]->statuses['wet']);
 		}
 	}
 	
 	private function processStatusBurned($time, &$action_message, $monster) {
-		if($this->monsters[$monster->id]->debuffs->burned->ends <= $time) {
-			unset($this->monsters[$monster->id]->debuffs->burned);
+		if($this->monsters[$monster->id]->debuffs['burned']['ends'] <= $time) {
+			unset($this->monsters[$monster->id]->debuffs['burned']);
 			$this->addActionMessage($action_message, 'debuff_lost', $this->monsters[$monster->id]->name.' is no longer Burned.');
 		}
 	}
 	private function processStatusPhoenixReborn($time, &$action_message, $monster) {
-		if($this->monsters[$monster->id]->statuses->phoenix_reborn->next_tick <= $time) {
+		if($this->monsters[$monster->id]->statuses['phoenix_reborn']['next_tick'] <= $time) {
 			$damage = ceil($this->monsters[$monster->id]->max_health / 20);
-			$this->monsters[$monster->id]->statuses->phoenix_reborn->next_tick += 1000;
+			$this->monsters[$monster->id]->statuses['phoenix_reborn']['next_tick'] += 1000;
 			$this->takeDamage($time, $action_message, $monster, $monster, 'Choas', $damage, false, 'damage_over_time');
 		}
 	}
 	private function processStatusRotting($time, &$action_message, $monster) {
-		if($this->monsters[$monster->id]->statuses->rotting->next_tick <= $time) {
+		if($this->monsters[$monster->id]->statuses['rotting']['next_tick'] <= $time) {
 			$damage = 2;
-			$this->monsters[$monster->id]->statuses->rotting->next_tick += 1000;
+			$this->monsters[$monster->id]->statuses['rotting']['next_tick'] += 1000;
 			$this->takeDamage($time, $action_message, $monster, $monster, 'Undead', $damage, false, 'damage_over_time');
 		}
 	}
 	
 	private function takeDamage($time, &$action_message, $monster, $source, $type, $amount, $crit = false, $action_type = 'damage') {
 		if($this->monsters[$monster->id]->current_health > 0) {
-			if(!empty($this->monsters[$monster->id]->buffs->bubble)) {
+			if(!empty($this->monsters[$monster->id]->buffs['bubble'])) {
 				$this->addActionMessage($action_message, $action_type, $this->monsters[$monster->id]->name.' absorbed the '.$type.' Damage with a Bubble.');
-				unset($this->monsters[$monster->id]->buffs->bubble);
+				unset($this->monsters[$monster->id]->buffs['bubble']);
 			}else{
 				
 				$this->addActionMessage($action_message, $action_type, $this->monsters[$monster->id]->name.' takes '.$amount.' '.$type.' Damage'.($crit ? '(Critical Hit)' : '').'.');
@@ -631,21 +631,21 @@ class CombatComponent extends Component
 				$this->addHealthChangeLog($time, $monster, $type, -1 * $amount);
 				
 				//undying
-				if($this->monsters[$monster->id]->current_health <= 0 && !empty($this->monsters[$monster->id]->buffs->undying)) {
+				if($this->monsters[$monster->id]->current_health <= 0 && !empty($this->monsters[$monster->id]->buffs['undying'])) {
 					$this->addActionMessage($action_message, 'event', $this->monsters[$monster->id]->name.' refuses to Die.');
 					$this->monsters[$monster->id]->current_health = 1;
 				}
-				if(!empty($this->monsters[$monster->id]->statuses->living_flesh) && $amount >= round($this->monsters[$monster->id]->max_health * 0.15)) {
+				if(!empty($this->monsters[$monster->id]->statuses['living_flesh']) && $amount >= round($this->monsters[$monster->id]->max_health * 0.15)) {
 					$living_flesh = $this->living_flesh(round($amount / 2));
 					$living_flesh->team = $monster->team;
 					$living_flesh->id = $this->getMonsterID();
 					$living_flesh->summon = true;
 					$this->monsters[$living_flesh->id] = $living_flesh;
 					$this->setupMonster($living_flesh, $time);
-					if(empty($this->monsters[$living_flesh->id]->statuses->rotting)) {
-						$this->monsters[$living_flesh->id]->statuses->rotting = (object)['next_tick' => $time + 1000]; 
+					if(empty($this->monsters[$living_flesh->id]->statuses['rotting'])) {
+						$this->monsters[$living_flesh->id]->statuses['rotting'] = ['next_tick' => $time + 1000]; 
 					}else{
-						$this->monsters[$living_flesh->id]->statuses->rotting->next_tick = $time + 1000; 
+						$this->monsters[$living_flesh->id]->statuses['rotting']['next_tick'] = $time + 1000; 
 					}
 					$this->monsters[$living_flesh->id]->next_action_time = $time;
 					$this->setupTeams();
@@ -655,12 +655,12 @@ class CombatComponent extends Component
 				if($this->monsters[$monster->id]->current_health <= 0) {
 					$this->handleDeath($time, $action_message, $monster);
 				}else{
-					if(!empty($this->monsters[$monster->id]->debuffs->asleep)) {
-						$this->monsters[$monster->id]->debuffs->asleep->ends = $time;
+					if(!empty($this->monsters[$monster->id]->debuffs['asleep'])) {
+						$this->monsters[$monster->id]->debuffs['asleep']['ends'] = $time;
 						$this->processStatusAsleep($time, $action_message, $monster);
 					}
-					if(!empty($this->monsters[$monster->id]->debuffs->frozen)) {
-						$this->monsters[$monster->id]->debuffs->frozen->ends = $time;
+					if(!empty($this->monsters[$monster->id]->debuffs['frozen'])) {
+						$this->monsters[$monster->id]->debuffs['frozen']['ends'] = $time;
 						$this->processStatusFrozen($time, $action_message, $monster, true);
 					}
 					if($type != 'Burn') {
@@ -673,7 +673,7 @@ class CombatComponent extends Component
 	
 	private function handleDeath($time, &$action_message, $monster) {
 		//check for phoenix
-		if(!empty($this->monsters[$monster->id]->statuses->phoenix)) {
+		if(!empty($this->monsters[$monster->id]->statuses['phoenix'])) {
 			$egg = $this->phoenixEgg();
 			$egg->contains = clone $this->monsters[$monster->id];
 			$egg->id = $this->getMonsterID();
@@ -694,10 +694,10 @@ class CombatComponent extends Component
 			}else{
 				$this->addActionMessage($action_message, 'event', $this->monsters[$monster->id]->name.' has Fainted.');
 			}
-			$this->monsters[$monster->id]->statuses = (object)[];
-			$this->monsters[$monster->id]->statuses->fainted = [];
-			$this->monsters[$monster->id]->buffs = (object)[];
-			$this->monsters[$monster->id]->debuffs = (object)[];
+			$this->monsters[$monster->id]->statuses = [];
+			$this->monsters[$monster->id]->statuses['fainted'] = [];
+			$this->monsters[$monster->id]->buffs = [];
+			$this->monsters[$monster->id]->debuffs = [];
 			$this->action_log[$time]['casting']['monster-'.$this->monsters[$monster->id]->id] = [
 				'status' => 'interrupted'
 			];
@@ -738,7 +738,7 @@ class CombatComponent extends Component
 					if(empty($this->monsters[$monster->id]->skills[$skill_index])) {
 						$skill_index = 0;
 					} 
-					if(!empty($this->monsters[$monster->id]->debuffs->confused)) {
+					if(!empty($this->monsters[$monster->id]->debuffs['confused'])) {
 						$confused_skill_index = rand(0, count($this->monsters[$monster->id]->skills) - 1);
 						if($confused_skill_index != $skill_index) {
 							$skill_index = $confused_skill_index;
@@ -856,10 +856,10 @@ class CombatComponent extends Component
 							$poison_count++;
 					}
 					foreach($this->monsters[$monster->id]->enemies as $a_monster) {
-						if(!empty($this->monsters[$a_monster->id]->debuffs->poisoned)) {
-							$this->monsters[$a_monster->id]->debuffs->poisoned->amount_min *= round(1 + 0.05 * $poison_count);
-							$this->monsters[$a_monster->id]->debuffs->poisoned->amount_max *= round(1 + 0.05 * $poison_count);
-							$this->monsters[$a_monster->id]->debuffs->poisoned->ends += $poison_count * 1000;
+						if(!empty($this->monsters[$a_monster->id]->debuffs['poisoned'])) {
+							$this->monsters[$a_monster->id]->debuffs['poisoned']['amount_min'] *= round(1 + 0.05 * $poison_count);
+							$this->monsters[$a_monster->id]->debuffs['poisoned']['amount_max'] *= round(1 + 0.05 * $poison_count);
+							$this->monsters[$a_monster->id]->debuffs['poisoned']['ends'] += $poison_count * 1000;
 							$this->addActionMessage($action_message, 'debuff_changed', $this->monsters[$a_monster->id]->name.' had its poison extended by '.$poison_count.' second'.($poison_count == 1 ? '' : 's').'.');
 						}
 					}
@@ -883,12 +883,12 @@ class CombatComponent extends Component
 				
 				if($ultimateData->id == 5) {
 					if($this->monsters[$monster->id]->current_health > 1) {
-						$this->monsters[$monster->id]->max_health = floor($this->monsters[$monster->id]->max_health / 2);
-						$this->monsters[$monster->id]->current_health = floor($this->monsters[$monster->id]->current_health / 2);
-						if(empty($this->monsters[$monster->id]->statuses->split)) {
-							$this->monsters[$monster->id]->statuses->split = (object)['stacks' => 1];
+						$this->monsters[$monster->id]->max_health = max(1,floor($this->monsters[$monster->id]->max_health / 2));
+						$this->monsters[$monster->id]->current_health = max(1,floor($this->monsters[$monster->id]->current_health / 2));
+						if(empty($this->monsters[$monster->id]->statuses['split'])) {
+							$this->monsters[$monster->id]->statuses['split'] = ['stacks' => 1];
 						}else{
-							$this->monsters[$monster->id]->statuses->split->stacks++;
+							$this->monsters[$monster->id]->statuses['split']['stacks']++;
 						}
 						$this->addActionMessage($action_message, 'event', $this->monsters[$monster->id]->name.' splits into two.');
 						$clone = clone $this->monsters[$monster->id];
@@ -911,7 +911,7 @@ class CombatComponent extends Component
 					if(empty($this->environment->whirlpool)) {
 						$this->addActionMessage($action_message, 'event', 'A Whirlpool appears.');
 						$this->addActionMessage($action_message, 'environment_change', 'Water type skills do 20% more damage.');
-						$this->environment->whirlpool = (object)[
+						$this->environment->whirlpool = [
 							'stacks' => 1,
 							'ends' => 0
 						];
@@ -1030,9 +1030,9 @@ class CombatComponent extends Component
 					$this->monsters[$reborn->id] = $reborn;
 					$this->setupMonster($reborn, $time);
 					$this->setupTeams();
-					unset($this->monsters[$reborn->id]->statuses->phoenix);
+					unset($this->monsters[$reborn->id]->statuses['phoenix']);
 
-					$this->monsters[$reborn->id]->statuses->phoenix_reborn = (object)['next_tick' => $time + 1000]; 
+					$this->monsters[$reborn->id]->statuses['phoenix_reborn'] = ['next_tick' => $time + 1000]; 
 					$this->action_log[$time]['messages']['monster-'.$this->monsters[$reborn->id]->id][][] = [
 						'type' => 'event',
 						'text' => $reborn->name.' has been reborn and is stronger than ever, but is slowly burning away.'
@@ -1040,9 +1040,9 @@ class CombatComponent extends Component
 				}
 				
 				if($ultimateData->id == 15) {
-					if(!empty($this->monsters[$monster->id]->statuses->red_belt)) {
-						unset($this->monsters[$monster->id]->statuses->red_belt);
-						$this->monsters[$monster->id]->statuses->black_belt = true;
+					if(!empty($this->monsters[$monster->id]->statuses['red_belt'])) {
+						unset($this->monsters[$monster->id]->statuses['red_belt']);
+						$this->monsters[$monster->id]->statuses['black_belt'] = true;
 						$this->karateTraining($monster, true);
 						foreach($this->monsters[$monster->id]->skills as $index => $a_skill) {
 							if($a_skill->id == 15 && !empty($a_skill->ultimate)) {
@@ -1051,25 +1051,25 @@ class CombatComponent extends Component
 							}
 						}
 						$this->addActionMessage($action_message, 'skill_result', $monster->name.' is now a Black Belt.');
-					}elseif(!empty($this->monsters[$monster->id]->statuses->purple_belt)) {
-						unset($this->monsters[$monster->id]->statuses->purple_belt);
-						$this->monsters[$monster->id]->statuses->red_belt = true;
+					}elseif(!empty($this->monsters[$monster->id]->statuses['purple_belt'])) {
+						unset($this->monsters[$monster->id]->statuses['purple_belt']);
+						$this->monsters[$monster->id]->statuses['red_belt'] = true;
 						$this->karateTraining($monster, false);
 						$this->addActionMessage($action_message, 'skill_result', $monster->name.' is now a Red Belt.');
-					}elseif(!empty($this->monsters[$monster->id]->statuses->green_belt)) {
-						unset($this->monsters[$monster->id]->statuses->green_belt);
-						$this->monsters[$monster->id]->statuses->purple_belt = true;
+					}elseif(!empty($this->monsters[$monster->id]->statuses['green_belt'])) {
+						unset($this->monsters[$monster->id]->statuses['green_belt']);
+						$this->monsters[$monster->id]->statuses['purple_belt'] = true;
 						$this->karateTraining($monster, false);
 						$this->addActionMessage($action_message, 'skill_result', $monster->name.' is now a Purple Belt.');
-					}elseif(!empty($this->monsters[$monster->id]->statuses->yellow_belt)) {
+					}elseif(!empty($this->monsters[$monster->id]->statuses['yellow_belt'])) {
 						//skipping yellow
-						unset($this->monsters[$monster->id]->statuses->yellow_belt);
-						$this->monsters[$monster->id]->statuses->green_belt = true;
+						unset($this->monsters[$monster->id]->statuses['yellow_belt']);
+						$this->monsters[$monster->id]->statuses['green_belt'] = true;
 						$this->karateTraining($monster, false);
 						$this->addActionMessage($action_message, 'skill_result', $monster->name.' is now a Green Belt.');
-					}elseif(!empty($this->monsters[$monster->id]->statuses->white_belt)) {
-						unset($this->monsters[$monster->id]->statuses->white_belt);
-						$this->monsters[$monster->id]->statuses->green_belt = true;
+					}elseif(!empty($this->monsters[$monster->id]->statuses['white_belt'])) {
+						unset($this->monsters[$monster->id]->statuses['white_belt']);
+						$this->monsters[$monster->id]->statuses['green_belt'] = true;
 						$this->karateTraining($monster, false);
 						$this->addActionMessage($action_message, 'skill_result', $monster->name.' is now a Green Belt.');
 					}
@@ -1194,14 +1194,14 @@ class CombatComponent extends Component
 		$speed_status_modifier_amount = 0;
 		if(!empty($skill->casting_speed_increase))
 			$speed_status_modifier_amount -= $skill->casting_speed_increase;
-		if(!empty($caster->buffs->speed_up)) {
-			foreach($caster->buffs->speed_up as $speed_up_buff) {
-				$speed_status_modifier_amount -= $speed_up_buff->amount;
+		if(!empty($caster->buffs['speed_up'])) {
+			foreach($caster->buffs['speed_up'] as $speed_up_buff) {
+				$speed_status_modifier_amount -= $speed_up_buff['amount'];
 			}
 		}
-		if(!empty($caster->debuffs->speed_down)) {
-			foreach($caster->debuffs->speed_down as $speed_down_buff) {
-				$speed_status_modifier_amount += $speed_down_buff->amount;
+		if(!empty($caster->debuffs['speed_down'])) {
+			foreach($caster->debuffs['speed_down'] as $speed_down_buff) {
+				$speed_status_modifier_amount += $speed_down_buff['amount'];
 			}
 		}
 		$speed_status_modifier = pow(2, $speed_status_modifier_amount / 100);
@@ -1359,7 +1359,7 @@ class CombatComponent extends Component
 			foreach($targets as $target) {
 				$healing = $this->healingDampening($time, $this->calculateAmount($time, $skill_effect, $monster, $target));
 				
-				if(!empty($this->monsters[$target->id]->debuffs->infected)) {
+				if(!empty($this->monsters[$target->id]->debuffs['infected'])) {
 					$this->addActionMessage($action_message, 'skill_result', 'Infection prevented healing from '.$ability_name);
 					$this->useInfect($time, $action_message, $target);
 				}elseif($healing > 0 && $this->monsters[$target->id]->current_health < $this->monsters[$target->id]->max_health) {
@@ -1407,7 +1407,7 @@ class CombatComponent extends Component
 		}elseif($skill_effect->effect == 'Bubble') {
 			foreach($targets as $target) {
 				//check for hit
-				if(empty($this->monsters[$target->id]->buffs->bubble)) {
+				if(empty($this->monsters[$target->id]->buffs['bubble'])) {
 					$this->applyBubble($time, $action_message, $skill_effect, $target);
 					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
 				}elseif(!$secondary) {
@@ -1487,10 +1487,10 @@ class CombatComponent extends Component
 				if(!empty($this->monsters[$target->id]->debuffs)) {
 					$cleanse_count = rand((int)$skill_effect->amount_min,(int)$skill_effect->amount_max);
 					$count = 0;
-					while($cleanse_count > 0 && count(get_object_vars($this->monsters[$target->id]->debuffs)) > 0) {
+					while($cleanse_count > 0 && count($this->monsters[$target->id]->debuffs) > 0) {
 						$count++;
 						$cleanse_status_key = array_rand((array)$this->monsters[$target->id]->debuffs);
-						unset($this->monsters[$target->id]->debuffs->$cleanse_status_key);
+						unset($this->monsters[$target->id]->debuffs[$cleanse_status_key]);
 					}
 					$this->addActionMessage($action_message, 'skill_result', $count.' debuff'.($count == 1 ? ' was' : 's were').' cleansed.');
 					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
@@ -1504,10 +1504,10 @@ class CombatComponent extends Component
 				if(!empty($this->monsters[$target->id]->buffs)) {
 					$purge_count = rand((int)$skill_effect->amount_min,(int)$skill_effect->amount_max);
 					$count = 0;
-					while($purge_count > 0 && count(get_object_vars($this->monsters[$target->id]->buffs)) > 0) {
+					while($purge_count > 0 && count($this->monsters[$target->id]->buffs) > 0) {
 						$count++;
 						$purge_status_key = array_rand((array)$this->monsters[$target->id]->buffs);
-						unset($this->monsters[$target->id]->buffs->$purge_status_key);
+						unset($this->monsters[$target->id]->buffs[$purge_status_key]);
 						$purge_count--;
 					}
 					$this->addActionMessage($action_message, 'skill_result', $count.' buff'.($count == 1 ? ' was' : 's were').' purged.');
@@ -1524,105 +1524,105 @@ class CombatComponent extends Component
 					if($skill_effect->status == 'random_buff') {
 						if(!empty($this->monsters[$target->id]->buffs)) {
 							$consuming = array_rand((array)$this->monsters[$target->id]->buffs);
-							if(!empty($this->monsters[$target->id]->buffs->$consuming->stacks)) {
-								$stack_count += $this->monsters[$target->id]->buffs->$consuming->stacks;
+							if(!empty($this->monsters[$target->id]->buffs[$consuming]->stacks)) {
+								$stack_count += $this->monsters[$target->id]->buffs[$consuming]->stacks;
 							}else{
 								$stack_count++;
 							}
-							unset($this->monsters[$target->id]->buffs->$consuming);
+							unset($this->monsters[$target->id]->buffs[$consuming]);
 						}
 					}elseif($skill_effect->status == 'all_buffs') {
 						if(!empty($this->monsters[$target->id]->buffs)) {
 							foreach($this->monsters[$target->id]->buffs as $consuming => $buff) {
-								if(!empty($this->monsters[$target->id]->buffs->$consuming->stacks)) {
-									$stack_count += $this->monsters[$target->id]->buffs->$consuming->stacks;
+								if(!empty($this->monsters[$target->id]->buffs[$consuming]->stacks)) {
+									$stack_count += $this->monsters[$target->id]->buffs[$consuming]->stacks;
 								}else{
 									$stack_count++;
 								}
-								unset($this->monsters[$target->id]->buffs->$consuming);
+								unset($this->monsters[$target->id]->buffs[$consuming]);
 							}
 						}
 					}elseif($skill_effect->status == 'random_debuff') {
 						if(!empty($this->monsters[$target->id]->debuffs)) {
 							$consuming = array_rand((array)$this->monsters[$target->id]->debuffs);
-							if(!empty($this->monsters[$target->id]->debuffs->$consuming->stacks)) {
-								$stack_count += $this->monsters[$target->id]->debuffs->$consuming->stacks;
+							if(!empty($this->monsters[$target->id]->debuffs[$consuming]->stacks)) {
+								$stack_count += $this->monsters[$target->id]->debuffs[$consuming]->stacks;
 							}else{
 								$stack_count++;
 							}
-							unset($this->monsters[$target->id]->debuffs->$consuming);
+							unset($this->monsters[$target->id]->debuffs[$consuming]);
 						}
 					}elseif($skill_effect->status == 'all_debuffs') {
 						if(!empty($this->monsters[$target->id]->debuffs)) {
 							foreach($this->monsters[$target->id]->debuffs as $consuming => $buff) {
-								if(!empty($this->monsters[$target->id]->debuffs->$consuming->stacks)) {
-									$stack_count += $this->monsters[$target->id]->debuffs->$consuming->stacks;
+								if(!empty($this->monsters[$target->id]->debuffs[$consuming]->stacks)) {
+									$stack_count += $this->monsters[$target->id]->debuffs[$consuming]->stacks;
 								}else{
 									$stack_count++;
 								}
-								unset($this->monsters[$target->id]->debuffs->$consuming);
+								unset($this->monsters[$target->id]->debuffs[$consuming]);
 							}
 						}
 					}elseif($skill_effect->status == 'random_buff_debuff') {
 						if(!empty($this->monsters[$target->id]->debuffs) || !empty($this->monsters[$target->id]->buffs)) {
 							$all_statuses = $this->monsters[$target->id]->buffs + $this->monsters[$target->id]->debuffs;
 							$consuming = array_rand($all_statuses);
-							if(!empty($this->monsters[$target->id]->buffs->$consuming)) {
-								if(!empty($this->monsters[$target->id]->buffs->$consuming->stacks)) {
-									$stack_count += $this->monsters[$target->id]->buffs->$consuming->stacks;
+							if(!empty($this->monsters[$target->id]->buffs[$consuming])) {
+								if(!empty($this->monsters[$target->id]->buffs[$consuming]->stacks)) {
+									$stack_count += $this->monsters[$target->id]->buffs[$consuming]->stacks;
 								}else{
 									$stack_count++;
 								}
-								unset($this->monsters[$target->id]->buffs->$consuming);
+								unset($this->monsters[$target->id]->buffs[$consuming]);
 							}
-							if(!empty($this->monsters[$target->id]->debuffs->$consuming)) {
-								if(!empty($this->monsters[$target->id]->debuffs->$consuming->stacks)) {
-									$stack_count += $this->monsters[$target->id]->debuffs->$consuming->stacks;
+							if(!empty($this->monsters[$target->id]->debuffs[$consuming])) {
+								if(!empty($this->monsters[$target->id]->debuffs[$consuming]->stacks)) {
+									$stack_count += $this->monsters[$target->id]->debuffs[$consuming]->stacks;
 								}else{
 									$stack_count++;
 								}
-								unset($this->monsters[$target->id]->debuffs->$consuming);
+								unset($this->monsters[$target->id]->debuffs[$consuming]);
 							}
 						}
 					}elseif($skill_effect->status == 'all_buffs_debuffs') {
 						if(!empty($this->monsters[$target->id]->buffs)) {
 							foreach($this->monsters[$target->id]->buffs as $consuming => $buff) {
-								if(!empty($this->monsters[$target->id]->buffs->$consuming->stacks)) {
-									$stack_count += $this->monsters[$target->id]->buffs->$consuming->stacks;
+								if(!empty($this->monsters[$target->id]->buffs[$consuming]->stacks)) {
+									$stack_count += $this->monsters[$target->id]->buffs[$consuming]->stacks;
 								}else{
 									$stack_count++;
 								}
-								unset($this->monsters[$target->id]->buffs->$consuming);
+								unset($this->monsters[$target->id]->buffs[$consuming]);
 							}
 						}
 						if(!empty($this->monsters[$target->id]->debuffs)) {
 							foreach($this->monsters[$target->id]->debuffs as $consuming => $buff) {
-								if(!empty($this->monsters[$target->id]->debuffs->$consuming->stacks)) {
-									$stack_count += $this->monsters[$target->id]->debuffs->$consuming->stacks;
+								if(!empty($this->monsters[$target->id]->debuffs[$consuming]->stacks)) {
+									$stack_count += $this->monsters[$target->id]->debuffs[$consuming]->stacks;
 								}else{
 									$stack_count++;
 								}
-								unset($this->monsters[$target->id]->debuffs->$consuming);
+								unset($this->monsters[$target->id]->debuffs[$consuming]);
 							}
 						}
 					}else{
 						$consuming = $skill_effect->status;
-						if(!empty($this->monsters[$target->id]->buffs->$consuming)) {
-							if(!empty($this->monsters[$target->id]->buffs->$consuming->stacks)) {
-								$stack_count += $this->monsters[$target->id]->buffs->$consuming->stacks;
+						if(!empty($this->monsters[$target->id]->buffs[$consuming])) {
+							if(!empty($this->monsters[$target->id]->buffs[$consuming]->stacks)) {
+								$stack_count += $this->monsters[$target->id]->buffs[$consuming]->stacks;
 							}else{
 								$stack_count++;
 							}
-							unset($this->monsters[$target->id]->buffs->$consuming);
+							unset($this->monsters[$target->id]->buffs[$consuming]);
 						}
-						if(!empty($this->monsters[$target->id]->debuffs->$consuming)) {
+						if(!empty($this->monsters[$target->id]->debuffs[$consuming])) {
 							$consuming = $skill_effect->status;
-							if(!empty($this->monsters[$target->id]->debuffs->$consuming->stacks)) {
-								$stack_count += $this->monsters[$target->id]->debuffs->$consuming->stacks;
+							if(!empty($this->monsters[$target->id]->debuffs[$consuming]->stacks)) {
+								$stack_count += $this->monsters[$target->id]->debuffs[$consuming]->stacks;
 							}else{
 								$stack_count++;
 							}
-							unset($this->monsters[$target->id]->debuffs->$consuming);
+							unset($this->monsters[$target->id]->debuffs[$consuming]);
 						}
 					}
 					if($stack_count > 0) {
@@ -1656,7 +1656,7 @@ class CombatComponent extends Component
 			foreach($targets as $target) {
 				$amount = $this->calculateAmount($time, $skill_effect, $monster, $target);
 				$this->addActionMessage($action_message, 'buff_gained', $this->monsters[$target->id]->name.' Attack Increased by '.$amount.'%.');
-				$this->monsters[$target->id]->buffs->attack_up[] = (object)[
+				$this->monsters[$target->id]->buffs['attack_up'][] = [
 					'amount' => $amount,
 					'number_of_turns' => $skill_effect->duration
 				];
@@ -1668,7 +1668,7 @@ class CombatComponent extends Component
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					$amount = $this->calculateAmount($time, $skill_effect, $monster, $target);
 					$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$target->id]->name.' Attack Decreased by '.$amount.'%.');
-					$this->monsters[$target->id]->debuffs->attack_down[] = (object)[
+					$this->monsters[$target->id]->debuffs['attack_down'][] = [
 						'amount' => $amount,
 						'number_of_turns' => $skill_effect->duration
 					];
@@ -1682,7 +1682,7 @@ class CombatComponent extends Component
 			foreach($targets as $target) {
 				$amount = $this->calculateAmount($time, $skill_effect, $monster, $target);
 				$this->addActionMessage($action_message, 'buff_gained', $this->monsters[$target->id]->name.' Defense Increased by '.$amount.'%.');
-				$this->monsters[$target->id]->buffs->defense_up[] = (object)[
+				$this->monsters[$target->id]->buffs['defense_up'][] = [
 					'amount' => $amount,
 					'number_of_turns' => $skill_effect->duration
 				];
@@ -1694,7 +1694,7 @@ class CombatComponent extends Component
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					$amount = $this->calculateAmount($time, $skill_effect, $monster, $target);
 					$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$target->id]->name.' Defense Decreased by '.$amount.'%.');
-					$this->monsters[$target->id]->debuffs->defense_down[] = (object)[
+					$this->monsters[$target->id]->debuffs['defense_down'][] = [
 						'amount' => $amount,
 						'number_of_turns' => $skill_effect->duration
 					];
@@ -1708,7 +1708,7 @@ class CombatComponent extends Component
 			foreach($targets as $target) {
 				$amount = $this->calculateAmount($time, $skill_effect, $monster, $target);
 				$this->addActionMessage($action_message, 'buff_gained', $this->monsters[$target->id]->name.' Speed Increased by '.$amount.'%.');
-				$this->monsters[$target->id]->buffs->speed_up[] = (object)[
+				$this->monsters[$target->id]->buffs['speed_up'][] = [
 					'amount' => $amount,
 					'number_of_turns' => $skill_effect->duration
 				];
@@ -1720,7 +1720,7 @@ class CombatComponent extends Component
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					$amount = $this->calculateAmount($time, $skill_effect, $monster, $target);
 					$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$target->id]->name.' Speed Decreased by '.$amount.'%.');
-					$this->monsters[$target->id]->debuffs->speed_down[] = (object)[
+					$this->monsters[$target->id]->debuffs['speed_down'][] = [
 						'amount' => $amount,
 						'number_of_turns' => $skill_effect->duration
 					];
@@ -1734,7 +1734,7 @@ class CombatComponent extends Component
 			foreach($targets as $target) {
 				$amount = $this->calculateAmount($time, $skill_effect, $monster, $target);
 				$this->addActionMessage($action_message, 'buff_gained', $this->monsters[$target->id]->name.' Evasion Increased by '.$amount.'%.');
-				$this->monsters[$target->id]->buffs->evade_up[] = (object)[
+				$this->monsters[$target->id]->buffs['evade_up'][] = [
 					'amount' => $amount,
 					'number_of_turns' => $skill_effect->duration
 				];
@@ -1746,7 +1746,7 @@ class CombatComponent extends Component
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					$amount = $this->calculateAmount($time, $skill_effect, $monster, $target);
 					$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$target->id]->name.' Evasion Decreased by '.$amount.'%.');
-					$this->monsters[$target->id]->debuffs->evade_down[] = (object)[
+					$this->monsters[$target->id]->debuffs['evade_down'][] = [
 						'amount' => $amount,
 						'number_of_turns' => $skill_effect->duration
 					];
@@ -1839,21 +1839,21 @@ class CombatComponent extends Component
 		if($skill_effect->chance == 100 && $secondary)
 			return true;
 		$chanceToHit = round(($skill_effect->chance + ($this->monsters[$attacker->id]->stats->hitModifier - $this->monsters[$defender->id]->stats->evadeModifier) * 100) * 1000);
-		if(!empty($defender->statuses->drenched)) {
+		if(!empty($defender->statuses['drenched'])) {
 			if($type == 'Electric') {
 				$chanceToHit += 60000;
 			}
 			if($skill_effect->effect == 'Freeze') {
 				$chanceToHit += 80000;
 			}
-		}elseif(!empty($defender->statuses->soaked)) {
+		}elseif(!empty($defender->statuses['soaked'])) {
 			if($type == 'Electric') {
 				$chanceToHit += 40000;
 			}
 			if($skill_effect->effect == 'Freeze') {
 				$chanceToHit += 60000;
 			}
-		}elseif(!empty($defender->statuses->wet)) {
+		}elseif(!empty($defender->statuses['wet'])) {
 			if($type == 'Electric') {
 				$chanceToHit += 20000;
 			}
@@ -1862,15 +1862,15 @@ class CombatComponent extends Component
 			}
 		}
 		$evade_status_modifier = 0;
-		if(!empty($defender->buffs->evade_up)) {
-			foreach($defender->buffs->evade_up as $evade_up_buff) {
-				$evade_status_modifier += $evade_up_buff->amount * 1000;
+		if(!empty($defender->buffs['evade_up'])) {
+			foreach($defender->buffs['evade_up'] as $evade_up_buff) {
+				$evade_status_modifier += $evade_up_buff['amount'] * 1000;
 			}
 		}
 	
-		if(!empty($defender->debuffs->evade_down)) {
-			foreach($defender->debuffs->evade_down as $evade_down_buff) {
-				$evade_status_modifier -= $evade_down_buff->amount * 1000;
+		if(!empty($defender->debuffs['evade_down'])) {
+			foreach($defender->debuffs['evade_down'] as $evade_down_buff) {
+				$evade_status_modifier -= $evade_down_buff['amount'] * 1000;
 			}
 		}
 		
@@ -1882,7 +1882,7 @@ class CombatComponent extends Component
 	}
 	
 	private function checkForCrit(&$amount, $caster, $target) {
-		if(!empty($this->monsters[$target->id]->debuffs->frozen))
+		if(!empty($this->monsters[$target->id]->debuffs['frozen']))
 			return true;
 		$chanceToCrit = $this->monsters[$caster->id]->stats->criticalChance * 100 * 1000;
 		if(rand(1,100000) <= $chanceToCrit) {
@@ -1919,25 +1919,25 @@ class CombatComponent extends Component
 			
 			//calcuate attack modifier
 			$attack_status_modifier_amount = 0;
-			if(!empty($this->monsters[$caster->id]->buffs->attack_up)) {
-				foreach($this->monsters[$caster->id]->buffs->attack_up as $attack_up_buff) {
-					$attack_status_modifier_amount += $attack_up_buff->amount;
+			if(!empty($this->monsters[$caster->id]->buffs['attack_up'])) {
+				foreach($this->monsters[$caster->id]->buffs['attack_up'] as $attack_up_buff) {
+					$attack_status_modifier_amount += $attack_up_buff['amount'];
 				}
 			}
-			if(!empty($this->monsters[$caster->id]->debuffs->attack_down)) {
-				foreach($this->monsters[$caster->id]->debuffs->attack_down as $attack_down_buff) {
-					$attack_status_modifier_amount -= $attack_down_buff->amount;
+			if(!empty($this->monsters[$caster->id]->debuffs['attack_down'])) {
+				foreach($this->monsters[$caster->id]->debuffs['attack_down'] as $attack_down_buff) {
+					$attack_status_modifier_amount -= $attack_down_buff['amount'];
 				}
 			}
 			$defender_status_modifier_amount = 0;
-			if(!empty($this->monsters[$target->id]->buffs->defense_up)) {
-				foreach($this->monsters[$target->id]->buffs->defense_up as $defense_up_buff) {
-					$defender_status_modifier_amount += $defense_up_buff->amount;
+			if(!empty($this->monsters[$target->id]->buffs['defense_up'])) {
+				foreach($this->monsters[$target->id]->buffs['defense_up'] as $defense_up_buff) {
+					$defender_status_modifier_amount += $defense_up_buff['amount'];
 				}
 			}
-			if(!empty($this->monsters[$target->id]->debuffs->defense_down)) {
-				foreach($this->monsters[$target->id]->debuffs->defense_down as $defense_down_buff) {
-					$defender_status_modifier_amount -= $defense_down_buff->amount;
+			if(!empty($this->monsters[$target->id]->debuffs['defense_down'])) {
+				foreach($this->monsters[$target->id]->debuffs['defense_down'] as $defense_down_buff) {
+					$defender_status_modifier_amount -= $defense_down_buff['amount'];
 				}
 			}
 			$attack_status_modifier = pow(2, $attack_status_modifier_amount / 100);
@@ -1964,10 +1964,10 @@ class CombatComponent extends Component
 	
 	private function amountModifiers($time, $caster, $amount, $effect) {
 		//split modifier
-		if(!empty($caster->statuses->split)) {
-			$amount = round($amount / pow(2, $caster->statuses->split->stacks));
+		if(!empty($caster->statuses['split'])) {
+			$amount = round($amount / pow(2, $caster->statuses['split']['stacks']));
 		}
-		if(!empty($caster->statuses->phoenix_reborn)) {
+		if(!empty($caster->statuses['phoenix_reborn'])) {
 			$amount = round($amount * 1.5);
 		}
 		if($effect != 'Heal') {
@@ -1982,9 +1982,9 @@ class CombatComponent extends Component
 	}
 	
 	private function directHit($time, &$action_message, $monster) {
-		if(!empty($this->monsters[$monster->id]->statuses->discharge)) {
-			$this->monsters[$monster->id]->statuses->discharge->stacks++;
-			if($this->monsters[$monster->id]->statuses->discharge->stacks >= 3) {
+		if(!empty($this->monsters[$monster->id]->statuses['discharge'])) {
+			$this->monsters[$monster->id]->statuses['discharge']['stacks']++;
+			if($this->monsters[$monster->id]->statuses['discharge']['stacks'] >= 3) {
 				$amount = 6;
 				$skill_effect = (object)[
 					'effect' => 'Magical Damage',
@@ -1995,23 +1995,23 @@ class CombatComponent extends Component
 				];
 				$targets = $this->getTargets($monster, $skill_effect->targets);
 				$this->processEffect($time, $action_message, $monster, 'Discharge', 'Electric', $skill_effect, $targets);
-				$this->monsters[$monster->id]->statuses->discharge->stacks = 0;	
+				$this->monsters[$monster->id]->statuses['discharge']['stacks'] = 0;	
 			}
 		}
 	}
 	
 	private function applyHealOverTime($time, &$action_message, $skill_effect, $monster) {
 		//see if already healing over time
-		if(!empty($this->monsters[$monster->id]->buffs->healing_over_time)) {
-			$this->monsters[$monster->id]->buffs->healing_over_time->stacks++;
-			$this->monsters[$monster->id]->buffs->healing_over_time->amount_min += $this->amountModifiers($time, $monster, $skill_effect->amount_min, 'Heal');
-			$this->monsters[$monster->id]->buffs->healing_over_time->amount_max += $this->amountModifiers($time, $monster, $skill_effect->amount_max, 'Heal');
-			$this->monsters[$monster->id]->buffs->healing_over_time->ends = $time + $skill_effect->duration * 1000;
-			$this->monsters[$monster->id]->buffs->healing_over_time->next_tick = $time + 1000;
-			$this->addActionMessage($action_message, 'buff_gained', $this->monsters[$monster->id]->name.' gains a Heal Over Time('.$this->monsters[$monster->id]->buffs->healing_over_time->stacks.').');
+		if(!empty($this->monsters[$monster->id]->buffs['healing_over_time'])) {
+			$this->monsters[$monster->id]->buffs['healing_over_time']['stacks']++;
+			$this->monsters[$monster->id]->buffs['healing_over_time']['amount_min'] += $this->amountModifiers($time, $monster, $skill_effect->amount_min, 'Heal');
+			$this->monsters[$monster->id]->buffs['healing_over_time']['amount_max'] += $this->amountModifiers($time, $monster, $skill_effect->amount_max, 'Heal');
+			$this->monsters[$monster->id]->buffs['healing_over_time']['ends'] = $time + $skill_effect->duration * 1000;
+			$this->monsters[$monster->id]->buffs['healing_over_time']['next_tick'] = $time + 1000;
+			$this->addActionMessage($action_message, 'buff_gained', $this->monsters[$monster->id]->name.' gains a Heal Over Time('.$this->monsters[$monster->id]->buffs['healing_over_time']['stacks'].').');
 		}else{
 			$this->addActionMessage($action_message, 'buff_gained', $this->monsters[$monster->id]->name.' gains a Heal Over Time.');
-			$this->monsters[$monster->id]->buffs->healing_over_time = (object)[
+			$this->monsters[$monster->id]->buffs['healing_over_time'] = [
 				'stacks' => 1,
 				'amount_min' => $this->amountModifiers($time, $monster, $skill_effect->amount_min, 'Heal'),
 				'amount_max' => $this->amountModifiers($time, $monster, $skill_effect->amount_max, 'Heal'),
@@ -2023,18 +2023,18 @@ class CombatComponent extends Component
 	
 	private function applyPoison($time, &$action_message, $skill_effect, $monster) {
 		//see if already poisoned
-		if(!empty($this->monsters[$monster->id]->debuffs->poisoned)) {
-			$this->monsters[$monster->id]->debuffs->poisoned->stacks++;
-			$this->monsters[$monster->id]->debuffs->poisoned->amount_min += $this->amountModifiers($time, $monster, $skill_effect->amount_min, 'Magical Damage');
-			$this->monsters[$monster->id]->debuffs->poisoned->amount_max += $this->amountModifiers($time, $monster, $skill_effect->amount_max, 'Magical Damage');
-			if($this->monsters[$monster->id]->debuffs->poisoned->ends < $time + $skill_effect->duration * 1000) {
-				$this->monsters[$monster->id]->debuffs->poisoned->ends = $time + $skill_effect->duration * 1000;
-				$this->monsters[$monster->id]->debuffs->poisoned->next_tick = $time + 1000;
+		if(!empty($this->monsters[$monster->id]->debuffs['poisoned'])) {
+			$this->monsters[$monster->id]->debuffs['poisoned']['stacks']++;
+			$this->monsters[$monster->id]->debuffs['poisoned']['amount_min'] += $this->amountModifiers($time, $monster, $skill_effect->amount_min, 'Magical Damage');
+			$this->monsters[$monster->id]->debuffs['poisoned']['amount_max'] += $this->amountModifiers($time, $monster, $skill_effect->amount_max, 'Magical Damage');
+			if($this->monsters[$monster->id]->debuffs['poisoned']['ends'] < $time + $skill_effect->duration * 1000) {
+				$this->monsters[$monster->id]->debuffs['poisoned']['ends'] = $time + $skill_effect->duration * 1000;
+				$this->monsters[$monster->id]->debuffs['poisoned']['next_tick'] = $time + 1000;
 			}
-			$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is Poisoned('.$this->monsters[$monster->id]->debuffs->poisoned->stacks.').');
+			$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is Poisoned('.$this->monsters[$monster->id]->debuffs['poisoned']['stacks'].').');
 		}else{
 			$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is Poisoned.');
-			$this->monsters[$monster->id]->debuffs->poisoned = (object)[
+			$this->monsters[$monster->id]->debuffs['poisoned'] = [
 				'stacks' => 1,
 				'amount_min' => $this->amountModifiers($time, $monster, $skill_effect->amount_min, 'Magical Damage'),
 				'amount_max' => $this->amountModifiers($time, $monster, $skill_effect->amount_max, 'Magical Damage'),
@@ -2046,35 +2046,35 @@ class CombatComponent extends Component
 	
 	private function applyInfect($time, &$action_message, $skill_effect, $monster) {
 		//see if already infected
-		if(!empty($this->monsters[$monster->id]->debuffs->infected)) {
-			$this->monsters[$monster->id]->debuffs->infected->stacks += rand((int)$skill_effect->amount_min, (int)$skill_effect->amount_max);
-			$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is Infected('.$this->monsters[$monster->id]->debuffs->infected->stacks.').');
+		if(!empty($this->monsters[$monster->id]->debuffs['infected'])) {
+			$this->monsters[$monster->id]->debuffs['infected']['stacks'] += rand((int)$skill_effect->amount_min, (int)$skill_effect->amount_max);
+			$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is Infected('.$this->monsters[$monster->id]->debuffs['infected']['stacks'].').');
 		}else{
-			$this->monsters[$monster->id]->debuffs->infected = (object)[
+			$this->monsters[$monster->id]->debuffs['infected'] = [
 				'stacks' => rand((int)$skill_effect->amount_min, (int)$skill_effect->amount_max)
 			];
-			if($this->monsters[$monster->id]->debuffs->infected->stacks == 1) {
+			if($this->monsters[$monster->id]->debuffs['infected']['stacks'] == 1) {
 				$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is Infected.');
 			}else{
-				$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is Infected('.$this->monsters[$monster->id]->debuffs->infected->stacks.').');
+				$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is Infected('.$this->monsters[$monster->id]->debuffs['infected']['stacks'].').');
 			}
 		}
 	}
 	
 	private function useInfect($time, &$action_message, $monster) {
-		if(!empty($this->monsters[$monster->id]->debuffs->infected)) {
-			$this->monsters[$monster->id]->debuffs->infected->stacks--;
-			if($this->monsters[$monster->id]->debuffs->infected->stacks == 0) {
-				unset($this->monsters[$monster->id]->debuffs->infected);
+		if(!empty($this->monsters[$monster->id]->debuffs['infected'])) {
+			$this->monsters[$monster->id]->debuffs['infected']['stacks']--;
+			if($this->monsters[$monster->id]->debuffs['infected']['stacks'] == 0) {
+				unset($this->monsters[$monster->id]->debuffs['infected']);
 				$this->addActionMessage($action_message, 'debuff_lost', $this->monsters[$monster->id]->name.' is no longer Infected.');
 			}
 		}
 	}
 	
 	private function applyBubble($time, &$action_message, $skill_effect, $monster) {
-		if(empty($this->monsters[$monster->id]->buffs->bubble)) {
+		if(empty($this->monsters[$monster->id]->buffs['bubble'])) {
 			$this->addActionMessage($action_message, 'buff_lost', $this->monsters[$monster->id]->name.' is protected in a Bubble.');
-			$this->monsters[$monster->id]->buffs->bubble = true;
+			$this->monsters[$monster->id]->buffs['bubble'] = true;
 		}
 	}
 	
@@ -2094,7 +2094,7 @@ class CombatComponent extends Component
 		$this->monsters[$monster->id]->next_action_time = $time + round($skill_effect->duration * 1000);
 		if($skill_effect->duration > 0) {
 			$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is Stunned.');
-			$this->monsters[$monster->id]->debuffs->stunned = (object) ['ends' => $this->monsters[$monster->id]->next_action_time];
+			$this->monsters[$monster->id]->debuffs['stunned'] = ['ends' => $this->monsters[$monster->id]->next_action_time];
 		}
 		$this->checkForInterrupt($time, $action_message, $monster);
 	}
@@ -2103,41 +2103,41 @@ class CombatComponent extends Component
 		$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' fell Asleep.');
 		$this->checkForInterrupt($time, $action_message, $monster);
 		$this->monsters[$monster->id]->next_action_time = $time + round($skill_effect->duration * 1000);
-		$this->monsters[$monster->id]->debuffs->asleep = (object) ['ends' => $this->monsters[$monster->id]->next_action_time];
+		$this->monsters[$monster->id]->debuffs['asleep'] = ['ends' => $this->monsters[$monster->id]->next_action_time];
 	}
 	
 	private function applyFrozen($time, &$action_message, $skill_effect, $monster) {
 		$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is Frozen Solid.');
 		$this->checkForInterrupt($time, $action_message, $monster);
 		$this->monsters[$monster->id]->next_action_time = $time + round($skill_effect->duration * 1000);
-		$this->monsters[$monster->id]->debuffs->frozen = (object) ['ends' => $this->monsters[$monster->id]->next_action_time];
+		$this->monsters[$monster->id]->debuffs['frozen'] = ['ends' => $this->monsters[$monster->id]->next_action_time];
 	}
 	private function applyConfuse($time, &$action_message, $skill_effect, $monster) {
 		$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' became Confused.');
-		$this->monsters[$monster->id]->debuffs->confused = (object) ['ends' => $time + round($skill_effect->duration * 1000)];
+		$this->monsters[$monster->id]->debuffs['confused'] = ['ends' => $time + round($skill_effect->duration * 1000)];
 	}
 	
 	private function applyWet($time, &$action_message, $monster, $desired_wetness = null) {
-		if(!empty($this->monsters[$monster->id]->statuses->drenched)) {
-			$this->monsters[$monster->id]->statuses->drenched = (object) ['ends' => $time + WETNESS_DURATION];
+		if(!empty($this->monsters[$monster->id]->statuses['drenched'])) {
+			$this->monsters[$monster->id]->statuses['drenched'] = ['ends' => $time + WETNESS_DURATION];
 			$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' continues to be Drenched in Water.');
-		}elseif(!empty($this->monsters[$monster->id]->statuses->soaked) || (!empty($this->environment->status->whirlpool) && $desired_wetness == null) || $desired_wetness == 'Drenched') {
-			if(!empty($this->monsters[$monster->id]->statuses->soaked))
-				unset($this->monsters[$monster->id]->statuses->soaked);
-			if(!empty($this->monsters[$monster->id]->statuses->wet))
-				unset($this->monsters[$monster->id]->statuses->wet);
-			$this->monsters[$monster->id]->statuses->drenched = (object)[
+		}elseif(!empty($this->monsters[$monster->id]->statuses['soaked']) || (!empty($this->environment->status->whirlpool) && $desired_wetness == null) || $desired_wetness == 'Drenched') {
+			if(!empty($this->monsters[$monster->id]->statuses['soaked']))
+				unset($this->monsters[$monster->id]->statuses['soaked']);
+			if(!empty($this->monsters[$monster->id]->statuses['wet']))
+				unset($this->monsters[$monster->id]->statuses['wet']);
+			$this->monsters[$monster->id]->statuses['drenched'] = [
 				'ends' => $time + WETNESS_DURATION
 			];
 			$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is now Drenched.');
-		}elseif(!empty($this->monsters[$monster->id]->statuses->wet) || $desired_wetness == 'Soaked') {
-			unset($this->monsters[$monster->id]->statuses->wet);
-			$this->monsters[$monster->id]->statuses->soaked = (object)[
+		}elseif(!empty($this->monsters[$monster->id]->statuses['wet']) || $desired_wetness == 'Soaked') {
+			unset($this->monsters[$monster->id]->statuses['wet']);
+			$this->monsters[$monster->id]->statuses['soaked'] = [
 				'ends' => $time + WETNESS_DURATION
 			];
 			$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is now Soaked.');
 		}else{
-			$this->monsters[$monster->id]->statuses->wet = (object)[
+			$this->monsters[$monster->id]->statuses['wet'] = [
 				'ends' => $time + WETNESS_DURATION
 			];
 			$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is now Wet.');
@@ -2145,29 +2145,29 @@ class CombatComponent extends Component
 	}
 	
 	private function applyUndying($time, &$action_message, $skill_effect, $monster) {
-		if(empty($this->monsters[$monster->id]->buffs->undying)) {
+		if(empty($this->monsters[$monster->id]->buffs['undying'])) {
 			$this->addActionMessage($action_message, 'buff_gained', $this->monsters[$monster->id]->name.' is Immortal for '.$skill_effect->duration.' turn'.($skill_effect->duration == 1 ? '' : 's').'.');
-			$this->monsters[$monster->id]->buffs->undying = (object)[
+			$this->monsters[$monster->id]->buffs['undying'] = [
 				'number_of_turns' => $skill_effect->duration
 			];
-		}elseif($this->monsters[$monster->id]->buffs->undying->number_of_turns < $skill_effect->duration) {
-			$this->monsters[$monster->id]->buffs->undying->number_of_turns = $skill_effect->duration;
+		}elseif($this->monsters[$monster->id]->buffs['undying']['number_of_turns'] < $skill_effect->duration) {
+			$this->monsters[$monster->id]->buffs['undying']['number_of_turns'] = $skill_effect->duration;
 		}
 	}
 	
 	private function applyBurn($time, &$action_message, $skill_effect, $monster) {
-		if(empty($this->monsters[$monster->id]->debuffs->burned)) {
+		if(empty($this->monsters[$monster->id]->debuffs['burned'])) {
 			$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' is Burned.');
-			$this->monsters[$monster->id]->debuffs->burned = (object)[
+			$this->monsters[$monster->id]->debuffs['burned'] = [
 				'ends' => $time + BURN_DURATION
 			];
-		}elseif($this->monsters[$monster->id]->debuffs->burned->ends < $time + BURN_DURATION) {
-			$this->monsters[$monster->id]->debuffs->burned->ends = $time + BURN_DURATION;
+		}elseif($this->monsters[$monster->id]->debuffs['burned']['ends'] < $time + BURN_DURATION) {
+			$this->monsters[$monster->id]->debuffs['burned']['ends'] = $time + BURN_DURATION;
 		}
 	}
 	
 	private function triggerBurn($time, &$action_message, $monster) {
-		if(!empty($this->monsters[$monster->id]->debuffs->burned)) {
+		if(!empty($this->monsters[$monster->id]->debuffs['burned'])) {
 			$this->takeDamage($time, $action_message, $monster, $monster, 'Burn', BURN_AMOUNT, false, 'burn_damage');
 		}
 	}
@@ -2202,9 +2202,9 @@ class CombatComponent extends Component
 			'name' => 'Phoenix Egg',
 			'current_health' => 25,
 			'max_health' => 25,
-			'statuses' => (object)[],
-			'debuffs' => (object)[],
-			'buffs' => (object)[],
+			'statuses' => [],
+			'debuffs' => [],
+			'buffs' => [],
 			'strength' => 1,
 			'agility' => 1,
 			'dexterity' => 1,
@@ -2242,9 +2242,9 @@ class CombatComponent extends Component
 				'name' => 'Searing Totem',
 				'current_health' => 1,
 				'max_health' => 1,
-				'statuses' => (object)[],
-				'debuffs' => (object)[],
-				'buffs' => (object)[],
+				'statuses' => [],
+				'debuffs' => [],
+				'buffs' => [],
 				'strength' => 1,
 				'agility' => 1,
 				'dexterity' => 1,
