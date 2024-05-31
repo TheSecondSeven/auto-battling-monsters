@@ -29,7 +29,8 @@
 					}else{
 						echo '1 second';
 					}
-					if($user->dreamt_gold > 0 || $user->dreamt_rune_shards > 0 || $user->dreamt_gems > 0) echo ' and have found';
+					echo '.';
+					if($user->dreamt_gold > 0 || $user->dreamt_rune_shards > 0 || $user->dreamt_gems > 0) echo ' They have found';
 					if($user->dreamt_gold > 0) echo ' '.$user->dreamt_gold.' gold';
 					if($user->dreamt_rune_shards > 0) {
 						if($user->dreamt_gold > 0) {
