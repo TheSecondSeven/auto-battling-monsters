@@ -14,7 +14,7 @@ class DreamingCommand extends Command
         return $parser;
     }
 
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): bool
     {
         $users = $this->fetchTable('Users')
             ->find()
