@@ -1524,8 +1524,8 @@ class CombatComponent extends Component
 					if($skill_effect->status == 'random_buff') {
 						if(!empty($this->monsters[$target->id]->buffs)) {
 							$consuming = array_rand((array)$this->monsters[$target->id]->buffs);
-							if(!empty($this->monsters[$target->id]->buffs[$consuming]->stacks)) {
-								$stack_count += $this->monsters[$target->id]->buffs[$consuming]->stacks;
+							if(!empty($this->monsters[$target->id]->buffs[$consuming]['stacks'])) {
+								$stack_count += $this->monsters[$target->id]->buffs[$consuming]['stacks'];
 							}else{
 								$stack_count++;
 							}
@@ -1534,8 +1534,8 @@ class CombatComponent extends Component
 					}elseif($skill_effect->status == 'all_buffs') {
 						if(!empty($this->monsters[$target->id]->buffs)) {
 							foreach($this->monsters[$target->id]->buffs as $consuming => $buff) {
-								if(!empty($this->monsters[$target->id]->buffs[$consuming]->stacks)) {
-									$stack_count += $this->monsters[$target->id]->buffs[$consuming]->stacks;
+								if(!empty($this->monsters[$target->id]->buffs[$consuming]['stacks'])) {
+									$stack_count += $this->monsters[$target->id]->buffs[$consuming]['stacks'];
 								}else{
 									$stack_count++;
 								}
@@ -1545,8 +1545,8 @@ class CombatComponent extends Component
 					}elseif($skill_effect->status == 'random_debuff') {
 						if(!empty($this->monsters[$target->id]->debuffs)) {
 							$consuming = array_rand((array)$this->monsters[$target->id]->debuffs);
-							if(!empty($this->monsters[$target->id]->debuffs[$consuming]->stacks)) {
-								$stack_count += $this->monsters[$target->id]->debuffs[$consuming]->stacks;
+							if(!empty($this->monsters[$target->id]->debuffs[$consuming]['stacks'])) {
+								$stack_count += $this->monsters[$target->id]->debuffs[$consuming]['stacks'];
 							}else{
 								$stack_count++;
 							}
@@ -1555,8 +1555,8 @@ class CombatComponent extends Component
 					}elseif($skill_effect->status == 'all_debuffs') {
 						if(!empty($this->monsters[$target->id]->debuffs)) {
 							foreach($this->monsters[$target->id]->debuffs as $consuming => $buff) {
-								if(!empty($this->monsters[$target->id]->debuffs[$consuming]->stacks)) {
-									$stack_count += $this->monsters[$target->id]->debuffs[$consuming]->stacks;
+								if(!empty($this->monsters[$target->id]->debuffs[$consuming]['stacks'])) {
+									$stack_count += $this->monsters[$target->id]->debuffs[$consuming]['stacks'];
 								}else{
 									$stack_count++;
 								}
@@ -1568,16 +1568,16 @@ class CombatComponent extends Component
 							$all_statuses = $this->monsters[$target->id]->buffs + $this->monsters[$target->id]->debuffs;
 							$consuming = array_rand($all_statuses);
 							if(!empty($this->monsters[$target->id]->buffs[$consuming])) {
-								if(!empty($this->monsters[$target->id]->buffs[$consuming]->stacks)) {
-									$stack_count += $this->monsters[$target->id]->buffs[$consuming]->stacks;
+								if(!empty($this->monsters[$target->id]->buffs[$consuming]['stacks'])) {
+									$stack_count += $this->monsters[$target->id]->buffs[$consuming]['stacks'];
 								}else{
 									$stack_count++;
 								}
 								unset($this->monsters[$target->id]->buffs[$consuming]);
 							}
 							if(!empty($this->monsters[$target->id]->debuffs[$consuming])) {
-								if(!empty($this->monsters[$target->id]->debuffs[$consuming]->stacks)) {
-									$stack_count += $this->monsters[$target->id]->debuffs[$consuming]->stacks;
+								if(!empty($this->monsters[$target->id]->debuffs[$consuming]['stacks'])) {
+									$stack_count += $this->monsters[$target->id]->debuffs[$consuming]['stacks'];
 								}else{
 									$stack_count++;
 								}
@@ -1587,8 +1587,8 @@ class CombatComponent extends Component
 					}elseif($skill_effect->status == 'all_buffs_debuffs') {
 						if(!empty($this->monsters[$target->id]->buffs)) {
 							foreach($this->monsters[$target->id]->buffs as $consuming => $buff) {
-								if(!empty($this->monsters[$target->id]->buffs[$consuming]->stacks)) {
-									$stack_count += $this->monsters[$target->id]->buffs[$consuming]->stacks;
+								if(!empty($this->monsters[$target->id]->buffs[$consuming]['stacks'])) {
+									$stack_count += $this->monsters[$target->id]->buffs[$consuming]['stacks'];
 								}else{
 									$stack_count++;
 								}
@@ -1597,8 +1597,8 @@ class CombatComponent extends Component
 						}
 						if(!empty($this->monsters[$target->id]->debuffs)) {
 							foreach($this->monsters[$target->id]->debuffs as $consuming => $buff) {
-								if(!empty($this->monsters[$target->id]->debuffs[$consuming]->stacks)) {
-									$stack_count += $this->monsters[$target->id]->debuffs[$consuming]->stacks;
+								if(!empty($this->monsters[$target->id]->debuffs[$consuming]['stacks'])) {
+									$stack_count += $this->monsters[$target->id]->debuffs[$consuming]['stacks'];
 								}else{
 									$stack_count++;
 								}
@@ -1608,8 +1608,8 @@ class CombatComponent extends Component
 					}else{
 						$consuming = $skill_effect->status;
 						if(!empty($this->monsters[$target->id]->buffs[$consuming])) {
-							if(!empty($this->monsters[$target->id]->buffs[$consuming]->stacks)) {
-								$stack_count += $this->monsters[$target->id]->buffs[$consuming]->stacks;
+							if(!empty($this->monsters[$target->id]->buffs[$consuming]['stacks'])) {
+								$stack_count += $this->monsters[$target->id]->buffs[$consuming]['stacks'];
 							}else{
 								$stack_count++;
 							}
@@ -1617,8 +1617,8 @@ class CombatComponent extends Component
 						}
 						if(!empty($this->monsters[$target->id]->debuffs[$consuming])) {
 							$consuming = $skill_effect->status;
-							if(!empty($this->monsters[$target->id]->debuffs[$consuming]->stacks)) {
-								$stack_count += $this->monsters[$target->id]->debuffs[$consuming]->stacks;
+							if(!empty($this->monsters[$target->id]->debuffs[$consuming]['stacks'])) {
+								$stack_count += $this->monsters[$target->id]->debuffs[$consuming]['stacks'];
 							}else{
 								$stack_count++;
 							}
