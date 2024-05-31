@@ -32,7 +32,7 @@
 						echo '1 second';
 					}
 					echo '.';
-					if($user->dreamt_gold > 0 || $user->dreamt_rune_shards > 0 || $user->dreamt_gems > 0) echo ' They have found';
+					if($user->dreamt_gold > 0 || $user->dreamt_rune_shards > 0 || $user->dreamt_gems > 0) echo ' <strong>They have found';
 					if($user->dreamt_gold > 0) echo ' '.$user->dreamt_gold.' gold';
 					if($user->dreamt_rune_shards > 0) {
 						if($user->dreamt_gold > 0) {
@@ -53,7 +53,8 @@
 							}
 						}
 						echo ' '.$user->dreamt_gems.' gem'.($user->dreamt_gems  == 1 ? '' : 's');
-					} ?>!
+					}
+					if($user->dreamt_gold > 0 || $user->dreamt_rune_shards > 0 || $user->dreamt_gems > 0) echo '!</strong>'; ?>
 		<br>You can't start new Gauntlet Runs while in Dream Mode.
 		<br>
 		<?= $this->Html->link('Exit Dream Mode', ['controller' => 'users', 'action' => 'exit-dream-mode'], ['class'=>'btn btn-success']); ?>					
