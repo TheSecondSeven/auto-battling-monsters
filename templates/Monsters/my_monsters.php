@@ -29,9 +29,28 @@
 					}else{
 						echo '1 second';
 					}
-					if($user->dreamt_gold > 0) echo ' and have found '.$user->dreamt_gold.' gold';
-					if($user->dreamt_rune_shards > 0) echo ' and '.$user->dreamt_rune_shards.' rune shard'.($user->dreamt_rune_shards  == 1 ? '' : 's');
-					if($user->dreamt_gems > 0) echo ' and '.$user->dreamt_gems.' gem'.($user->dreamt_gems  == 1 ? '' : 's'); ?>.
+					if($user->dreamt_gold > 0 || $user->dreamt_rune_shards > 0 || $user->dreamt_gems > 0) echo ' and have found';
+					if($user->dreamt_gold > 0) echo ' '.$user->dreamt_gold.' gold';
+					if($user->dreamt_rune_shards > 0) {
+						if($user->dreamt_gold > 0) {
+							if($user->dreamt_gems == 0) {
+								echo ' and';
+							}else{
+								echo ',';
+							}
+						}
+						echo ' '.$user->dreamt_rune_shards.' rune shard'.($user->dreamt_rune_shards  == 1 ? '' : 's');
+					}
+					if($user->dreamt_gems > 0) {
+						if($user->dreamt_gold > 0 || $user->dreamt_rune_shards > 0) {
+							if($user->dreamt_gold > 0 && $user->dreamt_rune_shards > 0) {
+								echo ', and';
+							}else{
+								echo ' and';
+							}
+						}
+						echo ' '.$user->dreamt_gems.' gem'.($user->dreamt_gems  == 1 ? '' : 's');
+					} ?>!
 		<br>After 2 hours, your monsters start dreaming of gold for you. Earnings stop after 24 hours.
 		<br>Each unused active monster slot will also add chances to earn rune shards or gems!
 		<br>You can't start new Gauntlet Runs while in Dream Mode.
