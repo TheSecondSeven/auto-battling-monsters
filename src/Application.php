@@ -149,7 +149,11 @@ class Application extends BaseApplication
 
         $authenticationService->loadAuthenticator('Authentication.Cookie', [
             'fields' => $fields,
-            'loginUrl' => Router::url('/login')
+            'loginUrl' => Router::url('/login'),
+            'cookie' => [
+                // cookie expires in 2 days from now
+                'expires' => (new DateTime())->addDays(30)
+            ],
         ]);
         // Configure form data check to pick email and password
         $authenticationService->loadAuthenticator('Authentication.Form', [
