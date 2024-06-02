@@ -754,7 +754,7 @@ class CombatComponent extends Component
 							$this->addActionMessage($action_message, 'skill_result', $this->monsters[$monster->id]->name.' can no longer use '.$skill->name.'.');
 							$this->action_log[$time]['messages']['monster-'.$this->monsters[$monster->id]->id][] = $action_message;
 							$this->monsters[$monster->id]->next_action_skill++;
-							$this->monsters[$monster->id]->next_action_time += GLOBAL_DOWN_TIME * 2;
+							$this->monsters[$monster->id]->next_action_time += GLOBAL_DOWN_TIME;
 						}else{
 							if(!empty($skill->ultimate)) {
 								//use ultimate
@@ -1095,19 +1095,23 @@ class CombatComponent extends Component
 				if($ultimateData->id == 18) {
 					foreach($this->monsters[$monster->id]->skills as $skill) {
 						if(empty($skill->ultimate)) {
-							//use the skill!
-							$this->addActionMessage($action_message, 'skill_use', $this->monsters[$monster->id]->name.' uses '.$skill->name.'.');
-							foreach($skill->skill_effects as $skill_effect) {
-								$targets = $this->getTargets($monster, $skill_effect->targets);
-								$this->processEffect($time, $action_message, $monster, $skill->name, $skill->type->name, $skill_effect, $targets);
-								if(empty($skill_effect->missed) && $skill_effect->effect != 'Random Amount' && $skill_effect->effect != 'Consume') {
-									foreach($skill_effect->secondary_skill_effects as $secondary_skill_effect) {
-										if($skill_effect->targets == $secondary_skill_effect->targets) {
-											$secondary_targets = $targets;
-										}else{
-											$secondary_targets = $this->getTargets($monster, $secondary_skill_effect->targets);
+							if(!empty($skill->disabled)) {
+								$this->addActionMessage($action_message, 'skill_result', $this->monsters[$monster->id]->name.' cannot use '.$skill->name.'.');
+							}else{
+								//use the skill!
+								$this->addActionMessage($action_message, 'skill_use', $this->monsters[$monster->id]->name.' uses '.$skill->name.'.');
+								foreach($skill->skill_effects as $skill_effect) {
+									$targets = $this->getTargets($monster, $skill_effect->targets);
+									$this->processEffect($time, $action_message, $monster, $skill->name, $skill->type->name, $skill_effect, $targets);
+									if(empty($skill_effect->missed) && $skill_effect->effect != 'Random Amount' && $skill_effect->effect != 'Consume') {
+										foreach($skill_effect->secondary_skill_effects as $secondary_skill_effect) {
+											if($skill_effect->targets == $secondary_skill_effect->targets) {
+												$secondary_targets = $targets;
+											}else{
+												$secondary_targets = $this->getTargets($monster, $secondary_skill_effect->targets);
+											}
+											$this->processEffect($time, $action_message, $monster, $skill->name, $skill->type->name, $secondary_skill_effect, $secondary_targets, true);
 										}
-										$this->processEffect($time, $action_message, $monster, $skill->name, $skill->type->name, $secondary_skill_effect, $secondary_targets, true);
 									}
 								}
 							}
