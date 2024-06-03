@@ -117,7 +117,7 @@ class RunesController extends AppController
 				if($rune->$field > 0) {
 					$cost += pow(5, $rune->$field);
 				}
-				$upgrade_options[$field] = 'Upgrade '.$upgrade.' for '.$cost.' Rune Shards';
+				$upgrade_options[$field] = $upgrade.' for '.$cost.' Rune Shards';
 			}
 		}
 		

@@ -7,13 +7,13 @@ class Rune extends Entity
 {
     public static function upgrades($type) {
 		$upgrades =  [
-			'unlock_type' => 'Unlocks '.$type.' Skills',
-			'damage_level' => $type.' Damage Increase',
-			'healing_level' => $type.' Healing Increase',
-			'critical_chance_level' => $type.' Critical Chance Increase',
-			'cast_again_level' => $type.' Overload Chance Increase',
-			'casting_speed_level' => $type.' Casting Speed Increase',
-			'health_level' => 'Monster Health Increase'
+			'unlock_type' => 'Unlock '.$type.' Skills',
+			'damage_level' => 'Increase '.$type.' Damage',
+			'healing_level' => 'Increase '.$type.' Healing',
+			'critical_chance_level' => 'Increase '.$type.' Critical Chance',
+			'cast_again_level' => 'Increase '.$type.' Overload Chance',
+			'casting_speed_level' => 'Increase '.$type.' Casting Speed',
+			'health_level' => 'Increase Monster Health'
 		];
 		return $upgrades;
 	}
