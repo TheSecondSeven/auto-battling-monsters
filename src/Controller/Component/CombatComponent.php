@@ -224,34 +224,18 @@ class CombatComponent extends Component
 				$rune = $this->monsters[$monster->id]->$rune_object;
 				if($rune->damage_level > 0) {
 					$increase_amount = 1 + RUNE_DAMAGE_INCREASE * $rune->damage_level / 100;
-					for($j=1; $j<=4; $j++) {
-                        $skill_object = 'skill'.$j;
-						if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
-							foreach($this->monsters[$monster->id]->$skill_object->skill_effects as $skill_effect_index => $skill_effect) {
+					foreach($this->monsters[$monster->id]->skills as $skill_index => $skill) {
+						if($skill->type_id == $rune->type_id) {
+							foreach($skill->skill_effects as $skill_effect_index => $skill_effect) {
 								if(in_array($skill_effect->effect, ['Physical Damage','Magical Damage','Leech','True Damage','Poison'])) {
-									$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_min = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_min * $increase_amount);
-									$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_max = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_max * $increase_amount);
+									$this->monsters[$monster->id]->skills[$skill_index]->skill_effects[$skill_effect_index]->amount_min = round($skill_effect->amount_min * $increase_amount);
+									$this->monsters[$monster->id]->skills[$skill_index]->skill_effects[$skill_effect_index]->amount_max = round($skill_effect->amount_max * $increase_amount);
 								}
-								foreach($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects as $secondary_skill_effect_index => $secondary_skill_effect) {
+								foreach($skill_effect->secondary_skill_effects as $secondary_skill_effect_index => $secondary_skill_effect) {
 									if(in_array($secondary_skill_effect->effect, ['Physical Damage','Magical Damage','True Damage','Leech','Poison'])) {
-										$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min * $increase_amount);
-										$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max * $increase_amount);
+										$this->monsters[$monster->id]->skills[$skill_index]->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min = round($secondary_skill_effect->amount_min * $increase_amount);
+										$this->monsters[$monster->id]->skills[$skill_index]->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max = round($secondary_skill_effect->amount_max * $increase_amount);
 									}
-								}
-							}
-						}
-					}
-					$skill_object = 'ultimate';
-					if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
-						foreach($this->monsters[$monster->id]->$skill_object->skill_effects as $skill_effect_index => $skill_effect) {
-							if(in_array($skill_effect->effect, ['Physical Damage','Magical Damage','Leech','True Damage','Poison'])) {
-								$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_min = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_min * $increase_amount);
-								$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_max = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_max * $increase_amount);
-							}
-							foreach($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects as $secondary_skill_effect_index => $secondary_skill_effect) {
-								if(in_array($secondary_skill_effect->effect, ['Physical Damage','Magical Damage','True Damage','Leech','Poison'])) {
-									$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min * $increase_amount);
-									$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max * $increase_amount);
 								}
 							}
 						}
@@ -259,34 +243,18 @@ class CombatComponent extends Component
 				}
 				if($rune->healing_level > 0) {
 					$increase_amount = 1 + RUNE_HEALING_INCREASE * $rune->healing_level / 100;
-					for($j=1; $j<=4; $j++) {
-                        $skill_object = 'skill'.$j;
-						if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
-							foreach($this->monsters[$monster->id]->$skill_object->skill_effects as $skill_effect_index => $skill_effect) {
+					foreach($this->monsters[$monster->id]->skills as $skill_index => $skill) {
+						if($skill->type_id == $rune->type_id) {
+							foreach($skill->skill_effects as $skill_effect_index => $skill_effect) {
 								if(in_array($skill_effect->effect, ['Heal','Healing Over Time'])) {
-									$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_min = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_min * $increase_amount);
-									$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_max = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_max * $increase_amount);
+									$this->monsters[$monster->id]->skills[$skill_index]->skill_effects[$skill_effect_index]->amount_min = round($skill_effect->amount_min * $increase_amount);
+									$this->monsters[$monster->id]->skills[$skill_index]->skill_effects[$skill_effect_index]->amount_max = round($skill_effect->amount_max * $increase_amount);
 								}
-								foreach($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects as $secondary_skill_effect_index => $secondary_skill_effect) {
+								foreach($skill_effect->secondary_skill_effects as $secondary_skill_effect_index => $secondary_skill_effect) {
 									if(in_array($secondary_skill_effect->effect, ['Heal','Healing Over Time'])) {
-										$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min * $increase_amount);
-										$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max * $increase_amount);
+										$this->monsters[$monster->id]->skills[$skill_index]->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min = round($secondary_skill_effect->amount_min * $increase_amount);
+										$this->monsters[$monster->id]->skills[$skill_index]->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max = round($secondary_skill_effect->amount_max * $increase_amount);
 									}
-								}
-							}
-						}
-					}
-					$skill_object = 'ultimate';
-					if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
-						foreach($this->monsters[$monster->id]->$skill_object->skill_effects as $skill_effect_index => $skill_effect) {
-							if(in_array($skill_effect->effect, ['Heal','Healing Over Time'])) {
-								$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_min = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_min * $increase_amount);
-								$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_max = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_max * $increase_amount);
-							}
-							foreach($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects as $secondary_skill_effect_index => $secondary_skill_effect) {
-								if(in_array($secondary_skill_effect->effect, ['Heal','Healing Over Time'])) {
-									$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min * $increase_amount);
-									$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max * $increase_amount);
 								}
 							}
 						}
@@ -294,61 +262,35 @@ class CombatComponent extends Component
 				}
 				if($rune->critical_chance_level > 0) {
 					$increase_amount = RUNE_CRITICAL_CHANCE_INCREASE * $rune->critical_chance_level / 100;
-					for($j=1; $j<=4; $j++) {
-                        $skill_object = 'skill'.$j;
-						if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
-							if(empty($this->monsters[$monster->id]->$skill_object->critical_chance_increase)) {
-								$this->monsters[$monster->id]->$skill_object->critical_chance_increase = 0;
+					foreach($this->monsters[$monster->id]->skills as $skill_index => $skill) {
+						if($skill->type_id == $rune->type_id) {
+							if(empty($this->monsters[$monster->id]->skills[$skill_index]->critical_chance_increase)) {
+								$this->monsters[$monster->id]->skills[$skill_index]->critical_chance_increase = 0;
 							}
-							$this->monsters[$monster->id]->$skill_object->critical_chance_increase += $increase_amount;
+							$this->monsters[$monster->id]->skills[$skill_index]->critical_chance_increase += $increase_amount;
 						}
-					}
-					$skill_object = 'ultimate';
-					if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
-						if(empty($this->monsters[$monster->id]->$skill_object->critical_chance_increase)) {
-							$this->monsters[$monster->id]->$skill_object->critical_chance_increase = 0;
-						}
-						$this->monsters[$monster->id]->$skill_object->critical_chance_increase += $increase_amount;
 					}
 				}
 				if($rune->cast_again_level > 0) {
-					$increase_amount = RUNE_CAST_AGAIN_INCREASE * $rune->cast_again_level / 100;
-					for($j=1; $j<=4; $j++) {
-
-                        $skill_object = 'skill'.$j;
-						if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
-							if(empty($this->monsters[$monster->id]->$skill_object->cast_again_chance)) {
-								$this->monsters[$monster->id]->$skill_object->cast_again_chance = 0;
+					$increase_amount = RUNE_CAST_AGAIN_INCREASE * $rune->cast_again_level;
+					foreach($this->monsters[$monster->id]->skills as $skill_index => $skill) {
+						if($skill->type_id == $rune->type_id) {
+							if(empty($this->monsters[$monster->id]->skills[$skill_index]->cast_again_chance)) {
+								$this->monsters[$monster->id]->skills[$skill_index]->cast_again_chance = 0;
 							}
-							$this->monsters[$monster->id]->$skill_object->cast_again_chance += $increase_amount;
+							$this->monsters[$monster->id]->skills[$skill_index]->cast_again_chance += $increase_amount;
 						}
-					}
-					$skill_object = 'ultimate';
-					if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
-						if(empty($this->monsters[$monster->id]->$skill_object->cast_again_chance)) {
-							$this->monsters[$monster->id]->$skill_object->cast_again_chance = 0;
-						}
-						$this->monsters[$monster->id]->$skill_object->cast_again_chance += $increase_amount;
 					}
 				}
 				if($rune->casting_speed_level > 0) {
-					$increase_amount = RUNE_CASTING_SPEED_INCREASE * $rune->casting_speed_level / 100;
-                    for($j=1; $j<=4; $j++) {
-
-                        $skill_object = 'skill'.$j;
-						if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
-							if(empty($this->monsters[$monster->id]->$skill_object->casting_speed_increase)) {
-								$this->monsters[$monster->id]->$skill_object->casting_speed_increase = 0;
+					$increase_amount = RUNE_CASTING_SPEED_INCREASE * $rune->casting_speed_level;
+					foreach($this->monsters[$monster->id]->skills as $skill_index => $skill) {
+						if($skill->type_id == $rune->type_id) {
+							if(empty($this->monsters[$monster->id]->skills[$skill_index]->casting_speed_increase)) {
+								$this->monsters[$monster->id]->skills[$skill_index]->casting_speed_increase = 0;
 							}
-							$this->monsters[$monster->id]->$skill_object->casting_speed_increase += $increase_amount * 100;
+							$this->monsters[$monster->id]->skills[$skill_index]->casting_speed_increase += $increase_amount;
 						}
-					}
-					$skill_object = 'ultimate';
-					if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
-						if(empty($this->monsters[$monster->id]->$skill_object->casting_speed_increase)) {
-							$this->monsters[$monster->id]->$skill_object->casting_speed_increase = 0;
-						}
-						$this->monsters[$monster->id]->$skill_object->casting_speed_increase += $increase_amount * 100;
 					}
 				}
 				if($rune->health_level > 0) {
@@ -386,7 +328,6 @@ class CombatComponent extends Component
 			$this->augmentSlot($monster, 'Skill4');
 			$this->augmentSlot($monster, 'Ultimate');
 			*/
-			$this->applyRunes($monster);
 			if(!empty($this->monsters[$monster->id]->skill1->id)) {
 				$this->monsters[$monster->id]->skills[] = clone($this->monsters[$monster->id]->skill1);
 			}
@@ -407,6 +348,7 @@ class CombatComponent extends Component
 				$this->setupPassiveUltimate($monster);
 			}
 		}
+		$this->applyRunes($monster);
 	}
 	
 	private function setupPassiveUltimate($monster) {
@@ -1257,8 +1199,9 @@ class CombatComponent extends Component
 		$cast_time = $skill->cast_time;
 		//speed modifiers
 		$speed_status_modifier_amount = 0;
-		if(!empty($skill->casting_speed_increase))
+		if(!empty($skill->casting_speed_increase)) {
 			$speed_status_modifier_amount -= $skill->casting_speed_increase;
+		}
 		if(!empty($caster->buffs['speed_up'])) {
 			foreach($caster->buffs['speed_up'] as $speed_up_buff) {
 				$speed_status_modifier_amount -= $speed_up_buff['amount'];
@@ -1279,7 +1222,7 @@ class CombatComponent extends Component
 		foreach($skill->skill_effects as $skill_effect) {
 			$the_skill_effect = clone $skill_effect;
 			$targets = $this->getTargets($monster, $the_skill_effect->targets);
-			$this->processEffect($time, $action_message, $monster, $skill->name, $skill->type->name, $the_skill_effect, $targets);
+			$this->processEffect($time, $action_message, $monster, $skill, $skill->type->name, $the_skill_effect, $targets);
 			if(empty($the_skill_effect->missed) && $the_skill_effect->effect != 'Random Amount' && $the_skill_effect->effect != 'Consume') {
 				foreach($the_skill_effect->secondary_skill_effects as $secondary_skill_effect) {
 					if($secondary_skill_effect->targets != 'Same as Primary Effect') {
@@ -1288,7 +1231,7 @@ class CombatComponent extends Component
 						}else{
 							$secondary_targets = $this->getTargets($monster, $secondary_skill_effect->targets);
 						}
-						$this->processEffect($time, $action_message, $monster, $skill->name, $skill->type->name, $secondary_skill_effect, $secondary_targets, true);
+						$this->processEffect($time, $action_message, $monster, $skill, $skill->type->name, $secondary_skill_effect, $secondary_targets, true);
 					}
 				}
 			}
@@ -1316,7 +1259,7 @@ class CombatComponent extends Component
 		
 	}
 	
-	private function processEffect($time, &$action_message, $monster, $ability_name, $type, &$skill_effect, $targets = [], $secondary = false) {
+	private function processEffect($time, &$action_message, $monster, $skill, $type, &$skill_effect, $targets = [], $secondary = false) {
 		$skill_effect->missed = false;
 		if($skill_effect->effect == 'Random Amount') {
 			foreach($targets as $target) {
@@ -1331,16 +1274,16 @@ class CombatComponent extends Component
 								}else{
 									$secondary_targets = $this->getTargets($monster, $secondary_skill_effect->targets);
 								}
-								$this->processEffect($time, $action_message, $monster, $ability_name, $type, $secondary_skill_effect, $secondary_targets, true);
+								$this->processEffect($time, $action_message, $monster, $skill, $type, $secondary_skill_effect, $secondary_targets, true);
 							}
 						}
 						$skill_effect->missed = true;
 					}else{
-						$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+						$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 						$skill_effect->missed = true;
 					}
 				}else{
-					$this->addActionMessage($action_message, 'skill_result', $ability_name.' had no effect on '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'skill_result', $skill->name.' had no effect on '.$this->monsters[$target->id]->name.'.');
 				}
 			}
 		}elseif($skill_effect->effect == 'Physical Damage') {
@@ -1349,16 +1292,16 @@ class CombatComponent extends Component
 				if($damage > 0) {
 					//check for hit
 					if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
-						$isCrit = $this->checkForCrit($damage, $monster, $target);
+						$isCrit = $this->checkForCrit($skill, $damage, $monster, $target);
 						$this->takeDamage($time, $action_message, $target, $monster, 'Physical', $damage, $isCrit);
 						$this->directHit($time, $action_message, $target);
-						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 					}elseif(!$secondary) {
-						$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+						$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 						$skill_effect->missed = true;
 					}
 				}else{
-					$this->addActionMessage($action_message, 'skill_result', $ability_name.' had no effect on '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'skill_result', $skill->name.' had no effect on '.$this->monsters[$target->id]->name.'.');
 				}
 			}
 		}elseif($skill_effect->effect == 'Magical Damage') {
@@ -1367,16 +1310,16 @@ class CombatComponent extends Component
 				if($damage > 0) {
 					//check for hit
 					if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
-						$isCrit = $this->checkForCrit($damage, $monster, $target);
+						$isCrit = $this->checkForCrit($skill, $damage, $monster, $target);
 						$this->takeDamage($time, $action_message, $target, $monster, $type, $damage, $isCrit);
 						$this->directHit($time, $action_message, $target);
-						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 					}elseif(!$secondary) {
-						$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+						$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 						$skill_effect->missed = true;
 					}
 				}else{
-					$this->addActionMessage($action_message, 'skill_result', $ability_name.' had no effect on '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'skill_result', $skill->name.' had no effect on '.$this->monsters[$target->id]->name.'.');
 				}
 			}
 		}elseif($skill_effect->effect == 'True Damage') {
@@ -1385,16 +1328,16 @@ class CombatComponent extends Component
 				if($damage > 0) {
 					//check for hit
 					if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
-						$isCrit = $this->checkForCrit($damage, $monster, $target);
+						$isCrit = $this->checkForCrit($skill, $damage, $monster, $target);
 						$this->takeDamage($time, $action_message, $target, $monster, 'True', $damage, $isCrit);
 						$this->directHit($time, $action_message, $target);
-						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 					}elseif(!$secondary) {
-						$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+						$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 						$skill_effect->missed = true;
 					}
 				}else{
-					$this->addActionMessage($action_message, 'skill_result', $ability_name.' had no effect on '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'skill_result', $skill->name.' had no effect on '.$this->monsters[$target->id]->name.'.');
 				}
 			}
 		}elseif($skill_effect->effect == 'Leech') {
@@ -1403,7 +1346,7 @@ class CombatComponent extends Component
 				if($damage > 0) {
 					//check for hit
 					if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
-						$isCrit = $this->checkForCrit($damage, $monster, $target);
+						$isCrit = $this->checkForCrit($skill, $damage, $monster, $target);
 						$this->takeDamage($time, $action_message, $target, $monster, 'Magical', $damage, $isCrit);
 						$this->directHit($time, $action_message, $target);
 						
@@ -1411,13 +1354,13 @@ class CombatComponent extends Component
 						$this->monsters[$monster->id]->current_health += $healing;
 						$this->addActionMessage($action_message, 'healing', $this->monsters[$monster->id]->name.' heals for '.$healing.'.');
 						$this->addHealthChangeLog($time, $monster, 'Healing', $healing);
-						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 					}elseif(!$secondary) {
-						$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+						$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 						$skill_effect->missed = true;
 					}
 				}else{
-					$this->addActionMessage($action_message, 'skill_result', $ability_name.' had no effect on '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'skill_result', $skill->name.' had no effect on '.$this->monsters[$target->id]->name.'.');
 				}
 			}
 		}elseif($skill_effect->effect == 'Heal') {
@@ -1425,36 +1368,36 @@ class CombatComponent extends Component
 				$healing = $this->healingDampening($time, $this->calculateAmount($time, $skill_effect, $monster, $target));
 				
 				if(!empty($this->monsters[$target->id]->debuffs['infected'])) {
-					$this->addActionMessage($action_message, 'skill_result', 'Infection prevented healing from '.$ability_name);
+					$this->addActionMessage($action_message, 'skill_result', 'Infection prevented healing from '.$skill->name);
 					$this->useInfect($time, $action_message, $target);
 				}elseif($healing > 0 && $this->monsters[$target->id]->current_health < $this->monsters[$target->id]->max_health) {
-					$isCrit = $this->checkForCrit($healing, $monster, $target);
+					$isCrit = $this->checkForCrit($skill, $healing, $monster, $target);
 					$healing = min($healing,($this->monsters[$target->id]->max_health - $this->monsters[$target->id]->current_health));
 					$this->monsters[$target->id]->current_health += $healing;
 					$this->addActionMessage($action_message, 'healing', $this->monsters[$target->id]->name.' heals for '.$healing.'.');
 					$this->addHealthChangeLog($time, $target, 'Healing', $healing);
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}else{
 					if(!$secondary) {
-						$this->addActionMessage($action_message, 'healing', $ability_name.' had no effect on '.$this->monsters[$target->id]->name.'.');
+						$this->addActionMessage($action_message, 'healing', $skill->name.' had no effect on '.$this->monsters[$target->id]->name.'.');
 					}else{
-						$this->addActionMessage($action_message, 'healing', 'The Heal from '.$ability_name.' had no effect on '.$this->monsters[$target->id]->name.'.');
+						$this->addActionMessage($action_message, 'healing', 'The Heal from '.$skill->name.' had no effect on '.$this->monsters[$target->id]->name.'.');
 					}
 				}
 			}
 		}elseif($skill_effect->effect == 'Heal Over Time') {
 			foreach($targets as $target) {
 				$this->applyHealOverTime($time, $action_message, $skill_effect, $target);
-				$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+				$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 			}
 		}elseif($skill_effect->effect == 'Poison') {
 			foreach($targets as $target) {
 				//check for hit
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					$this->applyPoison($time, $action_message, $skill_effect, $target);
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1463,9 +1406,9 @@ class CombatComponent extends Component
 				//check for hit
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					$this->applyInfect($time, $action_message, $skill_effect, $target);
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1474,9 +1417,9 @@ class CombatComponent extends Component
 				//check for hit
 				if(empty($this->monsters[$target->id]->buffs['bubble'])) {
 					$this->applyBubble($time, $action_message, $skill_effect, $target);
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'skill_result', $ability_name.' had no effect on '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'skill_result', $skill->name.' had no effect on '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1485,9 +1428,9 @@ class CombatComponent extends Component
 				//check for hit
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					$this->applyBurn($time, $action_message, $skill_effect, $target);
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1497,12 +1440,12 @@ class CombatComponent extends Component
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					if($this->checkForCC($target)) {
 						$this->applyStun($time, $action_message, $skill_effect, $target);
-						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 					}else{
 						$this->addActionMessage($action_message, 'skill_result', $this->monsters[$target->id]->name.' is immune to Control Effects.');
 					}
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1512,12 +1455,12 @@ class CombatComponent extends Component
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					if($this->checkForCC($target)) {
 						$this->applySleep($time, $action_message, $skill_effect, $target);
-						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 					}else{
 						$this->addActionMessage($action_message, 'skill_result', $this->monsters[$target->id]->name.' is immune to Control Effects.');
 					}
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1527,12 +1470,12 @@ class CombatComponent extends Component
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					if($this->checkForCC($target)) {
 						$this->applyFrozen($time, $action_message, $skill_effect, $target);
-						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+						$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 					}else{
 						$this->addActionMessage($action_message, 'skill_result', $this->monsters[$target->id]->name.' is immune to Control Effects.');
 					}
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1541,9 +1484,9 @@ class CombatComponent extends Component
 				//check for hit
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					$this->applyConfuse($time, $action_message, $skill_effect, $target);
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1558,9 +1501,9 @@ class CombatComponent extends Component
 						unset($this->monsters[$target->id]->debuffs[$cleanse_status_key]);
 					}
 					$this->addActionMessage($action_message, 'skill_result', $count.' debuff'.($count == 1 ? ' was' : 's were').' cleansed.');
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}else{
-					$this->addActionMessage($action_message, 'skill_result', $ability_name.' had no effect on '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'skill_result', $skill->name.' had no effect on '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1576,9 +1519,9 @@ class CombatComponent extends Component
 						$purge_count--;
 					}
 					$this->addActionMessage($action_message, 'skill_result', $count.' buff'.($count == 1 ? ' was' : 's were').' purged.');
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}else{
-					$this->addActionMessage($action_message, 'skill_result', $ability_name.' had no effect on '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'skill_result', $skill->name.' had no effect on '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1702,20 +1645,20 @@ class CombatComponent extends Component
 							if($secondary_skill_effect->duration > 0) {
 								$cloned_effect = clone $secondary_skill_effect;
 								$cloned_effect->duration *= $stack_count;
-								$this->processEffect($time, $action_message, $monster, $ability_name, $type, $cloned_effect, $secondary_targets, true);
+								$this->processEffect($time, $action_message, $monster, $skill, $type, $cloned_effect, $secondary_targets, true);
 							}else{
 								$cloned_effect = clone $secondary_skill_effect;
 								$cloned_effect->amount_min *= $stack_count;
 								$cloned_effect->amount_max *= $stack_count;
-								$this->processEffect($time, $action_message, $monster, $ability_name, $type, $cloned_effect, $secondary_targets, true);
+								$this->processEffect($time, $action_message, $monster, $skill, $type, $cloned_effect, $secondary_targets, true);
 							}
 						}
 					}else{
-						$this->addActionMessage($action_message, 'skill_result', $ability_name.' had no effect on '.$this->monsters[$target->id]->name.'.');
+						$this->addActionMessage($action_message, 'skill_result', $skill->name.' had no effect on '.$this->monsters[$target->id]->name.'.');
 						$skill_effect->missed = true;
 					}
 				}else{
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1727,7 +1670,7 @@ class CombatComponent extends Component
 					'amount' => $amount,
 					'number_of_turns' => $skill_effect->duration
 				];
-				$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+				$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 			}
 		}elseif($skill_effect->effect == 'Attack Down') {
 			foreach($targets as $target) {
@@ -1739,9 +1682,9 @@ class CombatComponent extends Component
 						'amount' => $amount,
 						'number_of_turns' => $skill_effect->duration
 					];
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1753,7 +1696,7 @@ class CombatComponent extends Component
 					'amount' => $amount,
 					'number_of_turns' => $skill_effect->duration
 				];
-				$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+				$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 			}
 		}elseif($skill_effect->effect == 'Defense Down') {
 			foreach($targets as $target) {
@@ -1765,9 +1708,9 @@ class CombatComponent extends Component
 						'amount' => $amount,
 						'number_of_turns' => $skill_effect->duration
 					];
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1779,7 +1722,7 @@ class CombatComponent extends Component
 					'amount' => $amount,
 					'number_of_turns' => $skill_effect->duration
 				];
-				$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+				$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 			}
 		}elseif($skill_effect->effect == 'Speed Down') {
 			foreach($targets as $target) {
@@ -1791,9 +1734,9 @@ class CombatComponent extends Component
 						'amount' => $amount,
 						'number_of_turns' => $skill_effect->duration
 					];
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1805,7 +1748,7 @@ class CombatComponent extends Component
 					'amount' => $amount,
 					'number_of_turns' => $skill_effect->duration
 				];
-				$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+				$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 			}
 		}elseif($skill_effect->effect == 'Evade Down') {
 			foreach($targets as $target) {
@@ -1817,9 +1760,9 @@ class CombatComponent extends Component
 						'amount' => $amount,
 						'number_of_turns' => $skill_effect->duration
 					];
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1828,9 +1771,9 @@ class CombatComponent extends Component
 				//check for hit
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					$this->applyWet($time, $action_message, $target);
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
@@ -1839,25 +1782,25 @@ class CombatComponent extends Component
 				//check for hit
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					$this->applyDelay($time, $action_message, $skill_effect, $target);
-					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $ability_name.' misses '.$this->monsters[$target->id]->name.'.');
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
 					$skill_effect->missed = true;
 				}
 			}
 		}elseif($skill_effect->effect == 'Undying') {
 			foreach($targets as $target) {
 				$this->applyUndying($time, $action_message, $skill_effect, $target);
-				$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $ability_name, $type, $skill_effect, $target);
+				$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 			}
 		}
 	}
 
-	private function checkSecondaryEffectsForSameTarget($time, &$action_message, $monster, $ability_name, $type, $skill_effect, $target) {
+	private function checkSecondaryEffectsForSameTarget($time, &$action_message, $monster, $skill, $type, $skill_effect, $target) {
 		if(!empty($skill_effect->secondary_skill_effects)) {
 			foreach($skill_effect->secondary_skill_effects as $secondary_skill_effect) {
 				if($secondary_skill_effect->targets == 'Same as Primary Effect') {
-					$this->processEffect($time, $action_message, $monster, $ability_name, $type, $secondary_skill_effect, [$target], true);
+					$this->processEffect($time, $action_message, $monster, $skill, $type, $secondary_skill_effect, [$target], true);
 				}
 			}
 		}
@@ -1948,11 +1891,13 @@ class CombatComponent extends Component
 		}
 	}
 	
-	private function checkForCrit(&$amount, $caster, $target) {
+	private function checkForCrit($skill, &$amount, $caster, $target) {
 		if(!empty($this->monsters[$target->id]->debuffs['frozen']))
 			return true;
-		$chanceToCrit = $this->monsters[$caster->id]->stats->criticalChance * 100 * 1000;
-		if(rand(1,100000) <= $chanceToCrit) {
+		$chanceToCrit = $this->monsters[$caster->id]->stats->criticalChance;
+		if(!empty($skill->critical_chance_increase))
+			$chanceToCrit += $skill->critical_chance_increase;
+		if(rand(1,10000) <= $chanceToCrit * 100) {
 			$amount = round(1.5 * $amount);
 			return true;
 		}else{

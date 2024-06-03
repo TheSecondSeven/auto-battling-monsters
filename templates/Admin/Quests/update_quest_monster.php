@@ -2,6 +2,7 @@
 <div class="monsters form">
     <h3>Update Quest Monster </h3>
 	<?= $this->Form->create($quest_monster) ?>
+	<?= $this->Form->control('quest_id', ['type' => 'hidden']); ?>
 	<?= $this->Form->control('name'); ?>
 	<?= $this->Form->control('clone'); ?>
 	<?= $this->Form->control('skill_1_id', ['label' => '1st Skill', 'options' => $skills]); ?>

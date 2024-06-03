@@ -250,7 +250,7 @@ class QuestsController extends AppController
                 'QuestMonsters.id' => $quest_monster_id
             ])
             ->firstOrFail();
-		if ($this->request->is('post', 'put')) {
+		if ($this->request->is(array('post', 'put'))) {
             $quest_monster = $this->Quests->QuestMonsters->patchEntity($quest_monster, $this->request->getData());
 			if ($this->Quests->QuestMonsters->save($quest_monster)) {
 				$this->Flash->success(__('The quest monster has been updated.'));
