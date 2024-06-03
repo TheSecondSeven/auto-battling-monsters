@@ -1,7 +1,6 @@
 <?php $this->extend('../layout/dashboard'); ?>
 <div class="campaign index">
     <h2>Available Quests</h2>
-    <?php pr($user); ?>
     <?php if(count($available_quests) > 0) { ?>
 	<table class="table table-striped">
         <thead>

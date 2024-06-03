@@ -105,7 +105,7 @@ class QuestRewardsTable extends Table
             if(!empty($quest_reward->type->id)) {
                 $rune = TableRegistry::getTableLocator()->get('Runes')->addRuneToUser($user->id, [$quest_reward->type->id]);
             }elseif($quest_reward->usable) {
-                $rune = TableRegistry::getTableLocator()->get('Runes')->addRuneToUser($user->id, $user->useable_types);
+                $rune = TableRegistry::getTableLocator()->get('Runes')->addRuneToUser($user->id, $user->usable_types);
             }else{
                 $rune = TableRegistry::getTableLocator()->get('Runes')->addRuneToUser($user->id);
             }
