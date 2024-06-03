@@ -313,14 +313,17 @@ class QuestsController extends AppController
 					'QuestsUsers.user_id' => $user_id,
 				]);
             })
-            ->contain([
-                'UserQuestRewards' => [
+            ->contain('UserQuestRewards', function ($q) use ($user_id) {
+                return $q->where([
+					'UserQuestRewards.user_id' => $user_id,
+				])
+                ->contain([
                     'Skills',
                     'Ultimates',
                     'Types',
                     'SecondaryTypes'
-                ]
-            ])
+                ]);
+            })
             ->firstOrFail();
         $this->set('quest', $quest);
 		$this->set('battlesJSON',$quest->_matchingData['QuestsUsers']->result_json_data);
