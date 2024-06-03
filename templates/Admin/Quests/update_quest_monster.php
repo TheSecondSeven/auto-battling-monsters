@@ -1,6 +1,6 @@
 <?php $this->extend('../layout/dashboard'); ?>
 <div class="monsters form">
-    <h3>Add Quest Monster </h3>
+    <h3>Update Quest Monster </h3>
 	<?= $this->Form->create($quest_monster) ?>
 	<?= $this->Form->control('name'); ?>
 	<?= $this->Form->control('clone'); ?>
@@ -14,6 +14,6 @@
 	<?= $this->Form->control('intelligence'); ?>
 	<?= $this->Form->control('luck'); ?>
 	<?= $this->Form->control('vitality'); ?>
-    <?= $this->Form->submit('Add Monster'); ?>
+    <?= $this->Form->submit('Update Monster'); ?>
     <?= $this->Form->end() ?>
 </div>

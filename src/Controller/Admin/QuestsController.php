@@ -193,20 +193,19 @@ class QuestsController extends AppController
         $this->set(compact('quest_reward','reward_types','types','skills','ultimates'));
 	}
 
-	public function deleteQuestReward($skill_id, $id = null) {
-		$quest_reward = $this->Skills->QuestRewards
+	public function deleteQuestReward($quest_id, $id = null) {
+		$quest_reward = $this->Quests->QuestRewards
             ->find()
             ->where([
                 'QuestRewards.id' => $id
             ])
             ->firstOrFail();
-		if ($this->Skills->QuestRewards->delete($quest_reward)) {
-			$this->calculateSkillValue($skill_id);
-			$this->Flash->success(__('The skill effect has been deleted.'));
+		if ($this->Quests->QuestRewards->delete($quest_reward)) {
+			$this->Flash->success(__('The quest reward has been deleted.'));
 		} else {
-			$this->Flash->error(__('The skill effect could not be deleted. Please, try again.'));
+			$this->Flash->error(__('The quest reward could not be deleted. Please, try again.'));
 		}
-		return $this->redirect(array('action' => 'view', $skill_id));
+		return $this->redirect(array('action' => 'view', $quest_id));
 	}
 
 	public function addQuestMonster($quest_id = null) {
@@ -243,6 +242,55 @@ class QuestsController extends AppController
             ->all()
             ->toArray();
         $this->set(compact('quest_monster','skills','ultimates'));
+	}
+	public function updateQuestMonster($quest_id, $quest_monster_id) {
+		$quest_monster = $this->Quests->QuestMonsters
+            ->find()
+            ->where([
+                'QuestMonsters.id' => $quest_monster_id
+            ])
+            ->firstOrFail();
+		if ($this->request->is('post')) {
+            $quest_monster = $this->Quests->QuestMonsters->patchEntity($quest_monster, $this->request->getData());
+			if ($this->Quests->QuestMonsters->save($quest_monster)) {
+				$this->Flash->success(__('The quest monster has been updated.'));
+				return $this->redirect(array('controller' => 'quests', 'action' => 'view', $quest_id));
+			} else {
+				$this->Flash->error(__('The quest monster could not be saved. Please, try again.'));
+			}
+		}
+        $skills = ['' => 'None'] + $this->Quests->QuestMonsters->Skill1
+            ->find('list')
+            ->order([
+                'Skill1.rarity = "Admin Only" DESC',
+                'Skill1.name ASC'
+            ])
+            ->all()
+            ->toArray();
+        $ultimates = ['' => 'None'] + $this->Quests->QuestMonsters->Ultimates
+            ->find('list')
+            ->order([
+                'Ultimates.rarity = "Admin Only" DESC',
+                'Ultimates.name ASC'
+            ])
+            ->all()
+            ->toArray();
+        $this->set(compact('quest_monster','skills','ultimates'));
+	}
+
+	public function deleteQuestMonster($quest_id, $id = null) {
+		$quest_monster = $this->Quests->QuestMonsters
+            ->find()
+            ->where([
+                'QuestMonsters.id' => $id
+            ])
+            ->firstOrFail();
+		if ($this->Quests->QuestMonsters->delete($quest_monster)) {
+			$this->Flash->success(__('The quest monster has been deleted.'));
+		} else {
+			$this->Flash->error(__('The quest monster could not be deleted. Please, try again.'));
+		}
+		return $this->redirect(array('action' => 'view', $quest_id));
 	}
 
 }

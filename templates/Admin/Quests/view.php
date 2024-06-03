@@ -64,11 +64,13 @@
 	<table class="table table-striped">
         <tr>
             <th>Reward</th>
+            <th>Usable?</th>
             <th>Actions</th>
         </tr>
 	    <?php foreach ($quest->quest_rewards as $reward):?>
 		<tr>
             <td><?= $reward->get('reward') ?></td>
+            <td><?= ($reward->usable ? 'Yes' : 'No') ?></td>
 			<td class="dropdown">
 				<div class="dropdown">
 					<button class="btn btn-primary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
