@@ -71,7 +71,7 @@ class QuestsController extends AppController
                 $completed_quests[$index]->monster = $this->fetchTable('Monsters')
                     ->find()
                     ->where([
-                        'Monsters.id' => 1
+                        'Monsters.id' => $quest->_matchingData['QuestsUsers']->monster_id
                     ])
                     ->first();
             } 
