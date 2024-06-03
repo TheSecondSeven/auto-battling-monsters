@@ -33,7 +33,8 @@ class MonstersController extends AppController
 				'Monsters.skill_2_id != 0',
 				'Monsters.skill_3_id != 0',
 				'Monsters.skill_4_id != 0',
-				'Monsters.ultimate_id != 0'
+				'Monsters.ultimate_id != 0',
+				'Monsters.total_battles != 0'
 			])
             ->order([
 				'Monsters.elo_rating DESC'
