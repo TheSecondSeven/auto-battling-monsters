@@ -5,8 +5,6 @@ use Cake\ORM\Entity;
 
 class Monster extends Entity
 {
-
-
     protected function _getListOfAbilities()
     {
         $abilities = '';

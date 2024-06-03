@@ -56,7 +56,6 @@ class QuestsController extends AppController
             ->contain([
                 'ParentQuests',
                 'ChildQuests',
-                'QuestMonsters',
                 'QuestRewards' => [
                     'Skills',
                     'Ultimates',
@@ -64,6 +63,9 @@ class QuestsController extends AppController
                     'SecondaryTypes'
                 ]
             ])
+            ->matching('QuestMonsters', function ($q) {
+                return $q->find('forBattle');
+            })
 			->first()
         );
 	}

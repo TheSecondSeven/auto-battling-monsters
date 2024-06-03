@@ -36,13 +36,7 @@
 	<?php foreach ($quest->quest_monsters as $monster):?>
 		<tr>
             <td><?= $monster->name ?></td>
-            <td><?php
-                if(!empty($monster->skill1->id)) echo $monster->skill1->name;
-                if(!empty($monster->skill2->id)) echo ' | '.$monster->skill2->name;
-                if(!empty($monster->skill3->id)) echo ' | '.$monster->skill3->name;
-                if(!empty($monster->skill4->id)) echo ' | '.$monster->skill4->name;
-                if(!empty($monster->ultimate->id)) echo ' | '.$monster->ultimate->name;
-            ?></td>
+            <td><?= $monster->get('listOfAbilities') ?></td>
 			<td class="dropdown">
 				<div class="dropdown">
 					<button class="btn btn-primary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
