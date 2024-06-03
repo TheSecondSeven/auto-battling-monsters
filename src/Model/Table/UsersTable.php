@@ -64,4 +64,25 @@ class UsersTable extends Table
         $this->save($user);
         return $amount;
     }
+
+    public function giveGoldToUser($user_id, $amount, $reason = null) {
+        $user = $this->get($user_id);
+        $user->gold += $amount;
+        $this->save($user);
+        return $amount;
+    }
+
+    public function giveRuneShardsToUser($user_id, $amount, $reason = null) {
+        $user = $this->get($user_id);
+        $user->rune_shards += $amount;
+        $this->save($user);
+        return $amount;
+    }
+
+    public function giveGemsToUser($user_id, $amount, $reason = null) {
+        $user = $this->get($user_id);
+        $user->gems += $amount;
+        $this->save($user);
+        return $amount;
+    }
 }
