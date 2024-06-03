@@ -329,26 +329,43 @@ class CombatComponent extends Component
 			$this->augmentSlot($monster, 'Ultimate');
 			*/
 			if(!empty($this->monsters[$monster->id]->skill1->id)) {
-				$this->monsters[$monster->id]->skills[] = clone($this->monsters[$monster->id]->skill1);
+				
+				$this->monsters[$monster->id]->skills[] = $this->cloneSkill($this->monsters[$monster->id]->skill1);
 			}
 			if(!empty($this->monsters[$monster->id]->skill2->id)) {
-				$this->monsters[$monster->id]->skills[] = clone($this->monsters[$monster->id]->skill2);
+				$this->monsters[$monster->id]->skills[] = $this->cloneSkill($this->monsters[$monster->id]->skill2);
 			}
 			if(!empty($this->monsters[$monster->id]->skill3->id)) {
-				$this->monsters[$monster->id]->skills[] = clone($this->monsters[$monster->id]->skill3);
+				$this->monsters[$monster->id]->skills[] = $this->cloneSkill($this->monsters[$monster->id]->skill3);
 			}
 			if(!empty($this->monsters[$monster->id]->skill4->id)) {
-				$this->monsters[$monster->id]->skills[] = clone($this->monsters[$monster->id]->skill4);
+				$this->monsters[$monster->id]->skills[] = $this->cloneSkill($this->monsters[$monster->id]->skill4);
 			}
 			if(!empty($this->monsters[$monster->id]->ultimate)) {
 				if(!$this->monsters[$monster->id]->ultimate->passive) {
-					$this->monsters[$monster->id]->ultimate->ultimate = 1;
-					$this->monsters[$monster->id]->skills[] = clone($this->monsters[$monster->id]->ultimate);
+					$cloned_ultimate = $this->cloneSkill($this->monsters[$monster->id]->ultimate);
+					$cloned_ultimate->ultimate = 1;
+					$this->monsters[$monster->id]->skills[] = $cloned_ultimate;
 				}
 				$this->setupPassiveUltimate($monster);
 			}
 		}
 		$this->applyRunes($monster);
+	}
+	private function cloneSkill($skill) {
+		$cloned_skill = clone $skill;
+		$skill_effects = [];
+		foreach($skill->skill_effects as $skill_effect) {
+			$secondary_skill_effects = [];
+			foreach($skill_effect->secondary_skill_effects as $secondary_skill_effect) {
+				$secondary_skill_effects[] = clone $secondary_skill_effect;
+			}
+			$cloned_skill_effect = clone $skill_effect;
+			$cloned_skill_effect->secondary_skill_effects = $secondary_skill_effects;
+			$skill_effects[] = $cloned_skill_effect;
+		}
+		$cloned_skill->skill_effects = $skill_effects;
+		return $cloned_skill;
 	}
 	
 	private function setupPassiveUltimate($monster) {
