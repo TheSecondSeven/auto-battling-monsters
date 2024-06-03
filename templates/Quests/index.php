@@ -16,18 +16,7 @@
         <?php foreach ($available_quests as $quest): ?>
             <tr>
                 <td><?= $quest->title ?></td>
-                <td><?php if(empty($quest->required_rest)) { echo 'None'; }else{
-                    $days = floor($quest->required_rest / (60 * 24));
-                    $hours = floor(($quest->required_rest % (60 * 24)) / 60);
-                    $minutes = floor($quest->required_rest % 60);
-					if($days > 0) {
-						echo $days.' day'.($days == 1 ? '' : 's');
-					}elseif($hours > 0) {
-						echo ' '.$hours.' hour'.($hours == 1 ? '' : 's');
-					}elseif($minutes > 0) {
-						echo ' '.$minutes.' minute'.($hours == 1 ? '' : 's');
-					}
-                } ?></td>
+                <td><?= $quest->get('required_rest_verbose') ?></td>
                 <td><?= $quest->get('monsters') ?></td>
                 <td><?= $quest->get('rewards') ?></td>
                 <td><?= $this->Html->link('View', ['controller' => 'quests', 'action' => 'view', $quest->id], ['class' => 'btn btn-primary']); ?></td>

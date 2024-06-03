@@ -60,7 +60,7 @@
                 <td><?= $quest->depth ?></td>
                 <td><?= $quest->title ?></td>
                 <td><?= $quest->description ?></td>
-                <td><?= ($quest->required_rest > 0 ? $quest->required_rest : 'None') ?></td>
+                <td><?= $quest->get('required_rest_verbose') ?></td>
                 <td><?= count($quest->quest_monsters) ?></td>
                 <td><?= count($quest->quest_rewards) ?></td>
                 <td class="dropdown">

@@ -42,4 +42,23 @@ class Quest extends Entity
         }
         return 'No Monsters';
     }
+
+    protected function _getRequiredRestVerbose() {
+        $return = '';
+        if(empty($this->required_rest)) {
+            $return = 'None';
+        }else{
+            $days = floor($this->required_rest / (60 * 24));
+            $hours = floor(($this->required_rest % (60 * 24)) / 60);
+            $minutes = floor($this->required_rest % 60);
+            if($days > 0) {
+                $return .= $days.' day'.($days == 1 ? '' : 's');
+            }elseif($hours > 0) {
+                $return .= ' '.$hours.' hour'.($hours == 1 ? '' : 's');
+            }elseif($minutes > 0) {
+                $return .= ' '.$minutes.' minute'.($hours == 1 ? '' : 's');
+            }
+        }
+        return $return;
+    }
 }
