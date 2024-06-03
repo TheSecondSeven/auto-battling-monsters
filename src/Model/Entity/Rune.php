@@ -6,6 +6,7 @@ use Cake\ORM\Entity;
 class Rune extends Entity
 {
     public static function upgrades($type) {
+		$upgrades = [];
 		if($type != 'Neutral') {
 			$upgrades =  [
 				'unlock_type' => 'Unlock '.$type.' Skills',
