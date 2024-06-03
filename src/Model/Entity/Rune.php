@@ -13,12 +13,12 @@ class Rune extends Entity
 			];
 		}
 		$upgrades =  $upgrades + [
-			'damage_level' => 'Increase '.$type.' Damage',
-			'healing_level' => 'Increase '.$type.' Healing',
-			'critical_chance_level' => 'Increase '.$type.' Critical Chance',
-			'cast_again_level' => 'Increase '.$type.' Overload Chance',
-			'casting_speed_level' => 'Increase '.$type.' Casting Speed',
-			'health_level' => 'Increase Monster Health'
+			'damage_level' => 'Increase '.$type.' Damage by '.RUNE_DAMAGE_INCREASE.'%',
+			'healing_level' => 'Increase '.$type.' Healing by '.RUNE_HEALING_INCREASE.'%',
+			'critical_chance_level' => 'Increase '.$type.' Critical Chance by '.RUNE_CRITICAL_CHANCE_INCREASE.'%',
+			'cast_again_level' => 'Increase '.$type.' Overload Chance by '.RUNE_CAST_AGAIN_INCREASE.'%',
+			'casting_speed_level' => 'Increase '.$type.' Casting Speed by '.RUNE_CASTING_SPEED_INCREASE.'%',
+			'health_level' => 'Increase Monster Health by '.RUNE_HEALTH_INCREASE.'%'
 		];
 		return $upgrades;
 	}
