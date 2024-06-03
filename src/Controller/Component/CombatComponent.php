@@ -241,6 +241,21 @@ class CombatComponent extends Component
 							}
 						}
 					}
+					$skill_object = 'ultimate';
+					if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
+						foreach($this->monsters[$monster->id]->$skill_object->skill_effects as $skill_effect_index => $skill_effect) {
+							if(in_array($skill_effect->effect, ['Physical Damage','Magical Damage','Leech','True Damage','Poison'])) {
+								$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_min = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_min * $increase_amount);
+								$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_max = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_max * $increase_amount);
+							}
+							foreach($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects as $secondary_skill_effect_index => $secondary_skill_effect) {
+								if(in_array($secondary_skill_effect->effect, ['Physical Damage','Magical Damage','True Damage','Leech','Poison'])) {
+									$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min * $increase_amount);
+									$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max * $increase_amount);
+								}
+							}
+						}
+					}
 				}
 				if($rune->healing_level > 0) {
 					$increase_amount = 1 + RUNE_HEALING_INCREASE * $rune->healing_level / 100;
@@ -261,6 +276,21 @@ class CombatComponent extends Component
 							}
 						}
 					}
+					$skill_object = 'ultimate';
+					if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
+						foreach($this->monsters[$monster->id]->$skill_object->skill_effects as $skill_effect_index => $skill_effect) {
+							if(in_array($skill_effect->effect, ['Heal','Healing Over Time'])) {
+								$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_min = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_min * $increase_amount);
+								$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_max = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->amount_max * $increase_amount);
+							}
+							foreach($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects as $secondary_skill_effect_index => $secondary_skill_effect) {
+								if(in_array($secondary_skill_effect->effect, ['Heal','Healing Over Time'])) {
+									$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_min * $increase_amount);
+									$this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max = round($this->monsters[$monster->id]->$skill_object->skill_effects[$skill_effect_index]->secondary_skill_effects[$secondary_skill_effect_index]->amount_max * $increase_amount);
+								}
+							}
+						}
+					}
 				}
 				if($rune->critical_chance_level > 0) {
 					$increase_amount = RUNE_CRITICAL_CHANCE_INCREASE * $rune->critical_chance_level / 100;
@@ -272,6 +302,13 @@ class CombatComponent extends Component
 							}
 							$this->monsters[$monster->id]->$skill_object->critical_chance_increase += $increase_amount;
 						}
+					}
+					$skill_object = 'ultimate';
+					if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
+						if(empty($this->monsters[$monster->id]->$skill_object->critical_chance_increase)) {
+							$this->monsters[$monster->id]->$skill_object->critical_chance_increase = 0;
+						}
+						$this->monsters[$monster->id]->$skill_object->critical_chance_increase += $increase_amount;
 					}
 				}
 				if($rune->cast_again_level > 0) {
@@ -286,6 +323,13 @@ class CombatComponent extends Component
 							$this->monsters[$monster->id]->$skill_object->cast_again_chance += $increase_amount;
 						}
 					}
+					$skill_object = 'ultimate';
+					if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
+						if(empty($this->monsters[$monster->id]->$skill_object->cast_again_chance)) {
+							$this->monsters[$monster->id]->$skill_object->cast_again_chance = 0;
+						}
+						$this->monsters[$monster->id]->$skill_object->cast_again_chance += $increase_amount;
+					}
 				}
 				if($rune->casting_speed_level > 0) {
 					$increase_amount = RUNE_CASTING_SPEED_INCREASE * $rune->casting_speed_level / 100;
@@ -298,6 +342,13 @@ class CombatComponent extends Component
 							}
 							$this->monsters[$monster->id]->$skill_object->casting_speed_increase += $increase_amount * 100;
 						}
+					}
+					$skill_object = 'ultimate';
+					if($this->monsters[$monster->id]->$skill_object->type_id == $rune->type_id) {
+						if(empty($this->monsters[$monster->id]->$skill_object->casting_speed_increase)) {
+							$this->monsters[$monster->id]->$skill_object->casting_speed_increase = 0;
+						}
+						$this->monsters[$monster->id]->$skill_object->casting_speed_increase += $increase_amount * 100;
 					}
 				}
 				if($rune->health_level > 0) {
