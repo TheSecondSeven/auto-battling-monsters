@@ -45,4 +45,23 @@ class UsersTable extends Table
         ]);
         return $rules;
     }
+
+    public function giveGoldToUserByRarity($user_id, $rarity, $reason = null) {
+        $amount = 5;
+        if($rarity == 'Legendary') {
+			$amount = 500;
+		}elseif($rarity == 'Epic') {
+			$amount = 100;
+        }elseif($rarity == 'Rare') {
+			$amount = 20;
+        }elseif($rarity == 'Uncommon') {
+			$amount = 5;
+        }elseif($rarity == 'Common') {
+			$amount = 5;
+        }
+        $user = $this->get($user_id);
+        $user->gold += $amount;
+        $this->save($user);
+        return $amount;
+    }
 }

@@ -53,6 +53,9 @@ class QuestRewardsTable extends Table
                     $random_skill = TableRegistry::getTableLocator()->get('UserSkills')->addRandomSkillToUser($user->id, $quest_reward->rarity);
                     if(empty($random_skill->id)) {
                         //change reward to gold
+                        $amount = TableRegistry::getTableLocator()->get('Users')->giveGoldToUserByRarity($user->id, $quest_reward->rarity);
+                        $user_quest_reward->reward_type = 'Gold';
+                        $user_quest_reward->amount = $amount;
                     }else{
                         $user_quest_reward->skill_id = $random_skill->id;
                     }
@@ -63,6 +66,9 @@ class QuestRewardsTable extends Table
                     $random_skill = TableRegistry::getTableLocator()->get('UserSkills')->addRandomSkillToUser($user->id, $quest_reward->rarity);
                     if(empty($random_skill->id)) {
                         //change reward to gold
+                        $amount = TableRegistry::getTableLocator()->get('Users')->giveGoldToUserByRarity($user->id, $quest_reward->rarity);
+                        $user_quest_reward->reward_type = 'Gold';
+                        $user_quest_reward->amount = $amount;
                     }else{
                         $user_quest_reward->skill_id = $random_skill->id;
                     }
@@ -75,6 +81,9 @@ class QuestRewardsTable extends Table
                     $random_skill = TableRegistry::getTableLocator()->get('UserSkills')->addRandomSkillToUser($user->id, $quest_reward->rarity);
                     if(empty($random_skill->id)) {
                         //change reward to gold
+                        $amount = TableRegistry::getTableLocator()->get('Users')->giveGoldToUserByRarity($user->id, $quest_reward->rarity);
+                        $user_quest_reward->reward_type = 'Gold';
+                        $user_quest_reward->amount = $amount;
                     }else{
                         $user_quest_reward->skill_id = $random_skill->id;
                     }
@@ -85,6 +94,9 @@ class QuestRewardsTable extends Table
                 $random_skill = TableRegistry::getTableLocator()->get('UserSkills')->addRandomSkillToUser($user->id, $quest_reward->rarity);
                 if(empty($random_skill->id)) {
                     //change reward to gold
+                    $amount = TableRegistry::getTableLocator()->get('Users')->giveGoldToUserByRarity($user->id, $quest_reward->rarity);
+                    $user_quest_reward->reward_type = 'Gold';
+                    $user_quest_reward->amount = $amount;
                 }else{
                     $user_quest_reward->skill_id = $random_skill->id;
                 }
