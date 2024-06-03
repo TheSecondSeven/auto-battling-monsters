@@ -19,10 +19,14 @@
 			</tr>
 		</tbody>
 	</table>
+	<?php if(count($available_monsters)) { ?>
     <div class="mb-3">
 		<?= $this->Form->create() ?>
         <?= $this->Form->control('monster_id', ['label' => 'Choose Your Monster','options' => $available_monsters]); ?>
         <?= $this->Form->submit(__('Venture Forth!')); ?>
         <?= $this->Form->end() ?>
 	</div>
+	<?php }else{ ?>
+		<p>You don't have any monsters ready to quest. To be able to quest, a monster needs to have its move set completed, be fully rested, and cannot be running the Gauntlet.
+	<?php } ?>
 </div>
