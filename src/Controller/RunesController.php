@@ -75,6 +75,9 @@ class RunesController extends AppController
 				'Runes.id' => $id,
 				'Runes.user_id' => $this->user->id
 			])
+			->contain([
+				'Types'
+			])
             ->firstOrFail();
 		
 		if ($this->request->is(array('post', 'put'))) {
@@ -106,7 +109,7 @@ class RunesController extends AppController
 				'Types.name != "Neutral"'
 			])
             ->all();
-		$upgrades = $rune->upgrades();
+		$upgrades = $rune->upgrades($rune->type->name);
         $upgrade_options = [];
 		foreach($upgrades as $field=>$upgrade) {
 			if($rune->$field < 5 && ($rune->unlock_type == 0 || $field != 'unlock_type')) {
