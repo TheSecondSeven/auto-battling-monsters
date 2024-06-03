@@ -26,6 +26,67 @@ class GauntletRunsController extends AppController
 
         $this->loadComponent('Combat');
     }
+
+	public function index() {
+		$gauntlet_runs = $this->paginate($this->GauntletRuns
+            ->find()
+            ->where(['GauntletRuns.user_id' => $this->user->id])
+            ->contain([
+                'Monsters' => [
+					'Skill1',
+					'Skill2',
+					'Skill3',
+					'Skill4',
+					'Ultimates',
+					'Rune1' => [
+						'Types'
+					],
+					'Rune2' => [
+						'Types'
+					],
+					'Rune3' => [
+						'Types'
+					]
+				]
+            ])
+			->order([
+				'GauntletRuns.created DESC'
+			])
+		);
+
+        
+        $available_monsters = $this->fetchTable('Monsters')
+			->find('forBattle')
+			->where([
+				'Monsters.user_id' => $this->user->id,
+				'Monsters.in_gauntlet_run' => 0,
+                'OR' => [
+				    'Monsters.resting_until IS NULL',
+				    'Monsters.resting_until <=' => date('Y-m-d H:i:s')
+                ],
+				'Monsters.skill_1_id != 0',
+				'Monsters.skill_2_id != 0',
+				'Monsters.skill_3_id != 0',
+				'Monsters.skill_4_id != 0',
+				'Monsters.ultimate_id != 0'
+			])
+			->order([
+				'Monsters.elo_rating DESC'
+			])
+			->all();
+		$available_monsters_list = [];
+		foreach($available_monsters as $monster) {
+			$available_monsters_list[$monster->id] = $monster->name.' | Using: '.$monster->get('listOfAbilities').' | Rating: '.$monster->elo_rating;
+		}
+		$monsters_in_gauntlet_run = $this->fetchTable('Monsters')
+			->find()
+			->where([
+				'Monsters.user_id' => $this->user->id,
+				'Monsters.in_gauntlet_run' => 1
+			])
+			->all();
+        $this->set(compact('gauntlet_runs','available_monsters_list','monsters_in_gauntlet_run'));
+	}
 	
 	public function completed() {
         $this->set('gauntlet_runs', $this->paginate($this->GauntletRuns
@@ -59,39 +120,19 @@ class GauntletRunsController extends AppController
 		
 		if(!empty($this->user->dreaming_since)) {
 			$this->Flash->error(__('You can not start a gauntlet run while in Dream Mode.'));
-			return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
+			return $this->redirect(['action' => 'index']);
 		}
 		if($this->user->total_gauntlet_runs_today >= $this->user->active_monster_limit * DAILY_GAUNTLET_LIMIT_PER_ACTIVE_MONSTER) {
 			$this->Flash->error(__('You can not start any more gauntlet runs today.'));
-			return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
-		}
-		$monsters = $this->GauntletRuns->Monsters
-			->find()
-			->where([
-				'Monsters.user_id' => $this->user->id
-			])
-			->contain([
-				'Types',
-				'SecondaryTypes',
-				'Skill1',
-				'Skill2',
-				'Skill3',
-				'Skill4',
-				'Ultimates'
-			])
-			->all()
-			->toList();
-		$monsters_active = 0;
-		foreach($monsters as $monster) {
-			if($monster->in_gauntlet_run) {
-				$monsters_active++;
-			}
-		}
-		if($monsters_active >= $this->user->active_monster_limit) {
-			$this->Flash->error(__('You can only have '.$this->user->active_monster_limit.' Monster'.($this->user->active_monster_limit == 1 ? '' : 's').' active in the Gauntlet at a time.'));
-			return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
+			return $this->redirect(['action' => 'index']);
 		}
 		
+		if(count($this->user->monsters) >= $this->user->active_monster_limit) {
+			$this->Flash->error(__('You can only have '.$this->user->active_monster_limit.' Monster'.($this->user->active_monster_limit == 1 ? '' : 's').' active in the Gauntlet at a time.'));
+			return $this->redirect(['action' => 'index']);
+		}
+		if(empty($monster_id))
+			$monster_id = $this->request->getData()['monster_id'];
 		
 		$monster = $this->GauntletRuns->Monsters
 			->find()
@@ -119,7 +160,7 @@ class GauntletRunsController extends AppController
 		$this->Flash->success(__($monster->name.' has started battling in the Gauntlet. It will be done at '.$monster->in_gauntlet_run_until->format('g:ia').' PST'));
 		}
 		$this->GauntletRuns->Monsters->save($monster);
-		return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
+		return $this->redirect(['action' => 'index']);
 	}
 	
 	public function completeRun($monster_id = null) {
@@ -134,10 +175,10 @@ class GauntletRunsController extends AppController
 			throw new NotFoundException(__('Invalid monster'));
 		}elseif($monster->in_gauntlet_run_until && (int)$monster->in_gauntlet_run_until->toUnixString() > time()) {
 			$this->Flash->error(__('Monster is not finished in the Gauntlet yet.'));
-			return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
+			return $this->redirect(['action' => 'index']);
 		}elseif(!$monster->in_gauntlet_run) {
 			$this->Flash->error(__('Monster wasn\'t in the gauntlet.'));
-			return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
+			return $this->redirect(['action' => 'index']);
 		}
 		//create run
 		$gauntlet_run = $this->GauntletRuns->newEntity([
@@ -201,7 +242,7 @@ class GauntletRunsController extends AppController
 				$elo_threshold++;
 			}
 			$already_fought_ids[] = $opponent->id;
-			$result = $this->Combat->twoTeamCombat(clone $monster, clone $opponent);
+			$result = $this->Combat->twoTeamCombat([clone $monster], [clone $opponent]);
 			
 			
 			

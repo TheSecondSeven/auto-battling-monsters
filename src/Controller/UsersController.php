@@ -119,9 +119,9 @@ class UsersController extends AppController
                 }
 
                 //create monster 
-                $this->fetchTable('Monsters')->createMonsterForUser($user->id, $type_id);
+                $new_monster_id = $this->fetchTable('Monsters')->createMonsterForUser($user->id, $type_id);
                 //create second monster 
-                $this->fetchTable('Monsters')->createMonsterForUser($user->id, $type_2_id);
+                // $this->fetchTable('Monsters')->createMonsterForUser($user->id, $type_2_id);
 
                 //grant base skills
                 $base_skills = [
@@ -133,17 +133,17 @@ class UsersController extends AppController
                 foreach($base_skills as $base_skill_id) {
                     $this->fetchTable('UserSkills')->addSkillToUser($user->id, $base_skill_id);
                 }
-                $this->fetchTable('UserSkills')->addRandomSkillToUser($user->id, 'Uncommon', [$type_id]);
-                $this->fetchTable('UserSkills')->addRandomSkillToUser($user->id, 'Uncommon', [$type_id]);
-                $this->fetchTable('UserSkills')->addRandomSkillToUser($user->id, 'Uncommon', [$type_2_id]);
-                $this->fetchTable('UserSkills')->addRandomSkillToUser($user->id, 'Uncommon', [$type_2_id]);
+                // $this->fetchTable('UserSkills')->addRandomSkillToUser($user->id, 'Uncommon', [$type_id]);
+                // $this->fetchTable('UserSkills')->addRandomSkillToUser($user->id, 'Uncommon', [$type_id]);
+                // $this->fetchTable('UserSkills')->addRandomSkillToUser($user->id, 'Uncommon', [$type_2_id]);
+                // $this->fetchTable('UserSkills')->addRandomSkillToUser($user->id, 'Uncommon', [$type_2_id]);
                 //hyper beam
                 $this->fetchTable('UserUltimates')->addUltimateToUser($user->id, 1);
                 //holy nova
-                $this->fetchTable('UserUltimates')->addUltimateToUser($user->id, 16);
-                $this->Flash->success(__('Your have created your account!'));
+                // $this->fetchTable('UserUltimates')->addUltimateToUser($user->id, 16);
+                $this->Flash->success(__('Your have received your first monster! It\'s a '.$type_name.' Type. Give it a name!'));
 
-                return $this->redirect(['controller'=>'monsters','action' => 'my-monsters']);
+                return $this->redirect(['controller'=>'monsters','action' => 'edit', $new_monster_id]);
             }
             $this->Flash->error(__('Unable to register.'));
         }

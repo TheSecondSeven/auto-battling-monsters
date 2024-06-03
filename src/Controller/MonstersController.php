@@ -75,18 +75,7 @@ class MonstersController extends AppController
 				'Monsters.elo_rating DESC'
 			])
             ->all();
-		$monsters_active = 0;
-		foreach($monsters as $monster) {
-			if($monster->in_gauntlet_run) {
-				$monsters_active++;
-			}
-		}
-		if($monsters_active >= $this->user->active_monster_limit) {
-			$battle_available = false;
-		}else{
-			$battle_available = true;
-		}
-		$this->set(compact(['monsters','battle_available']));
+		$this->set(compact(['monsters']));
     }
 
 	public function view($id = null) {

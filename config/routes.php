@@ -55,16 +55,21 @@ return function (RouteBuilder $routes): void {
          * its action called 'display', and we pass a param to select the view file
          * to use (in this case, templates/Pages/home.php)...
          */
-        $builder->connect('/', ['controller' => 'Monsters', 'action' => 'my-monsters']);
-        $builder->connect('/register', ['controller' => 'Users', 'action' => 'register']);
-        $builder->connect('/login', ['controller' => 'Users', 'action' => 'login']);
-        $builder->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
-        $builder->connect('/my-monsters', ['controller' => 'Monsters', 'action' => 'my-monsters']);
-        $builder->connect('/my-skills', ['controller' => 'Skills', 'action' => 'my-skills']);
-        $builder->connect('/my-ultimates', ['controller' => 'Ultimates', 'action' => 'my-ultimates']);
+        $builder->connect('/', ['controller' => 'monsters', 'action' => 'my-monsters']);
+        $builder->connect('/register', ['controller' => 'users', 'action' => 'register']);
+        $builder->connect('/login', ['controller' => 'users', 'action' => 'login']);
+        $builder->connect('/logout', ['controller' => 'users', 'action' => 'logout']);
+        $builder->connect('/my-monsters', ['controller' => 'monsters', 'action' => 'my-monsters']);
+        $builder->connect('/my-skills', ['controller' => 'skills', 'action' => 'my-skills']);
+        $builder->connect('/my-ultimates', ['controller' => 'ultimates', 'action' => 'my-ultimates']);
         $builder->connect('/my-runes', ['controller' => 'Runes', 'action' => 'my-runes']);
-        $builder->connect('/view-gauntlet-battles/*', ['controller' => 'GauntletRuns', 'action' => 'view-battles']);
-        $builder->connect('/view-gauntlet-results/*', ['controller' => 'GauntletRuns', 'action' => 'view-results']);
+
+        $builder->connect('/campaign', ['controller' => 'quests', 'action' => 'index']);
+
+
+        $builder->connect('/the-gauntlet', ['controller' => 'gauntlet-runs', 'action' => 'index']);
+        $builder->connect('/view-gauntlet-battles/*', ['controller' => 'gauntlet-runs', 'action' => 'view-battles']);
+        $builder->connect('/view-gauntlet-results/*', ['controller' => 'gauntlet-runs', 'action' => 'view-results']);
 
         /*
          * ...and connect the rest of 'Pages' controller's URLs.

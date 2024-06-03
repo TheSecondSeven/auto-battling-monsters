@@ -1,11 +1,11 @@
 <?php $this->extend('../layout/dashboard'); ?>
 <div class="skills index">
 	<h2><?php echo __('My Runes'); ?></h2>
-	<?php echo $this->Html->link('Create Rune', ['controller' => 'runes', 'action' => 'create'],['class' => 'btn btn-primary']); ?>
+	<?php //echo $this->Html->link('Create Rune', ['controller' => 'runes', 'action' => 'create'],['class' => 'btn btn-primary']); ?>
 	<table class="table table-striped">
 	<?php 
-	if(empty($runes)) {
-		echo '<tr><td colspan="10">You have not created any Runes yet.</td></tr>';
+	if(count($runes) == 0) {
+		echo '<tr><td colspan="11">You currently don\'t have any runes. Progress through the campaign to earn some!</td></tr>';
 	}else{ ?>	
         <thead>
             <tr>

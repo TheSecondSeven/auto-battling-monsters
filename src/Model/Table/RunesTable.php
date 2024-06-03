@@ -16,4 +16,21 @@ class RunesTable extends Table
         $this->belongsTo('Types');
         $this->belongsTo('Users');
     }
+    public function addRuneToUser($user_id, $types = []) {
+        if(empty($types)) {
+            $types = [1,2,3,5,6,8,10];
+        }
+        $type_id = $types[rand(0,count($types) - 1)];
+        
+		$rune = $this->newEntity(
+			[
+				'user_id' => $user_id,
+                'type_id' => $type_id,
+                'level' => 0
+			],
+			['validate' => false]
+		);
+		$this->save($rune);
+		return $rune;
+	}
 }

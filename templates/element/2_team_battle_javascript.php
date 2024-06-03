@@ -63,6 +63,7 @@
 	}
 	
 	function restart() {
+		$('#rewards').hide();
 		clearInterval(interval);
 		$('.castCompletion').stop();
 		$('.healthRemaining').stop();
@@ -125,6 +126,7 @@
 		}else{
 			$('.castCompletion').stop();
 			$('.healthRemaining').finish();
+			$('#rewards').show();
 			clearInterval(interval);
 		}
 	}

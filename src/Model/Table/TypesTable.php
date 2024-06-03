@@ -12,6 +12,9 @@ class TypesTable extends Table
         parent::initialize($config);
         $this->addBehavior('Timestamp');
 		$this->hasMany('Monsters');
+		$this->hasMany('SecondaryMonsters')
+            ->setClassName('Monsters')
+            ->setForeignKey('secondary_type_id');
 		$this->hasMany('Skills');
 		$this->hasMany('Ultimates');
 		$this->hasMany('SecondaryUltimates')

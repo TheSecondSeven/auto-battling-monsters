@@ -28,15 +28,19 @@ class CombatComponent extends Component
 		return $ID;
 	}
 	
-	public function twoTeamCombat($monster, $opponent) {
+	public function twoTeamCombat($monsters, $opponents) {
 		$this->environment = ['statuses' => []];
 		$this->monsters = [];
-		$monster->id = $this->getMonsterID();
-		$monster->team = 1;
-		$this->monsters[$monster->id] = $monster;
-		$opponent->id = $this->getMonsterID();
-		$opponent->team = 2;
-		$this->monsters[$opponent->id] = $opponent;
+		foreach($monsters as $monster) {
+			$monster->id = $this->getMonsterID();
+			$monster->team = 1;
+			$this->monsters[$monster->id] = $monster;
+		}
+		foreach($opponents as $opponent) {
+			$opponent->id = $this->getMonsterID();
+			$opponent->team = 2;
+			$this->monsters[$opponent->id] = $opponent;
+		}
 		$this->originalMonsters = $this->monsters;
 		
 		foreach($this->monsters as $monster) {
@@ -333,18 +337,24 @@ class CombatComponent extends Component
 			*/
 			$this->applyRunes($monster);
 			if(!empty($this->monsters[$monster->id]->skill1->id)) {
-				$this->monsters[$monster->id]->skills = [
-					clone($this->monsters[$monster->id]->skill1),
-					clone($this->monsters[$monster->id]->skill2),
-					clone($this->monsters[$monster->id]->skill3),
-					clone($this->monsters[$monster->id]->skill4)
-				];
+				$this->monsters[$monster->id]->skills[] = clone($this->monsters[$monster->id]->skill1);
 			}
-			if(!$this->monsters[$monster->id]->ultimate->passive) {
-				$this->monsters[$monster->id]->ultimate->ultimate = 1;
-				$this->monsters[$monster->id]->skills[] = clone($this->monsters[$monster->id]->ultimate);
+			if(!empty($this->monsters[$monster->id]->skill2->id)) {
+				$this->monsters[$monster->id]->skills[] = clone($this->monsters[$monster->id]->skill2);
 			}
-			$this->setupPassiveUltimate($monster);
+			if(!empty($this->monsters[$monster->id]->skill3->id)) {
+				$this->monsters[$monster->id]->skills[] = clone($this->monsters[$monster->id]->skill3);
+			}
+			if(!empty($this->monsters[$monster->id]->skill4->id)) {
+				$this->monsters[$monster->id]->skills[] = clone($this->monsters[$monster->id]->skill4);
+			}
+			if(!empty($this->monsters[$monster->id]->ultimate)) {
+				if(!$this->monsters[$monster->id]->ultimate->passive) {
+					$this->monsters[$monster->id]->ultimate->ultimate = 1;
+					$this->monsters[$monster->id]->skills[] = clone($this->monsters[$monster->id]->ultimate);
+				}
+				$this->setupPassiveUltimate($monster);
+			}
 		}
 	}
 	
@@ -2188,8 +2198,8 @@ class CombatComponent extends Component
 		$stats = (object) [];
 		$stats->physicalAttackModifier = 1 + 0.05 * ($monster->strength - 1);
 		$stats->physicalDefenseModifier = 1 + 0.025 * ($monster->strength - 1);
-		$stats->evadeModifier = 0.01 + 0.01 * ($monster->agility - 1) + 0.01 * ($monster->dexterity - 1);
-		$stats->speed = 1.0 + 0.03 * ($monster->agility - 1);
+		$stats->evadeModifier = 0.01 + 0.01 * ($monster->dexterity - 1);
+		$stats->speed = 1.0 + 0.03 * ($monster->dexterity - 1);
 		$stats->hitModifier = 0.00 + 0.01 * ($monster->dexterity - 1);
 		$stats->magicalAttackModifier = 1 + 0.05 * ($monster->intelligence - 1);
 		$stats->magicalDefenseModifier = 1 + 0.025 * ($monster->intelligence - 1);
@@ -2212,7 +2222,6 @@ class CombatComponent extends Component
 			'debuffs' => [],
 			'buffs' => [],
 			'strength' => 1,
-			'agility' => 1,
 			'dexterity' => 1,
 			'intelligence' => 1,
 			'luck' => 1,
@@ -2252,7 +2261,6 @@ class CombatComponent extends Component
 				'debuffs' => [],
 				'buffs' => [],
 				'strength' => 1,
-				'agility' => 1,
 				'dexterity' => 1,
 				'intelligence' => 1,
 				'luck' => 1,
@@ -2297,7 +2305,6 @@ class CombatComponent extends Component
 				'debuffs' => [],
 				'buffs' => [],
 				'strength' => 1,
-				'agility' => 1,
 				'dexterity' => 1,
 				'intelligence' => 1,
 				'luck' => 1, 
@@ -2342,7 +2349,6 @@ class CombatComponent extends Component
 				'debuffs' => [],
 				'buffs' => [],
 				'strength' => 1,
-				'agility' => 1,
 				'dexterity' => 1,
 				'intelligence' => 1,
 				'luck' => 1,
@@ -2390,7 +2396,6 @@ class CombatComponent extends Component
 			'debuffs' => [],
 			'buffs' => [],
 			'strength' => 1,
-			'agility' => 1,
 			'dexterity' => 1,
 			'intelligence' => 1,
 			'luck' => 1,
@@ -2428,7 +2433,6 @@ class CombatComponent extends Component
 			'debuffs' => [],
 			'buffs' => [],
 			'strength' => 1,
-			'agility' => 1,
 			'dexterity' => 1,
 			'intelligence' => 1,
 			'luck' => 1,

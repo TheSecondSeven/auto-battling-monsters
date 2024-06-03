@@ -68,6 +68,12 @@ class AppController extends Controller
                         ]);
                 })
                 ->first();
+            $gauntlet_runs_to_be_completed = 0;
+            foreach($this->user->monsters as $monster) {
+                if($monster->in_gauntlet_run_until && (int)$monster->in_gauntlet_run_until->toUnixString() <= time())
+                    $gauntlet_runs_to_be_completed++;
+            }
+            $this->user->gauntlet_runs_to_be_completed = $gauntlet_runs_to_be_completed;
             
             $this->user->total_gauntlet_runs_today = $this->fetchTable('GauntletRuns')
                 ->find()
@@ -78,6 +84,27 @@ class AppController extends Controller
                 ->all()
                 ->count() + count($this->user->monsters);
             $this->set('user', $this->user);
+
+            $this->user->usable_types = [];
+            $types = $this->fetchTable('Types')
+                ->find()
+                ->contain('Monsters', function ($q) use ($user_id) {
+                    return $q->where([
+                        'Monsters.user_id' => $user_id,
+                    ]);
+                })
+                ->contain('SecondaryMonsters', function ($q) use ($user_id) {
+                    return $q->where([
+                        'SecondaryMonsters.user_id' => $user_id,
+                    ]);
+                })
+                ->all()
+                ->toList();
+            foreach($types as $type) {
+                if(!empty($type->monsters) || !empty($type->secondary_monsters)) {
+                    $this->user->usable_types[] = $type->id;
+                }
+            }
         }
     }
 }

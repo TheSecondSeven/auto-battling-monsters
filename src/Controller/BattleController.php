@@ -61,7 +61,7 @@ class BattleController extends AppController
 				->first();
 			$elo_threshold++;
 		}
-		$result = $this->Combat->twoTeamCombat($monster, $opponent);
+		$result = $this->Combat->twoTeamCombat([$monster], [$opponent]);
 		$this->set('battlesJSON',json_encode([$result],JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP));
 		$this->set('statuses',$this->fetchTable('Statuses')
             ->find()
