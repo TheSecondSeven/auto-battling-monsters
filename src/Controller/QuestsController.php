@@ -65,7 +65,7 @@ class QuestsController extends AppController
             ])
             ->all()
             ->toList();
-        $completed_quest_ids = [-1];
+        $completed_quest_ids = [1];
         foreach($completed_quests as $index=>$quest) {
             if(!empty($quest->_matchingData['QuestsUsers']->monster_id)) {
                 $completed_quests[$index]->monster = $this->fetchTable('Monsters')
@@ -101,29 +101,6 @@ class QuestsController extends AppController
                 ]
             ])
             ->all();
-        if(count($available_quests) == 0) {
-            $available_quests = $this->Quests
-            ->find()
-            ->where([
-                'Quests.quest_id IS NULL'
-            ])
-            ->notMatching('Users', function ($q) use ($user_id) {
-                return $q->where([
-					'QuestsUsers.user_id' => $user_id,
-					'QuestsUsers.completed IS NOT NULL',
-				]);
-            })
-            ->contain([
-                'QuestMonsters',
-                'QuestRewards' => [
-                    'Skills',
-                    'Ultimates',
-                    'Types',
-                    'SecondaryTypes'
-                ]
-            ])
-            ->all();
-        }
         
         $available_monsters = $this->fetchTable('Monsters')
 			->find('list')
@@ -162,7 +139,7 @@ class QuestsController extends AppController
             })
             ->all()
             ->toList();
-        $completed_quest_ids = [-1];
+        $completed_quest_ids = [1];
         foreach($completed_quests as $index=>$quest) {
             if(!empty($quest->_matchingData['QuestsUsers']->monster_id)) {
                 $completed_quests[$index]->monster = $this->fetchTable('Monsters')
@@ -204,33 +181,6 @@ class QuestsController extends AppController
                     ->find('forBattle');
             })
             ->first();
-        if(empty($quest->id)) {
-            $quest = $this->Quests
-            ->find()
-            ->notMatching('Users', function ($q) use ($user_id) {
-                return $q->where([
-					'QuestsUsers.user_id' => $user_id,
-					'QuestsUsers.completed IS NOT NULL',
-				]);
-            })
-            ->where([
-                'Quests.id' => $quest_id,
-                'Quests.quest_id IS NULL'
-            ])
-            ->contain([
-                'QuestRewards' => [
-                    'Skills',
-                    'Ultimates',
-                    'Types',
-                    'SecondaryTypes'
-                ]
-            ])
-            ->contain('QuestMonsters', function (SelectQuery $q) {
-                return $q
-                    ->find('forBattle');
-            })
-            ->firstOrFail();
-        }
         
 		if ($this->request->is('post','put')) {
             $monster = $this->fetchTable('Monsters')
