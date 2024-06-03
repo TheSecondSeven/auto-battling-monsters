@@ -855,7 +855,7 @@ class CombatComponent extends Component
 				$this->addActionMessage($action_message, 'skill_use', $this->monsters[$monster->id]->name.' uses '.$ultimateData->name.'.');
 				foreach($ultimateData->skill_effects as $skill_effect) {
 					$targets = $this->getTargets($monster, $skill_effect->targets);
-					$this->processEffect($time, $action_message, $monster, $ultimateData->name, $ultimateData->type->name, $skill_effect, $targets);
+					$this->processEffect($time, $action_message, $monster, $ultimateData, $ultimateData->type->name, $skill_effect, $targets);
 					if(empty($skill_effect->missed)) {
 						foreach($skill_effect->secondary_skill_effects as $secondary_skill_effect) {
 							if($skill_effect->targets == $secondary_skill_effect->targets) {
@@ -863,7 +863,7 @@ class CombatComponent extends Component
 							}else{
 								$secondary_targets = $this->getTargets($monster, $secondary_skill_effect->targets);
 							}
-							$this->processEffect($time, $action_message, $monster, $ultimateData->name, $ultimateData->type->name, $secondary_skill_effect, $secondary_targets, true);
+							$this->processEffect($time, $action_message, $monster, $ultimateData, $ultimateData->type->name, $secondary_skill_effect, $secondary_targets, true);
 						}
 					}
 				}
@@ -896,7 +896,7 @@ class CombatComponent extends Component
 						'chance' => 100
 					];
 					$targets = $this->getTargets($monster, $skill_effect->targets);
-					$this->processEffect($time, $action_message, $monster, $ultimateData->name, $ultimateData->type->name, $skill_effect, $targets);
+					$this->processEffect($time, $action_message, $monster, $ultimateData, $ultimateData->type->name, $skill_effect, $targets);
 				}
 				
 				
@@ -966,7 +966,7 @@ class CombatComponent extends Component
 								'chance' => 10000
 							];
 							$targets = $this->getTargets($monster, $skill_effect->targets);
-							$this->processEffect($time, $action_message, $monster, $ultimateData->name, $element, $skill_effect, $targets);
+							$this->processEffect($time, $action_message, $monster, $ultimateData, $element, $skill_effect, $targets);
 						}
 					}
 				}
@@ -987,7 +987,7 @@ class CombatComponent extends Component
 						];
 						$targets = $this->getTargets($monster, $skill_effect->targets);
 						
-						$this->processEffect($time, $action_message, $monster, $ultimateData->name, 'Wild', $skill_effect, $targets);
+						$this->processEffect($time, $action_message, $monster, $ultimateData, 'Wild', $skill_effect, $targets);
 					}
 					if($effects == 0) {
 						$this->addActionMessage($action_message, 'skill_result', $ultimateData->name.' fizzles.');
@@ -1122,7 +1122,7 @@ class CombatComponent extends Component
 								$this->addActionMessage($action_message, 'skill_use', $this->monsters[$monster->id]->name.' uses '.$skill->name.'.');
 								foreach($skill->skill_effects as $skill_effect) {
 									$targets = $this->getTargets($monster, $skill_effect->targets);
-									$this->processEffect($time, $action_message, $monster, $skill->name, $skill->type->name, $skill_effect, $targets);
+									$this->processEffect($time, $action_message, $monster, $skill, $skill->type->name, $skill_effect, $targets);
 									if(empty($skill_effect->missed) && $skill_effect->effect != 'Random Amount' && $skill_effect->effect != 'Consume') {
 										foreach($skill_effect->secondary_skill_effects as $secondary_skill_effect) {
 											if($skill_effect->targets == $secondary_skill_effect->targets) {
@@ -1130,7 +1130,7 @@ class CombatComponent extends Component
 											}else{
 												$secondary_targets = $this->getTargets($monster, $secondary_skill_effect->targets);
 											}
-											$this->processEffect($time, $action_message, $monster, $skill->name, $skill->type->name, $secondary_skill_effect, $secondary_targets, true);
+											$this->processEffect($time, $action_message, $monster, $skill, $skill->type->name, $secondary_skill_effect, $secondary_targets, true);
 										}
 									}
 								}
@@ -2023,7 +2023,10 @@ class CombatComponent extends Component
 					'chance' => 100
 				];
 				$targets = $this->getTargets($monster, $skill_effect->targets);
-				$this->processEffect($time, $action_message, $monster, 'Discharge', 'Electric', $skill_effect, $targets);
+				$skill = (object)[
+					'name' => 'Discharge'
+				];
+				$this->processEffect($time, $action_message, $monster, $skill, 'Electric', $skill_effect, $targets);
 				$this->monsters[$monster->id]->statuses['discharge']['stacks'] = 0;	
 			}
 		}
