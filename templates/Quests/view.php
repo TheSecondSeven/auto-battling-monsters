@@ -19,7 +19,10 @@
 			</tr>
 		</tbody>
 	</table>
-	<?php if(count($available_monsters)) { ?>
+	<?php if(empty($quest->quest_monsters) || empty($quest->quest_rewards)) { ?>
+		<p>This quest isn't ready yet. Please check back later!</p>
+	
+	<?php }elseif(count($available_monsters)) { ?>
     <div class="mb-3">
 		<?= $this->Form->create() ?>
         <?= $this->Form->control('monster_id', ['label' => 'Choose Your Monster','options' => $available_monsters]); ?>
