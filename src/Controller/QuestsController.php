@@ -200,8 +200,20 @@ class QuestsController extends AppController
                     'Monsters.ultimate_id != 0'
                 ])
                 ->firstOrFail();
+            $opponents = [];
+            foreach($quest->quest_monsters  as $quest_monster) {
+                if($quest_monster->clone) {
+                    $clone_monster = clone $monster;
+                    unset($clone_monster->rune1);
+                    unset($clone_monster->rune2);
+                    unset($clone_monster->rune3);
+                    $opponents[] = $clone_monster;
+                }else{
+                    $opponents[] = $quest_monster;
+                }
+            }
             
-            $result = $this->Combat->twoTeamCombat([clone $monster], $quest->quest_monsters);
+            $result = $this->Combat->twoTeamCombat([clone $monster], $opponents);
             $quests_user = $this->Quests->QuestsUsers
                 ->find()
                 ->where([
