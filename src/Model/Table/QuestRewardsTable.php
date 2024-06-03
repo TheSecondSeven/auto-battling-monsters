@@ -111,11 +111,11 @@ class QuestRewardsTable extends Table
             }
             $user_quest_reward->type_id = $rune->type_id;
         }elseif($quest_reward->reward_type == 'Rune Shards') {
-            TableRegistry::getTableLocator()->get('Users')->giveRuneShardsToUser($user->id, $amount);
+            TableRegistry::getTableLocator()->get('Users')->giveRuneShardsToUser($user->id, $quest_reward->amount);
         }elseif($quest_reward->reward_type == 'Gold') {
-            TableRegistry::getTableLocator()->get('Users')->giveGoldToUser($user->id, $amount);
+            TableRegistry::getTableLocator()->get('Users')->giveGoldToUser($user->id, $quest_reward->amount);
         }elseif($quest_reward->reward_type == 'Gems') {
-            TableRegistry::getTableLocator()->get('Users')->giveGemsToUser($user->id, $amount);
+            TableRegistry::getTableLocator()->get('Users')->giveGemsToUser($user->id, $quest_reward->amount);
         }
         // }elseif($quest_reward->reward_type == 'Ultimate') {
         //     if(!empty($quest_reward->ultimate->id)) {
