@@ -204,6 +204,12 @@ class QuestsController extends AppController
             foreach($quest->quest_monsters  as $quest_monster) {
                 if($quest_monster->clone) {
                     $clone_monster = clone $monster;
+                    $clone_monster->name = 'Clone of '.$monster->name;
+                    $clone_monster->skill1 = clone $monster->skill1;
+                    $clone_monster->skill2 = clone $monster->skill2;
+                    $clone_monster->skill3 = clone $monster->skill3;
+                    $clone_monster->skill4 = clone $monster->skill4;
+                    $clone_monster->ultimate = clone $monster->ultimate;
                     unset($clone_monster->rune1);
                     unset($clone_monster->rune2);
                     unset($clone_monster->rune3);
