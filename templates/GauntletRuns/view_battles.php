@@ -21,18 +21,20 @@
 	</div>
 	<br>
 	<br>
-	<div id="speed-controls" class="actions">
-		<a class="slow btn btn-secondary" onclick="setSpeed('slow'); return false;" type="button">Slow</a>
-		<a class="medium btn btn-primary"  onclick="setSpeed('medium'); return false;" type="button">Medium</a>
-		<a class="fast btn btn-secondary" onclick="setSpeed('fast'); return false;" type="button">Fast</a>
-		<br>
-		<br>
-		<a class="btn btn-primary" onclick="restart(); return false;" type="button">Restart Battle</a>
-		<a class="btn btn-primary" onclick="goToResults(); return false;" type="button">Battle Results</a>
-		<br>
-		<br>
-		<a class="btn btn-primary" onclick="previousBattle(); return false;" type="button">Previous Battle</a>
-		<a class="btn btn-primary" onclick="nextBattle(); return false;" type="button">Next Battle</a>
+	<div id="speed-controls" class="actions list-group list-group-horizontal">
+		<div class="list-group-item">
+			<a class="slow btn btn-secondary" onclick="setSpeed('slow'); return false;" type="button">Slow</a>
+			<a class="medium btn btn-primary"  onclick="setSpeed('medium'); return false;" type="button">Medium</a>
+			<a class="fast btn btn-secondary" onclick="setSpeed('fast'); return false;" type="button">Fast</a>
+		</div>
+		<div class="list-group-item">
+			<a class="btn btn-primary" onclick="restart(); return false;" type="button">Restart Battle</a>
+			<a class="btn btn-primary" onclick="goToResults(); return false;" type="button">Battle Results</a>
+		</div>
+		<div class="list-group-item">
+			<a class="btn btn-primary" onclick="previousBattle(); return false;" type="button">Previous Battle</a>
+			<a class="btn btn-primary" onclick="nextBattle(); return false;" type="button">Next Battle</a>
+		</div>
 	</div>
 	<br>
 	<div id="teams">

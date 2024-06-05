@@ -1,6 +1,6 @@
 <style>
 	.content {
-		height: 750px;
+		height: 1550px;
 		text-align: center;
 	}
 	#teams {
@@ -25,10 +25,9 @@
 		font-weight: bold;
 	}
 	#speed-controls {
-		
-		display: inline-block;
-		float: none !important;
-		width: 100% !important;
+		margin: 0 auto;
+  align-items: center;
+  justify-content: center;
 	}
 	
 	#team-1 {
@@ -46,16 +45,33 @@
 		width: 100%;
 		min-height: 300px;
 	}
+
+	.portrait {
+		width: 200px;
+		height: 200px;
+		position: relative;
+		border: 2px solid black;
+		background-color: #75dbdb61;
+	}
+
+	.portrait.fire {
+		background-color: #e6194b;
+	}
 	
 	.clear-fix {
 		clear: both;
 	}
 	
 	.combatText {
-		clear: both;
 		height: 20px;
+		width: 20px;
+		line-height: 20px;
+		position:absolute;
+		top: calc(50% - 10px);
+		left: calc(50% - 10px);
 	}
 	.combatTextItem {
+  		transform: scale(1);
 		float: left;
 		margin: 0 0 0 5px;
 		width: 20px;
@@ -63,8 +79,13 @@
 		font-size: 12px;
 		font-weight: bold;
 		color: white;
-		line-height: 30px;
+		line-height: 20px;
 		text-align: center;
+  		transition: transform 0.5s;
+		position: absolute;
+	}
+	.combatTextItem.grow {
+  		transform: scale(3);
 	}
 	.combatText .heal {
 		color: #3cb44b;
@@ -73,20 +94,27 @@
 		color: #e6194b;
 	}
 	.info {
-		margin-top: 10px;
-		height: 20px;
+		width: 100%;
+		line-height: 20px;
+
+		position: absolute;
+		bottom: 3px;
+		left: 0px;
 	}
 	.name {
-		float: left;
+		margin: 0 auto;
 		height: 20px;
 		line-height: 20px;
 	}
 	.statuses {
-		float: left;
+		line-height: 30px;
+		position: absolute;
+		top: 0px;
+		left: 0px;
 	}
 	.statuses div {
 		float: left;
-		margin: 0 0 0 5px;
+		margin: 7.666px 0 0 7.666px;
 		width: 30px;
 		height: 30px;	
 		word-wrap: break-word;
@@ -142,7 +170,7 @@
 	
 	
 	.healthBar {
-		margin-top: 10px;
+		margin-top: 1px;
 		clear: both;
 		border:1px solid black;
 		height: 25px;
@@ -161,6 +189,7 @@
 		text-align: center;
 	}
 	.castBar {
+		margin-top: 1px;
 		clear: both;
 		border:1px solid black;
 		height: 25px;
@@ -186,21 +215,24 @@
 		text-align: center;
 	}
 	.messageLog {
-		margin: 0;
+		margin: 1px 0 0 0;
 		list-style-type: none;
-		width: 202px;
+		width: 200px;
+		padding-left: 0px;
 	}
 	.messageLog li.group {
-		margin: 0;
+		margin: 1px 0 0 0;
 		padding: 0 5px 0 5px;
 		border:1px solid black;
 	}
 	
 	.messageLog li ul {
-		margin: 0;
-		list-style-type: none;
+    padding-left: 15px;
+    margin: 0;
+    list-style-type: disclosure-closed;
 	}
 	.messageLog li ul li {
 		margin: 0;
+		text-align: left;
 	}
 </style>

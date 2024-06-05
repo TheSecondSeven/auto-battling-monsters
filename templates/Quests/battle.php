@@ -8,11 +8,15 @@
 	</div>
 	<br>
 	<br>
-	<div id="speed-controls" class="actions">
-		<a class="slow btn btn-secondary" onclick="setSpeed('slow'); return false;" type="button">Slow</a>
-		<a class="medium btn btn-primary"  onclick="setSpeed('medium'); return false;" type="button">Medium</a>
-		<a class="fast btn btn-secondary" onclick="setSpeed('fast'); return false;" type="button">Fast</a>
-		<a class="btn btn-success" onclick="restart(); return false;" type="button">Restart</a>
+	<div id="speed-controls" class="actions list-group list-group-horizontal">
+		<div class="list-group-item">
+			<a class="slow btn btn-secondary" onclick="setSpeed('slow'); return false;" type="button">Slow</a>
+			<a class="medium btn btn-primary"  onclick="setSpeed('medium'); return false;" type="button">Medium</a>
+			<a class="fast btn btn-secondary" onclick="setSpeed('fast'); return false;" type="button">Fast</a>
+		</div>
+		<div class="list-group-item">
+			<a class="btn btn-success" onclick="restart(); return false;" type="button">Restart</a>
+		</div>	
 	</div>
 	<?php if(!empty($quest->user_quest_rewards)) { ?>
 		<br>

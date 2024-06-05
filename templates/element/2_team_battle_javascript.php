@@ -135,7 +135,7 @@
 		var state = data.state[monsterID];
 		if(!($($('#'+monsterID)).length > 0)) {
 			var teamID = state.team;
-			$('#team-'+teamID).append('<div id="'+monsterID+'" class="monsterDiv"><div class="combatText"></div><div class="clear-fix"></div><div class="info"><div class="name"></div><div class="statuses"></div></div><div class="clear-fix"></div><div class="healthBar"><div class="healthRemaining"></div><div class="healthText"></div></div><div class="clear-fix"></div><div class="castBar"><div class="castCompletion"></div><div class="castText"></div></div><div class="clear-fix"></div><ul class="messageLog"></ul></div>');		
+			$('#team-'+teamID).append('<div id="'+monsterID+'" class="monsterDiv"><div class="portrait"><div class="statuses"></div><div class="combatText"></div><div class="info"><div class="name"></div></div></div><div class="clear-fix"></div><div class="healthBar"><div class="healthRemaining"></div><div class="healthText"></div></div><div class="clear-fix"></div><div class="castBar"><div class="castCompletion"></div><div class="castText"></div></div><div class="clear-fix"></div><ul class="messageLog"></ul></div>');		
 		}
 		var monsterDiv = $('#'+monsterID);
 		$(monsterDiv).data('updated', 1);
@@ -232,10 +232,44 @@
 				var monsterHealthChanges = data.healthChange[monsterID];
 				
 				for(var i = 0; i < monsterHealthChanges.length; i++) {
+					var diameter = 150;
 					if(parseInt(monsterHealthChanges[i].amount) > 0) {
-						$('.combatText',monsterDiv).prepend('<div class="combatTextItem heal '+monsterHealthChanges[i].type+'">+'+monsterHealthChanges[i].amount+'</div>').children(':first').hide().fadeIn(100).delay(700).fadeOut(300);
+						$('.combatText',monsterDiv)
+							.prepend('<div class="combatTextItem heal '+monsterHealthChanges[i].type+'">+'+monsterHealthChanges[i].amount+'</div>')
+							.children(':first')
+							.hide()
+							.fadeIn(100)
+							.addClass('grow')
+							.animate({
+								left: Math.floor(Math.random() * diameter - diameter / 2),
+								top: Math.floor(Math.random() * diameter - diameter / 2)
+							}, 1, function() {
+								$(this)
+								.fadeOut(300);
+							});
 					}else if(parseInt(monsterHealthChanges[i].amount) < 0){
-						$('.combatText',monsterDiv).prepend('<div class="combatTextItem damage '+monsterHealthChanges[i].type+'">'+monsterHealthChanges[i].amount+'</div>').children(':first').hide().fadeIn(100).delay(700).fadeOut(300);
+						$('.combatText',monsterDiv)
+						.prepend('<div class="combatTextItem damage '+monsterHealthChanges[i].type+'">'+monsterHealthChanges[i].amount+'</div>')
+						.children(':first')
+						.hide()
+						.fadeIn(100, function() {
+							$(this)
+							.addClass('grow');
+							$(this)
+							.animate({
+								left: Math.floor(Math.random() * diameter - diameter / 2),
+								top: Math.floor(Math.random() * diameter - diameter / 2)
+							}, {
+								duration: 400,
+								easing: 'linear',
+								complete: function() {
+									$(this)
+									.fadeOut(100, function() {
+										$(this).remove();
+									});
+								}
+							});
+						});
 					}
 				}
 			}
