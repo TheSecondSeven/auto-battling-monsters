@@ -58,7 +58,7 @@ class CombatComponent extends Component
 				}
 			}
 			foreach($this->monsters as $index=>$monster) {
-				if($monster->markedForDeath) 
+				if(!empty($monster->markedForDeath))
 					$this->handleDeath($time, $monster);
 			}
 			
@@ -309,14 +309,14 @@ class CombatComponent extends Component
 	
 	private function setupMonster($monster, $time) {
 		$this->monsters[$monster->id]->stats = $this->createStats($this->monsters[$monster->id]);
-		if(!$monster->persisted) {
+		if(empty($monster->persisted)) {
 			$this->monsters[$monster->id]->statuses = [];
 			$this->monsters[$monster->id]->debuffs = [];
 			$this->monsters[$monster->id]->buffs = [];
 		}
 		if(empty($this->monsters[$monster->id]->max_health)) {
 			$this->monsters[$monster->id]->max_health = $this->monsters[$monster->id]->stats->health;
-			if(!$monster->persisted) {
+			if(empty($monster->persisted)) {
 				$this->monsters[$monster->id]->current_health = $this->monsters[$monster->id]->max_health;
 			}
 		}
