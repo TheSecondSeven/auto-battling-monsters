@@ -2229,12 +2229,12 @@ class CombatComponent extends Component
 		$stats = (object) [];
 		$stats->physicalAttackModifier = 1 + 0.05 * ($monster->strength - 1);
 		$stats->physicalDefenseModifier = 1 + 0.025 * ($monster->strength - 1);
-		$stats->evadeModifier = 0.01 + 0.01 * ($monster->dexterity - 1);
+		$stats->evadeModifier = 0.00 + 0.01 * ($monster->dexterity - 1);
 		$stats->speed = 1.0 + 0.03 * ($monster->dexterity - 1);
 		$stats->hitModifier = 0.00 + 0.01 * ($monster->dexterity - 1);
 		$stats->magicalAttackModifier = 1 + 0.05 * ($monster->intelligence - 1);
 		$stats->magicalDefenseModifier = 1 + 0.025 * ($monster->intelligence - 1);
-		$stats->criticalChance = 0.01 + 0.02 * ($monster->luck - 1);
+		$stats->criticalChance = 0.00 + 0.02 * ($monster->luck - 1);
 		$stats->rerollChance = 0.00 + 0.03 * ($monster->luck - 1);
 		$stats->health = 100.0 + 2.0 * ($monster->vitality - 1);
 		return $stats;
