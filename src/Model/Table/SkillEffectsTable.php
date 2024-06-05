@@ -49,6 +49,8 @@ class SkillEffectsTable extends Table
 			'Consume',
 			'Undying',
 			'Random Amount',
+			'Blind',
+			'Reflect'
 			//'Delay'
 		];
 		$effect_options = array_combine($effects, $effects);

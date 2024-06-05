@@ -107,8 +107,8 @@
 	}
 	.status-key .status, .status-key .buff, .status-key .debuff {
 		margin: 0;
-		width: 20px;
-		height: 20px;	
+		width: 30px;
+		height: 30px;	
 		word-wrap: break-word;
 		font-size: 14px;
 		font-weight: bold;
@@ -135,7 +135,7 @@
 		echo '
 	.'.$status->class.' {
 		color: '.$status->text_color.' !important;
-		background-color: #'.$status->hex.';
+		background-color: '.$status->hex.';
 	}';
 		
 	} ?>

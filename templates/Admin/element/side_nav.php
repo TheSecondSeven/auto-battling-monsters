@@ -4,6 +4,7 @@
 		<?= $this->Html->link('Quests', ['controller' => 'quests', 'action' => 'index'], ['class'=>'list-group-item list-group-item-action']); ?>
 		<br>
 		<?= $this->Html->link('Monsters', ['controller' => 'monsters', 'action' => 'index'], ['class'=>'list-group-item list-group-item-action']); ?>
+		<?= $this->Html->link('Statuses', ['controller' => 'statuses', 'action' => 'index'], ['class'=>'list-group-item list-group-item-action']); ?> </li>
 		<?= $this->Html->link('Skills', ['controller' => 'skills', 'action' => 'index'], ['class'=>'list-group-item list-group-item-action']); ?> </li>
 		<?= $this->Html->link('Ultimates', ['controller' => 'ultimates', 'action' => 'index'], ['class'=>'list-group-item list-group-item-action']); ?> </li>
         <br>
