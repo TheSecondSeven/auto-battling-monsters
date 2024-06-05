@@ -64,7 +64,7 @@
                 <td><?= $status->name ?></td>
                 <td><?= $status->effect ?></td>
                 <td><?= $status->description ?></td>
-                <td style="vertical-align: middle;"><div style="display: inherit; width:30px; height:30px; border: 2px solid #<?= ($status->type == 'Status' ? '454545' : ($status->type == 'Buff' ? '3cb44b' : 'e6194b')) ?>; text-align: center; vertical-align: middle; background-color: <?= $status->hex ?>; color: <?= $status->text_color ?>;">99</div></td>
+                <td style="vertical-align: middle;"><div style="line-height: 26px; width:30px; height:30px; border: 2px solid #<?= ($status->type == 'Status' ? '454545' : ($status->type == 'Buff' ? '3cb44b' : 'e6194b')) ?>; text-align: center; vertical-align: middle; background-color: <?= $status->hex ?>; color: <?= $status->text_color ?>;">99</div></td>
                 <td class="dropdown">
                     <div class="dropdown">
                         <button class="btn btn-primary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

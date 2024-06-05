@@ -87,13 +87,13 @@
 	.statuses div {
 		float: left;
 		margin: 0 0 0 5px;
-		width: 20px;
-		height: 20px;	
+		width: 30px;
+		height: 30px;	
 		word-wrap: break-word;
 		font-size: 14px;
 		font-weight: bold;
 		color: white;
-		line-height: 20px;
+		line-height: 26px;
 		text-align: center;
 	}
 	.status-key {
@@ -113,7 +113,7 @@
 		font-size: 14px;
 		font-weight: bold;
 		color: white;
-		line-height: 20px;
+		line-height: 26px;
 		text-align: center;
 		display: inline-block;
 	}
