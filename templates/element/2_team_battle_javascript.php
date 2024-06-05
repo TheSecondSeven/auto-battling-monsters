@@ -235,18 +235,27 @@
 					var diameter = 150;
 					if(parseInt(monsterHealthChanges[i].amount) > 0) {
 						$('.combatText',monsterDiv)
-							.prepend('<div class="combatTextItem heal '+monsterHealthChanges[i].type+'">+'+monsterHealthChanges[i].amount+'</div>')
-							.children(':first')
-							.hide()
-							.fadeIn(100)
-							.addClass('grow')
+						.prepend('<div class="combatTextItem heal '+monsterHealthChanges[i].type+'">+'+monsterHealthChanges[i].amount+'</div>')
+						.children(':first')
+						.hide()
+						.fadeIn(100, function() {
+							$(this)
+							.addClass('grow');
+							$(this)
 							.animate({
 								left: Math.floor(Math.random() * diameter - diameter / 2),
 								top: Math.floor(Math.random() * diameter - diameter / 2)
-							}, 1, function() {
-								$(this)
-								.fadeOut(300);
+							}, {
+								duration: 400,
+								easing: 'linear',
+								complete: function() {
+									$(this)
+									.fadeOut(100, function() {
+										$(this).remove();
+									});
+								}
 							});
+						});
 					}else if(parseInt(monsterHealthChanges[i].amount) < 0){
 						$('.combatText',monsterDiv)
 						.prepend('<div class="combatTextItem damage '+monsterHealthChanges[i].type+'">'+monsterHealthChanges[i].amount+'</div>')
