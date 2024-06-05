@@ -6,6 +6,7 @@
 			<tr>
 				<th>Quest</th>
 				<th>Required Rest</th>
+				<th>Persistent?</th>
 				<th>Monsters</th>
 				<th>Rewards</th>
 			</tr>
@@ -13,7 +14,8 @@
 		<tbody>
 			<tr>
 				<td><?= $quest->title ?><br><?= $quest->description ?></td>
-				<td><?= (!empty($quest->required_rest) ? $quest->required_rest : 'None') ?></td>
+				<td><?= $quest->get('required_rest_verbose') ?></td>
+                <td><?= ($quest->persistent ? 'Yes' : 'No') ?></td>
 				<td><?= $quest->get('monsters') ?></td>
 				<td><?= $quest->get('rewards') ?></td>
 			</tr>
