@@ -704,6 +704,7 @@ class CombatComponent extends Component
 	}
 	
 	private function handleDeath($time, $monster) {
+		$this->monsters[$monster->id]->markedForDeath = false;
 		//check for phoenix
 		if(!empty($this->monsters[$monster->id]->statuses['phoenix'])) {
 			$egg = $this->phoenixEgg();
