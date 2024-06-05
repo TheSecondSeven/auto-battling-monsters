@@ -53,14 +53,18 @@ class CombatComponent extends Component
 		while($time <= 60000 && $battle_over == false) {
 			$this->processStatuses($time, $this->monsters);
 			foreach($this->monsters as $monster) {
-				if($this->monsters[$monster->id]->next_action_time <= $time && $this->monsters[$monster->id]->current_health > 0) {
+				if($monster->next_action_time <= $time && !isset($monster->statuses['fainted'])) {
 					$this->nextAction($time, $monster);
 				}
 			}
+			foreach($this->monsters as $index=>$monster) {
+				if($monster->markedForDeath) 
+					$this->handleDeath($time, $monster);
+			}
 			
 			if(!empty($this->action_log[$time])) {
-				foreach($this->monsters as $monster) {
-					$snapshot = clone($monster);
+				foreach($this->monsters as $index=>$monster) {
+					$snapshot = clone($this->monsters[$monster->id]);
 					$this->action_log[$time]['state']['monster-'.$snapshot->id] = [
 						'name' => (string)$snapshot->name,
 						'max_health' => (int)$snapshot->max_health,
@@ -329,7 +333,6 @@ class CombatComponent extends Component
 			$this->augmentSlot($monster, 'Ultimate');
 			*/
 			if(!empty($this->monsters[$monster->id]->skill1->id)) {
-				
 				$this->monsters[$monster->id]->skills[] = $this->cloneSkill($this->monsters[$monster->id]->skill1);
 			}
 			if(!empty($this->monsters[$monster->id]->skill2->id)) {
@@ -673,7 +676,7 @@ class CombatComponent extends Component
 				}
 				
 				if($this->monsters[$monster->id]->current_health <= 0) {
-					$this->handleDeath($time, $action_message, $monster);
+					$this->markForDeath($monster);
 				}else{
 					if(!empty($this->monsters[$monster->id]->debuffs['asleep'])) {
 						$this->monsters[$monster->id]->debuffs['asleep']['ends'] = $time;
@@ -690,8 +693,11 @@ class CombatComponent extends Component
 			}
 		}
 	}
+	private function markForDeath($monster) {
+		$this->monsters[$monster->id]->markedForDeath = true;
+	}
 	
-	private function handleDeath($time, &$action_message, $monster) {
+	private function handleDeath($time, $monster) {
 		//check for phoenix
 		if(!empty($this->monsters[$monster->id]->statuses['phoenix'])) {
 			$egg = $this->phoenixEgg();
@@ -709,10 +715,16 @@ class CombatComponent extends Component
 		}else{
 			$this->monsters[$monster->id]->current_health = 0;
 			if(!empty($monster->summon)) {
-				$this->addActionMessage($action_message, 'event', $this->monsters[$monster->id]->name.' was Destroyed.');
+				$this->action_log[$time]['messages']['monster-'.$this->monsters[$monster->id]->id][][] = [
+					'type' => 'event',
+					'text' => $this->monsters[$monster->id]->name.' was Destroyed.'
+				];
 				$this->monstersToRemove[] = $monster->id;
 			}else{
-				$this->addActionMessage($action_message, 'event', $this->monsters[$monster->id]->name.' has Fainted.');
+				$this->action_log[$time]['messages']['monster-'.$this->monsters[$monster->id]->id][][] = [
+					'type' => 'event',
+					'text' => $this->monsters[$monster->id]->name.' has Fainted.'
+				];
 			}
 			$this->monsters[$monster->id]->statuses = [];
 			$this->monsters[$monster->id]->statuses['fainted'] = [];
@@ -732,7 +744,7 @@ class CombatComponent extends Component
 				$hasEnemies = true;
 		}
 		
-		while($this->monsters[$monster->id]->next_action_time <= $time && $this->monsters[$monster->id]->current_health > 0 && $hasEnemies) {
+		while($this->monsters[$monster->id]->next_action_time <= $time && $hasEnemies) {
 			if(!empty($this->monsters[$monster->id]->next_use_skill)) {
 				$skill = $this->monsters[$monster->id]->next_use_skill;
 				if(!empty($skill->ultimate)) {
@@ -1109,7 +1121,7 @@ class CombatComponent extends Component
 				if($ultimateData->id == 'End of the World') {
 					$this->addActionMessage($action_message, 'skill_result', $monster->name.' ends the World.');
 					foreach($monster->enemies as $enemy) {
-						$this->handleDeath($time, $action_message, $enemy);
+						$this->markForDeath($time, $action_message, $enemy);
 					}
 				}
 				if($ultimateData->id == 18) {

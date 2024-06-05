@@ -7,6 +7,7 @@
             <tr>
                     <th>Quest</th>
                     <th>Required Rest</th>
+                    <th>Persistent</th>
                     <th>Enemies</th>
                     <th>Rewards</th>
                     <th class="actions">Actions</th>
@@ -17,6 +18,7 @@
             <tr>
                 <td><?= $quest->title ?></td>
                 <td><?= $quest->get('required_rest_verbose') ?></td>
+                <td><?= ($quest->persistent ? 'Yes' : 'No') ?></td>
                 <td><?= $quest->get('monsters') ?></td>
                 <td><?= $quest->get('rewards') ?></td>
                 <td><?= $this->Html->link('View', ['controller' => 'quests', 'action' => 'view', $quest->id], ['class' => 'btn btn-primary']); ?></td>

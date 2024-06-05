@@ -11,6 +11,7 @@
 				<th>Title</th>
 				<th>Description</th>
 				<th>Required Rest</th>
+				<th>Persistent</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -18,7 +19,8 @@
 				<td><?= (!empty($quest->parent_quest->id) ? $quest->parent_quest->title : 'None') ?></td>
 				<td><?= $quest->title ?></td>
 				<td><?= $quest->description ?></td>
-				<td><?= ($quest->required_rest > 0 ? $quest->required_rest : 'None') ?></td>
+                <td><?= $quest->get('required_rest_verbose') ?></td>
+                <td><?= ($quest->persistent ? 'Yes' : 'No') ?></td>
 			</tr>
 		</tbody>
 	</table>

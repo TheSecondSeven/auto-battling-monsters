@@ -48,6 +48,7 @@
                     <th>Title</th>
                     <th>Description</th>
                     <th>Required Rest</th>
+                    <th>Persistent</th>
                     <th>Enemies</th>
                     <th>Rewards</th>
                     <th class="actions">Actions</th>
@@ -61,6 +62,7 @@
                 <td><?= $quest->title ?></td>
                 <td><?= $quest->description ?></td>
                 <td><?= $quest->get('required_rest_verbose') ?></td>
+                <td><?= ($quest->persistent ? 'Yes' : 'No') ?></td>
                 <td><?= count($quest->quest_monsters) ?></td>
                 <td><?= count($quest->quest_rewards) ?></td>
                 <td class="dropdown">

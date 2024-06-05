@@ -5,6 +5,7 @@
 	<?= $this->Form->control('title'); ?>
 	<?= $this->Form->control('description'); ?>
 	<?= $this->Form->control('required_rest'); ?>
+	<?= $this->Form->control('persistent'); ?>
     <?= $this->Form->submit(__('Create Quest')); ?>
     <?= $this->Form->end() ?>
 </div>
