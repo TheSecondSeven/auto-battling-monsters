@@ -201,6 +201,47 @@ class QuestsController extends AppController
                 ])
                 ->firstOrFail();
             $opponents = [];
+            if($quest->persistent) {
+                //get state of monsters from before
+                $quests_user = $this->fetchTable('QuestsUsers')
+                    ->find()
+                    ->where([
+                        'QuestsUsers.quest_id' => $quest_id,
+                        'QuestsUsers.user_id' => $this->user->id
+                    ])
+                    ->first();
+                if(!empty($quests_user->result_json_data)) {
+                    $result = json_decode($quests_user->result_json_data, true);
+                    if(!empty($result)) {
+                        $last_action_log = end($result[0]['action_log']);
+                        $last_time = (int)key($result[0]['action_log']);
+                        if(!empty($last_action_log)) {
+                            $monster_states = $last_action_log['state'];
+                            //need to clean next_tick and ends
+                            foreach($monster_states as $state_index=>$monster_state) {
+                                foreach($monster_state['statuses'] as $status_index=>$status) {
+                                    if(!empty($status['next_tick']))
+                                        $monster_states[$state_index]['statuses'][$status_index]['next_tick'] = max(0, $status['next_tick'] - $last_time);
+                                    if(!empty($status['ends']))
+                                        $monster_states[$state_index]['statuses'][$status_index]['ends'] = max(0, $status['ends'] - $last_time);
+                                }
+                                foreach($monster_state['buffs'] as $buff_index=>$buff) {
+                                    if(!empty($buff['next_tick']))
+                                        $monster_states[$state_index]['buffs'][$buff_index]['next_tick'] = max(0, $buff['next_tick'] - $last_time);
+                                    if(!empty($buff['ends']))
+                                        $monster_states[$state_index]['buffs'][$buff_index]['ends'] = max(0, $buff['ends'] - $last_time);
+                                }
+                                foreach($monster_state['debuffs'] as $debuff_index=>$debuff) {
+                                    if(!empty($debuff['next_tick']))
+                                        $monster_states[$state_index]['debuffs'][$debuff_index]['next_tick'] = max(0, $debuff['next_tick'] - $last_time);
+                                    if(!empty($debuff['ends']))
+                                        $monster_states[$state_index]['debuffs'][$debuff_index]['ends'] = max(0, $debuff['ends'] - $last_time);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             foreach($quest->quest_monsters  as $quest_monster) {
                 if($quest_monster->clone) {
                     $clone_monster = clone $monster;
@@ -210,6 +251,18 @@ class QuestsController extends AppController
                     unset($clone_monster->rune3);
                     $opponents[] = $clone_monster;
                 }else{
+                    if($quest->persistent && !empty($monster_states)) {
+                        foreach($monster_states as $monster_state) {
+                            if($monster_state['team'] == 2 && $monster_state['name'] == $quest_monster->name) {
+                                $quest_monster->persisted = true;
+                                $quest_monster->current_health = $monster_state['current_health'];
+                                $quest_monster->statuses = $monster_state['statuses'];
+                                $quest_monster->buffs = $monster_state['buffs'];
+                                $quest_monster->debuffs = $monster_state['debuffs'];
+                                break;
+                            }
+                        }
+                    }
                     $opponents[] = $quest_monster;
                 }
             }

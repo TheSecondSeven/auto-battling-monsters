@@ -63,7 +63,7 @@ class QuestsController extends AppController
                     'SecondaryTypes'
                 ]
             ])
-            ->matching('QuestMonsters', function ($q) {
+            ->contain('QuestMonsters', function ($q) {
                 return $q->find('forBattle');
             })
 			->first()

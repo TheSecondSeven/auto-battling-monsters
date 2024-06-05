@@ -308,14 +308,17 @@ class CombatComponent extends Component
 	
 	
 	private function setupMonster($monster, $time) {
-		
 		$this->monsters[$monster->id]->stats = $this->createStats($this->monsters[$monster->id]);
-		$this->monsters[$monster->id]->statuses = [];
-		$this->monsters[$monster->id]->debuffs = [];
-		$this->monsters[$monster->id]->buffs = [];
+		if(!$monster->persisted) {
+			$this->monsters[$monster->id]->statuses = [];
+			$this->monsters[$monster->id]->debuffs = [];
+			$this->monsters[$monster->id]->buffs = [];
+		}
 		if(empty($this->monsters[$monster->id]->max_health)) {
 			$this->monsters[$monster->id]->max_health = $this->monsters[$monster->id]->stats->health;
-			$this->monsters[$monster->id]->current_health = $this->monsters[$monster->id]->stats->health;
+			if(!$monster->persisted) {
+				$this->monsters[$monster->id]->current_health = $this->monsters[$monster->id]->max_health;
+			}
 		}
 		$this->monsters[$monster->id]->next_action_time = $time;
 		$this->monsters[$monster->id]->next_use_skill = null;
