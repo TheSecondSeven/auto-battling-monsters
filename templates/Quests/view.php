@@ -23,7 +23,6 @@
 	</table>
 	<?php if(empty($quest->quest_monsters) || empty($quest->quest_rewards)) { ?>
 		<p>This quest isn't ready yet. Please check back later!</p>
-	
 	<?php }elseif(count($available_monsters)) { ?>
     <div class="mb-3">
 		<?= $this->Form->create() ?>

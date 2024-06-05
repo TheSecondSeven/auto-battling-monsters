@@ -357,6 +357,9 @@ class CombatComponent extends Component
 			}
 		}
 		$this->applyRunes($monster);
+		if($this->monsters[$monster->id]->current_health <= 0) {
+			$this->handleDeath(0, $monster);
+		}
 	}
 	private function cloneSkill($skill) {
 		$cloned_skill = clone $skill;
