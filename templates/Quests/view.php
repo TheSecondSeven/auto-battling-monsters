@@ -21,7 +21,7 @@
 		</tbody>
 	</table>
 	<?php if(empty($quest->quest_monsters) || empty($quest->quest_rewards)) { ?>
-		<p>This quest isn't ready yet. Please check back later!</p>
+		<div class="alert alert-label alert-warning" style="text-align: left">This quest isn't ready yet. Please check back later!</div>
 	<?php }elseif(count($available_monsters)) { ?>
     <div class="mb-3">
 		<?= $this->Form->create() ?>
@@ -30,6 +30,6 @@
         <?= $this->Form->end() ?>
 	</div>
 	<?php }else{ ?>
-		<p>You don't have any monsters ready to quest. To be able to quest, a monster needs to have its move set completed, be fully rested, and cannot be running the Gauntlet.
+		<div class="alert alert-label alert-danger" style="text-align: left">You don't have any monsters ready to quest. To be able to quest, a monster needs to have its move set completed, be fully rested, and cannot be running the Gauntlet.</div>
 	<?php } ?>
 </div>
