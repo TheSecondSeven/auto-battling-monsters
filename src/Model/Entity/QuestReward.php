@@ -5,8 +5,12 @@ use Cake\ORM\Entity;
 
 class QuestReward extends Entity
 {
-
     protected function _getReward()
+    {
+        if($this->mystery) return '???';
+        return $this->get('real_reward');
+    }
+    protected function _getRealReward()
     {
         if($this->reward_type == 'Skill') {
             if(!empty($this->skill->id)) {

@@ -65,7 +65,7 @@
         </tr>
 	    <?php foreach ($quest->quest_rewards as $reward):?>
 		<tr>
-            <td><?= $reward->get('reward') ?></td>
+            <td><?= $reward->get('real_reward') ?></td>
             <td><?= ($reward->usable ? 'Yes' : 'No') ?></td>
 			<td class="dropdown">
 				<div class="dropdown">

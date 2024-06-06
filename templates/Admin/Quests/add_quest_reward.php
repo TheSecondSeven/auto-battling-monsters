@@ -2,6 +2,7 @@
 <div class="rewards form">
     <h3>Add Quest Reward</h3>
 	<?= $this->Form->create($quest_reward) ?>
+	<?= $this->Form->control('mystery'); ?>
 	<?= $this->Form->control('reward_type', ['options' => $reward_types]); ?>
 	<?= $this->Form->control('skill_id'); ?>
 	<?= $this->Form->control('ultimate_id'); ?>

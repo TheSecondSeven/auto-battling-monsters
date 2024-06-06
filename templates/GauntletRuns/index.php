@@ -132,6 +132,7 @@
         </tbody>
 	</table>
     <?php } ?>
+    <?php if(count($gauntlet_runs) > 0) { ?>
         <h4>Completed Gauntlet Runs</h3>
     <table  class="table table-striped">
         <thead>
@@ -192,4 +193,5 @@
     <?php endforeach; ?>
         </tbody>
 	</table>
+    <?php } ?>
 </div>
