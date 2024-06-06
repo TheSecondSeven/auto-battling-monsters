@@ -40,7 +40,7 @@
 	</tr>
 	<?php foreach ($skill->skill_effects as $skill_effect):?>
 		<tr>
-			<td colspan="2"><?= $skillEffect->get('effect_verbose') ?></td>
+			<td colspan="2"><?= $skill_effect->get('effect_verbose') ?></td>
 			<td><?php echo $skill_effect->chance; ?>%</td>
 			<td><?php echo $skill_effect->targets; ?></td>
 			<td class="dropdown">
