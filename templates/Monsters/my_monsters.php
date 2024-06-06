@@ -4,31 +4,27 @@
 	<table  class="table table-striped">
 	<thead>
 	<tr>
-			<th>Status</th>
+			<th style="text-align: left;">Status</th>
 			<th>Name</th>
 			<th>Type</th>
-			<th>1st Skill</th>
-			<th>2nd Skill</th>
-			<th>3rd Skill</th>
-			<th>4th Skill</th>
-			<th>Ultimate</th>
-			<th>Battle Rating</th>
+			<th>Move Set</th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
 	<?php 
 	foreach ($monsters as $monster): ?>
-	<tr>
-		<td>
+	<tr style="vertical-align:middle;">
+		<td style="text-align: left;">
 			<?php
 			$can_practice = true;
 			if($monster->resting_until && (int)$monster->resting_until->toUnixString() > time()) {
+				echo '<div class="alert alert-warning alert-label" role="alert">';
 				$now = new DateTime();
 				$future_date = $monster->resting_until;
 				
 				$interval = $future_date->diff($now);
-				echo 'Resting from Battle for ';
+				echo 'Resting from Battle<br>for ';
 				if($interval->h > 0) {
 					echo $interval->h.' hour'.($interval->h == 1 ? '' : 's');
 				}elseif($interval->i > 0) {
@@ -39,16 +35,17 @@
 					echo '1 second';
 				}
 				echo '.';
+				echo '</div>';
 			}elseif($monster->in_gauntlet_run) {
 				if((int)$monster->in_gauntlet_run_until->toUnixString() <= time()) {
-					echo 'Completed Gauntlet Run!';
-					// echo $this->Html->link(__('View Results'), ['controller' => 'gauntlet_runs', 'action' => 'complete-run', $monster->id], ['class' => 'btn btn-success']);
+					echo '<div class="alert alert-success alert-label" role="alert">Completed Gauntlet Run!</div>';
 				}else{
+					echo '<div class="alert alert-info alert-label" role="alert">';
 					$now = new DateTime();
 					$future_date = $monster->in_gauntlet_run_until;
 					
 					$interval = $future_date->diff($now);
-					echo 'Completes the Gauntlet in ';
+					echo 'Running the Gauntlet<br>for ';
 					if($interval->h > 0) {
 						echo $interval->h.' hour'.($interval->h == 1 ? '' : 's');
 					}elseif($interval->i > 0) {
@@ -59,70 +56,20 @@
 						echo '1 second';
 					}
 					echo '.';
+					echo '</div>';
 				}
-			}elseif(!empty($user->dreaming_since)) {
-
-			}elseif($user->total_gauntlet_runs_today >= $user->active_monster_limit * DAILY_GAUNTLET_LIMIT_PER_ACTIVE_MONSTER) {
-
 			}elseif(empty($monster->skill1->id) || empty($monster->skill2->id) || empty($monster->skill3->id) || empty($monster->skill4->id) || empty($monster->ultimate->id)) {
 				$can_practice = false;
+				echo '<div class="alert alert-danger alert-label" role="alert">Moves Not Set</div>';
 			}else{
-				// if($battle_available) {
-				// 	echo $this->Html->link(__('Battle in the Gauntlet!'), array('controller' => 'gauntlet-runs', 'action' => 'start-run', $monster->id), ['class' => 'btn btn-primary']);
-				// }else{
-				// 	echo 'You can only have '.$user->active_monster_limit.' Monster'.($user->active_monster_limit == 1 ? '' : 's').' active in the Gauntlet at a time.';
-				// }
+				echo '<div class="alert alert-primary alert-label" role="alert">Available</div>';
 			}
 			?>
 		</td>
-		<td><?php echo $monster->name; ?>&nbsp;</td>
-		<td><?php echo $monster->type->name; if(!empty($monster->secondary_type->id)) echo '/'.$monster->secondary_type->name; ?>&nbsp;</td>
-		<td>
-			<?php 
-				if(!empty($monster->skill1->id)) {
-					echo $this->Html->link($monster->skill1->name, array('controller' => 'skills', 'action' => 'view', $monster->skill1->id), ['class' => 'btn btn-secondary']);
-				}else{
-					echo 'No Skill Set';
-				}
-			?>
-		</td>
-		<td>
-			<?php 
-				if(!empty($monster->skill2->id)) {
-					echo $this->Html->link($monster->skill2->name, array('controller' => 'skills', 'action' => 'view', $monster->skill2->id), ['class' => 'btn btn-secondary']);
-				}else{
-					echo 'No Skill Set';
-				}
-			?>
-		</td>
-		<td>
-			<?php 
-				if(!empty($monster->skill3->id)) {
-					echo $this->Html->link($monster->skill3->name, array('controller' => 'skills', 'action' => 'view', $monster->skill3->id), ['class' => 'btn btn-secondary']);
-				}else{
-					echo 'No Skill Set';
-				}
-			?>
-		</td>
-		<td>
-			<?php 
-				if(!empty($monster->skill4->id)) {
-					echo $this->Html->link($monster->skill4->name, array('controller' => 'skills', 'action' => 'view', $monster->skill4->id), ['class' => 'btn btn-secondary']);
-				}else{
-					echo 'No Skill Set';
-				}
-			?>
-		</td>
-		<td>
-			<?php 
-				if(!empty($monster->ultimate->id)) {
-					echo $this->Html->link($monster->ultimate->name, array('controller' => 'ultimates', 'action' => 'view', $monster->ultimate->id), ['class' => 'btn btn-secondary']);
-				}else{
-					echo 'No Ultimate Set';
-				}
-			?>
-		</td>
-		<td><?php echo $monster->elo_rating; ?>&nbsp;</td>
+		<td><?= $monster->name ?></td>
+		<td><?= $monster->get('type_verbose') ?></td>
+		<td><?= $monster->get('moveset') ?></td>
+		
 		<td class="dropdown">
 			<div class="dropdown">
 				<button class="btn btn-primary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

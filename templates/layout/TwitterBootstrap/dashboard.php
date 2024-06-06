@@ -31,7 +31,6 @@ $this->start('tb_body_start');
         <ul class="list-group list-group-horizontal">
             <li class="list-group-item">Active Monsters: <?= count($user->monsters).'/'.$user->active_monster_limit ?></li>
             <li class="list-group-item">Gold: <?= $user->gold ?></li>
-            <li class="list-group-item">Gems: <?= $user->gems ?></li>
             <li class="list-group-item">Rune Shards: <?= $user->rune_shards ?></li>
         </ul>
         <ul class="navbar-nav px-3">

@@ -30,11 +30,11 @@ class QuestReward extends Entity
             }
         }elseif($this->reward_type == 'Rune') {
             if(!empty($this->type->id)) {
-                return $this->type->name.' Rune';
+                return 'Level '.$this->amount.' '.$this->type->name.' Rune';
             }elseif($this->usable) {
-                return 'Random Rune';
+                return 'Random Level '.$this->amount.' Rune';
             }else{
-                return 'Random Rune';
+                return 'Random Level '.$this->amount.' Rune';
             }
         }elseif($this->reward_type == 'Monster') {
             if(!empty($this->type->id)) {
@@ -42,7 +42,7 @@ class QuestReward extends Entity
             }else{
                 return 'Random Single Type Monster';
             }
-        }elseif($this->reward_type == 'Monster') {
+        }elseif($this->reward_type == 'Dual Type Monster') {
             if(!empty($this->type->id) && !empty($this->secondary_type->id)) {
                 return $this->type->name.'/'.$this->secondary_type->name.' Monster';
             }else{

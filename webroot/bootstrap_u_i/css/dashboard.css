@@ -7,16 +7,13 @@ body {
   height: 16px;
   vertical-align: text-bottom;
 }
-td.description {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
 
-td.description:hover {
-  text-overflow: clip;
-  width: auto;
-  white-space: normal;
+.alert-label {
+  display: inline-block !important;
+  padding: 0.5rem !important;
+  margin: 0 !important;
+  text-align: center;
+  width: 100%;
 }
 
 /*

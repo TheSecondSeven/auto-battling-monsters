@@ -36,8 +36,8 @@ class RunesController extends AppController
 	}
 
     public function create() {
-		if($this->user->rune_shards < 5) {
-			$this->Flash->error(__('You do not have 5 Rune Shards. Battle in the Gauntlet to get some!'));
+		if($this->user->gold < 25) {
+			$this->Flash->error(__('You do not have 25 Gold. Battle in the Gauntlet to get some!'));
 			return $this->redirect(['action' => 'my-runes']);
 		}
         $rune = $this->Runes->newEmptyEntity();
@@ -49,9 +49,7 @@ class RunesController extends AppController
                 $this->request->getData()['first_upgrade'] => 1
             ]);
 			if ($this->Runes->save($rune)) {
-                $this->user = $this->Runes->Users->patchEntity($this->user, ['rune_shards' => $this->user->rune_shards - 5], ['validate' => false]);
-				$this->Runes->Users->save($this->user);
-				$this->Authentication->setIdentity($this->user);
+				$this->Runes->Users->removeGoldFromUser($this->user->id, 25, 'Created a Rune');
 				$this->Flash->success(__('The rune has been created.'));
 				return $this->redirect(['action' => 'my-runes']);
 			} else {
@@ -82,19 +80,19 @@ class RunesController extends AppController
 		
 		if ($this->request->is(array('post', 'put'))) {
 			//validate cost
-			$cost = pow(5, $rune->level + 1);
-            $upgrade = $this->request->getData()['upgrade'];
-			if($rune->$upgrade > 0) {
-				$cost += pow(5, $rune->$upgrade);
+			if($rune->get('current_level') < $rune->level) {
+				$cost = 0;
+			}else{
+				$cost = pow(5, $rune->level + 1);
 			}
 			if($cost <= $this->user->rune_shards) {
-				$rune->level += 1;
+				if($rune->get('current_level') == $rune->level) {
+					$rune->level += 1;
+				}
 				$choice = $this->request->getData()['upgrade'];
 				$rune->$choice += 1;
 				if ($this->Runes->save($rune)) {
-                    $this->user = $this->Runes->Users->patchEntity($this->user, ['rune_shards' => $this->user->rune_shards - $cost], ['validate' => false]);
-					$this->Runes->Users->save($this->user);
-					$this->Authentication->setIdentity($this->user);
+					if($cost > 0) $this->Runes->Users->removeRuneShardsFromUser($this->user->id, $cost, 'Upgrading a Rune');
 					$this->Flash->success(__('The rune has been upgraded.'));
 					return $this->redirect(['action' => 'my-runes']);
 				} else {
@@ -113,15 +111,17 @@ class RunesController extends AppController
         $upgrade_options = [];
 		foreach($upgrades as $field=>$upgrade) {
 			if($rune->$field < 5 && ($rune->unlock_type == 0 || $field != 'unlock_type')) {
-				$cost = pow(5, $rune->level + 1);
-				if($rune->$field > 0) {
-					$cost += pow(5, $rune->$field);
-				}
-				$upgrade_options[$field] = $upgrade.' for '.$cost.' Rune Shards';
+				$upgrade_options[$field] = $upgrade;
 			}
 		}
+
+		if($rune->get('current_level') < $rune->level) {
+			$cost = 0;
+		}else{
+			$cost = pow(5, $rune->level + 1);
+		}
 		
-		$this->set(compact('rune','types','upgrade_options'));
+		$this->set(compact('rune','types','upgrade_options','cost'));
 		
 	}
 

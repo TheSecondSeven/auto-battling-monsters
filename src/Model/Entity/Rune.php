@@ -22,4 +22,16 @@ class Rune extends Entity
 		];
 		return $upgrades;
 	}
+	protected function _getCurrentLevel()
+    {
+		$current_level = 0;
+		if(!empty($this->unlock_type)) $current_level++;
+		$current_level += $this->damage_level;
+		$current_level += $this->healing_level;
+		$current_level += $this->critical_chance_level;
+		$current_level += $this->cast_again_level;
+		$current_level += $this->health_level;
+		$current_level += $this->casting_speed_level;
+		return $current_level;
+    }
 }

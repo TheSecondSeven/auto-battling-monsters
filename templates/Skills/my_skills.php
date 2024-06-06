@@ -51,10 +51,11 @@
     <table class="table table-striped">
         <thead>
         <tr>
+            <th></th>
             <th><?php echo $this->Paginator->sort('rarity'); ?></th>
             <th><?php echo $this->Paginator->sort('name'); ?></th>
             <th><?php echo $this->Paginator->sort('type_id'); ?></th>
-            <th><?php echo $this->Paginator->sort('description'); ?></th>
+            <th>Description</th>
             <th><?php echo $this->Paginator->sort('cast_time'); ?></th>
             <th><?php echo $this->Paginator->sort('down_time'); ?></th>
             <th>In Use By</th>
@@ -63,7 +64,8 @@
         </thead>
         <tbody>
         <?php foreach ($skills as $skill): ?>
-            <tr>
+            <tr style="vertical-align: middle;">
+                <td><?= ($skill->_matchingData['UserSkills']->new ? '<div class="alert alert-primary alert-label" role="alert">New</div>' : '') ?> </td>
                 <td><?php echo h($skill->rarity); ?>&nbsp;</td>
                 <td><?php echo h($skill->name); ?>&nbsp;</td>
                 <td><?php echo $skill->type->name; ?>&nbsp;</td>

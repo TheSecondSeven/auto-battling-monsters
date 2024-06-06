@@ -83,6 +83,23 @@ class AppController extends Controller
                 ])
                 ->all()
                 ->count() + count($this->user->monsters);
+            $this->user->available_monsters = $this->fetchTable('Monsters')
+                ->find()
+                ->where([
+                    'Monsters.user_id' => $this->user->id,
+                    'Monsters.in_gauntlet_run' => 0,
+                    'OR' => [
+                        'Monsters.resting_until IS NULL',
+                        'Monsters.resting_until <=' => date('Y-m-d H:i:s')
+                    ],
+                    'Monsters.skill_1_id != 0',
+                    'Monsters.skill_2_id != 0',
+                    'Monsters.skill_3_id != 0',
+                    'Monsters.skill_4_id != 0',
+                    'Monsters.ultimate_id != 0'
+                ])
+                ->all()
+                ->count();
             $this->set('user', $this->user);
 
             $this->user->usable_types = [];

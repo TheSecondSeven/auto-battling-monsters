@@ -7,7 +7,7 @@
 	</div>
 	<br>
 	<div class="list-group">
-		<?= $this->Html->link('My Monsters', ['controller' => 'monsters', 'action' => 'my-monsters'], ['class'=>'list-group-item list-group-item-action']); ?>
+		<?= $this->Html->link('My Monsters'.(!empty($user->available_monsters) ? ' ('.$user->available_monsters.')' : ''), ['controller' => 'monsters', 'action' => 'my-monsters'], ['class'=>'list-group-item list-group-item-action'.(!empty($user->available_monsters) ? ' list-group-item-primary' : '')]); ?>
 		<?= $this->Html->link('My Skills', ['controller' => 'skills', 'action' => 'my-skills'], ['class'=>'list-group-item list-group-item-action']); ?>
 		<?= $this->Html->link('My Ultimates', ['controller' => 'ultimates', 'action' => 'my-ultimates'], ['class'=>'list-group-item list-group-item-action']); ?>
 		<?= $this->Html->link('My Runes', ['controller' => 'runes', 'action' => 'my-runes'], ['class'=>'list-group-item list-group-item-action']); ?>

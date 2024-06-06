@@ -119,7 +119,7 @@ class UsersController extends AppController
                 }
 
                 //create monster 
-                $new_monster_id = $this->fetchTable('Monsters')->createMonsterForUser($user->id, $type_id);
+                $new_monster = $this->fetchTable('Monsters')->createMonsterForUser($user->id, $type_id);
                 //create second monster 
                 // $this->fetchTable('Monsters')->createMonsterForUser($user->id, $type_2_id);
 
@@ -143,7 +143,7 @@ class UsersController extends AppController
                 // $this->fetchTable('UserUltimates')->addUltimateToUser($user->id, 16);
                 $this->Flash->success(__('Your have received your first monster! It\'s a '.$type_name.' Type. Give it a name!'));
 
-                return $this->redirect(['controller'=>'monsters','action' => 'edit', $new_monster_id]);
+                return $this->redirect(['controller'=>'monsters','action' => 'edit', $new_monster->id]);
             }
             $this->Flash->error(__('Unable to register.'));
         }
@@ -201,44 +201,21 @@ class UsersController extends AppController
 			$this->Flash->error(__('You do not have '.SINGLE_TYPE_MONSTER_COST.' Gold. Battle in the Gauntlet to get some!'));
 			return $this->redirect(['controller' => 'monsters','action' => 'my-monsters']);
 		}
-		$this->user->gold -= SINGLE_TYPE_MONSTER_COST;
-        $this->Users->save($this->user);
-		
-		$types = $this->fetchTable('Types')
-            ->find()
-            ->where([
-				'Types.name != "Neutral"',
-				'Types.name != "Flying"',
-            ])
-            ->all()
-            ->toList();
-		
-		//check if they already have one of every type
-        $user_id = $this->user->id;
-		$doesnt_have_types = $this->fetchTable('Types')
-            ->find()
-            ->where([
-				'Types.name != "Neutral"',
-				'Types.name != "Flying"'
-            ])
-            ->notMatching('Monsters', function ($q) use ($user_id) {
-                return $q->where(['Monsters.user_id' => $user_id]);
-            })
-            ->all()
-            ->toList();
-		
-		$monster_type = null;
-		
-		while($monster_type == null) {
-			if(!empty($doesnt_have_types)) {
-				$monster_type = $doesnt_have_types[rand(0,count($doesnt_have_types) - 1)];
-			}else{
-				$monster_type = $types[rand(0,count($types) - 1)];
-			}
-		}
-		$this->Users->Monsters->createMonsterForUser($user_id, $monster_type->id);
-		$this->Flash->success(__('You gained a new '.$monster_type->name.' Type Monster!'));
-		return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
+		$monster = $this->Users->Monsters->createMonsterForUser($this->user->id);
+        if(!empty($monster->id)) {
+            $this->Users->removeGoldFromUser($this->user->id, SINGLE_TYPE_MONSTER_COST);
+            $type = $this->fetchTable('Types')
+                ->find()
+                ->where([
+                    'Types.id' => $monster->type_id
+                ])
+                ->first();
+            $this->Flash->success(__('You gained a new '.$type->name.' Type Monster!'));
+		    return $this->redirect(['controller' => 'monsters', 'action' => 'edit', $monster->id]);
+        }else{
+            $this->Flash->error(__('Error creating monster. Please try again.'));
+		    return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
+        }
 	}
 	
 	public function purchaseRandomDualTypeMonster() {
@@ -246,96 +223,28 @@ class UsersController extends AppController
 			$this->Flash->error(__('You do not have '.DUAL_TYPE_MONSTER_COST.' Gold. Battle in the Gauntlet to get some!'));
 			return $this->redirect(['controller' => 'monsters','action' => 'my-monsters']);
 		}
-		$this->user->gold -= DUAL_TYPE_MONSTER_COST;
-        $this->Users->save($this->user);
-		
-		
-		$types = $this->fetchTable('Types')
-            ->find()
-            ->where([
-				'Types.name != "Neutral"',
-				'Types.name != "Flying"',
-            ])
-            ->all()
-            ->toList();
-		
-		//check if they have all combos
-		$dual_monster_count = $this->Users->Monsters
-            ->find()
-            ->where([
-				'Monsters.user_id' => $this->user->id,
-				'Monsters.type_id != 0',
-				'Monsters.secondary_type_id != 0'
-			])
-            ->contain([])
-            ->count();
-		$type_count = count($types);
-		$has_all_combos = false;
 
-		$combos = 1;
-		if($type_count > 2) {
-			$has_all_combos = false;
-			$fact = $type_count;
-			$ffact1 = 1;
-
-			while($fact >= 1)
-			{
-				$ffact1 = $fact * $ffact1;
-				$fact--;
-			}
-			$fact = $type_count - 2;
-			$ffact2 = 1;
-			while($fact >= 1)
-			{
-				$ffact2 = $fact * $ffact2;
-				$fact--;
-			}
-			$combos = $ffact1 / (2 * $ffact2);
-		}
-        if($dual_monster_count >= $combos) {
-			$has_all_combos = true;
-		}
-		
-		$monster_type = null;
-		$secondary_monster_type = null;
-		while($monster_type == null) {
-			$monster_type = $types[rand(0,count($types) - 1)];
-			$secondary_monster_type = null;
-			while($secondary_monster_type == null) {
-				$secondary_monster_type = $types[rand(0,count($types) - 1)];
-				if($monster_type->id == $secondary_monster_type->id) {
-					$secondary_monster_type = null;
-				}
-			}
-			if($has_all_combos == false) {
-				//check if they have this monster
-                $monster_check = $this->Users->Monsters
-                    ->find()
-                    ->where([
-                        'Monsters.user_id' => $this->user->id,
-                        'OR' => [
-                            0 => [
-                                'Monsters.type_id' => $monster_type->id,
-                                'Monsters.secondary_type_id' => $secondary_monster_type->id
-                            ],
-                            1 => [
-                                'Monsters.type_id' => $secondary_monster_type->id,
-                                'Monsters.secondary_type_id' => $monster_type->id,
-                            ]
-                        ]
-                    ])
-                    ->contain([])
-                    ->count();
-				if($monster_check > 0) {
-					$monster_type = null;
-					$secondary_monster_type = null;
-				}
-			}
-		}
-		
-		$this->Users->Monsters->createMonsterForUser($this->user->id, $monster_type->id, $secondary_monster_type->id);
-		$this->Flash->success(__('You gained a new '.$monster_type->name.' and '.$secondary_monster_type->name.' Dual Type Monster!'));
-		return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
+		$monster = $this->Users->Monsters->createDualTypeMonsterForUser($this->user->id);
+        if(!empty($monster->id)) {
+            $this->Users->removeGoldFromUser($this->user->id, DUAL_TYPE_MONSTER_COST);
+            $type = $this->fetchTable('Types')
+                ->find()
+                ->where([
+                    'Types.id' => $monster->type_id
+                ])
+                ->first();
+            $secondary_type = $this->fetchTable('Types')
+                ->find()
+                ->where([
+                    'Types.id' => $monster->secondary_type_id
+                ])
+                ->first();
+            $this->Flash->success('You gained a new '.$type->name.' and '.$secondary_type->name.' Dual Type Monster!');
+		    return $this->redirect(['controller' => 'monsters', 'action' => 'edit', $monster->id]);
+        }else{
+            $this->Flash->error(__('Error creating monster. Please try again.'));
+		    return $this->redirect(['controller' => 'monsters', 'action' => 'my-monsters']);
+        }
 	}
 	
 	public function increaseActiveMonsterLimit() {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use Cake\ORM\Table;
+use Cake\ORM\Query\SelectQuery;
 
 class SkillsTable extends Table
 {
@@ -46,4 +47,9 @@ class SkillsTable extends Table
                   'Legendary' => 4
             ];
 	}
+
+	public function findOrderedByNew(SelectQuery $query)
+      {
+            return $query->contain(['UserSkills'])->order(['UserSkills.new' => 'DESC']);
+      }
 }

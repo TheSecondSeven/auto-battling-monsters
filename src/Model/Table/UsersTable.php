@@ -46,6 +46,27 @@ class UsersTable extends Table
         return $rules;
     }
 
+    public function increaseMonsterLimit($user_id) {
+        $user = $this->get($user_id);
+        $user->active_monster_limit++;
+        $this->save($user);
+        return $amount;
+    }
+
+    public function removeGoldFromUser($user_id, $amount, $reason = null) {
+        $user = $this->get($user_id);
+        $user->gold = max(0, $user->gold - $amount);
+        $this->save($user);
+        return $amount;
+    }
+
+    public function removeRuneShardsFromUser($user_id, $amount, $reason = null) {
+        $user = $this->get($user_id);
+        $user->rune_shards = max(0, $user->rune_shards - $amount);
+        $this->save($user);
+        return $amount;
+    }
+
     public function giveGoldToUserByRarity($user_id, $rarity, $reason = null) {
         $amount = 5;
         if($rarity == 'Legendary') {

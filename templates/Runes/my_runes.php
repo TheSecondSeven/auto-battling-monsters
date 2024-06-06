@@ -1,7 +1,7 @@
 <?php $this->extend('../layout/dashboard'); ?>
 <div class="skills index">
 	<h2><?php echo __('My Runes'); ?></h2>
-	<?php //echo $this->Html->link('Create Rune', ['controller' => 'runes', 'action' => 'create'],['class' => 'btn btn-primary']); ?>
+	<?php echo $this->Html->link('Create Rune (25 Gold)', ['controller' => 'runes', 'action' => 'create'],['class' => 'btn btn-primary']); ?>
 	<table class="table table-striped">
 	<?php 
 	if(count($runes) == 0) {
@@ -26,7 +26,7 @@
         <?php foreach ($runes as $rune): ?>
             <tr>
                 <td><?php echo h($rune->type->name); ?>&nbsp;</td>
-                <td><?php echo h($rune->level); ?>&nbsp;</td>
+                <td><?= ($rune->get('current_level') != $rune->level ? $rune->get('current_level').'/' : '').$rune->level ?></td>
                 <td><?php if(!empty($rune->monster->id)) { echo $rune->monster->name; }else{ echo 'Available'; } ?>&nbsp;</td>
                 <td><?php if($rune->unlock_type) { echo 'Unlocks '.$rune->type->name.' Skills'; }else{ echo 'No'; } ?></td>
                 <td><?php if($rune->damage_level > 0) { echo $rune->type->name.' Damage Increased '.(RUNE_DAMAGE_INCREASE * $rune->damage_level).'%'; }else{ echo 'None'; } ?>&nbsp;</td>

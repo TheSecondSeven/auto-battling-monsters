@@ -42,7 +42,7 @@ class UserQuestReward extends Entity
             }else{
                 return 'Random Single Type Monster';
             }
-        }elseif($this->reward_type == 'Monster') {
+        }elseif($this->reward_type == 'Dual Type Monster') {
             if(!empty($this->type->id) && !empty($this->secondary_type->id)) {
                 return $this->type->name.'/'.$this->secondary_type->name.' Monster';
             }else{

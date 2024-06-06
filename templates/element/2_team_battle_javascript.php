@@ -135,7 +135,9 @@
 		var state = data.state[monsterID];
 		if(!($($('#'+monsterID)).length > 0)) {
 			var teamID = state.team;
-			$('#team-'+teamID).append('<div id="'+monsterID+'" class="monsterDiv"><div class="portrait"><div class="statuses"></div><div class="combatText"></div><div class="info"><div class="name"></div></div></div><div class="clear-fix"></div><div class="healthBar"><div class="healthRemaining"></div><div class="healthText"></div></div><div class="clear-fix"></div><div class="castBar"><div class="castCompletion"></div><div class="castText"></div></div><div class="clear-fix"></div><ul class="messageLog"></ul></div>');		
+			var type = 'fire';
+			if(state.type) type = state.type;
+			$('#team-'+teamID).append('<div id="'+monsterID+'" class="monsterDiv"><div class="portrait '+type+'"><div class="statuses"></div><div class="combatText"></div><div class="info"><div class="name"></div></div></div><div class="clear-fix"></div><div class="healthBar"><div class="healthRemaining"></div><div class="healthText"></div></div><div class="clear-fix"></div><div class="castBar"><div class="castCompletion"></div><div class="castText"></div></div><div class="clear-fix"></div><ul class="messageLog"></ul></div>');		
 		}
 		var monsterDiv = $('#'+monsterID);
 		$(monsterDiv).data('updated', 1);

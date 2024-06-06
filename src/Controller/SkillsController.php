@@ -72,6 +72,17 @@ class SkillsController extends AppController
         if(!empty($type_id)) $where['Skills.type_id'] = $type_id;
         if(!empty($name)) $where['Skills.name LIKE'] = '%'.$name.'%';
         $user_id = $this->user->id;
+        $this->paginate = [
+            'sortableFields' => [
+                'UserSkills.new', 'rarity', 'name', 'type_id', 'cast_time', 'down_time'
+            ],
+            'order' => [
+                'UserSkills.new' => 'DESC',
+                'rarity' => 'DESC',
+                'Types.name' => 'ASC',
+                'name' => 'ASC',
+            ]
+		];
 		$skills = $this->paginate($this->Skills
             ->find()
             ->where($where)
@@ -126,6 +137,9 @@ class SkillsController extends AppController
                     ]);
             })
             ->firstOrFail();
+        
+        $skill->user_skills[0]->new = 0;
+        $this->Skills->UserSkills->save($skill->user_skills[0]);
 		$this->set('skill', $skill);
         $status_effects = $this->fetchTable('Statuses')
             ->find()

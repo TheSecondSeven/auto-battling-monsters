@@ -28,9 +28,9 @@ class QuestRewardsTable extends Table
             'Rune',
             'Monster',
             'Dual Type Monster',
-            'Gems',
             'Gold',
-            'Rune Shards'
+            'Rune Shards',
+            'Increase Monster Limit'
 		];
 		$reward_type_options = array_combine($rewards, $rewards);
 		return $reward_type_options;
@@ -103,11 +103,11 @@ class QuestRewardsTable extends Table
             }
         }elseif($quest_reward->reward_type == 'Rune') {
             if(!empty($quest_reward->type->id)) {
-                $rune = TableRegistry::getTableLocator()->get('Runes')->addRuneToUser($user->id, [$quest_reward->type->id]);
+                $rune = TableRegistry::getTableLocator()->get('Runes')->addRuneToUser($user->id, [$quest_reward->type->id], $quest_reward->amount);
             }elseif($quest_reward->usable) {
-                $rune = TableRegistry::getTableLocator()->get('Runes')->addRuneToUser($user->id, $user->usable_types);
+                $rune = TableRegistry::getTableLocator()->get('Runes')->addRuneToUser($user->id, $user->usable_types, $quest_reward->amount);
             }else{
-                $rune = TableRegistry::getTableLocator()->get('Runes')->addRuneToUser($user->id);
+                $rune = TableRegistry::getTableLocator()->get('Runes')->addRuneToUser($user->id, [], $quest_reward->amount);
             }
             $user_quest_reward->type_id = $rune->type_id;
         }elseif($quest_reward->reward_type == 'Rune Shards') {
@@ -116,6 +116,15 @@ class QuestRewardsTable extends Table
             TableRegistry::getTableLocator()->get('Users')->giveGoldToUser($user->id, $quest_reward->amount);
         }elseif($quest_reward->reward_type == 'Gems') {
             TableRegistry::getTableLocator()->get('Users')->giveGemsToUser($user->id, $quest_reward->amount);
+        }elseif($quest_reward->reward_type == 'Monster') {
+            $monster = TableRegistry::getTableLocator()->get('Monsters')->createMonsterForUser($user->id, (!empty($quest_reward->type->id) ? $quest_reward->type->id : null));
+            $user_quest_reward->type_id = $monster->type_id;
+        }elseif($quest_reward->reward_type == 'Dual Type Monster') {
+            $monster = TableRegistry::getTableLocator()->get('Monsters')->createDualTypeMonsterForUser($user->id, (!empty($quest_reward->type->id) ? $quest_reward->type->id : null), (!empty($quest_reward->secondary_type->id) ? $quest_reward->secondary_type->id : null));
+            $user_quest_reward->type_id = $monster->type_id;
+            $user_quest_reward->secondary_type_id = $monster->secondary_type_id;
+        }elseif($quest_reward->reward_type == 'Increase Monster Limit') {
+            $monster = TableRegistry::getTableLocator()->get('Users')->increaseMonsterLimit($user->id);
         }
         // }elseif($quest_reward->reward_type == 'Ultimate') {
         //     if(!empty($quest_reward->ultimate->id)) {

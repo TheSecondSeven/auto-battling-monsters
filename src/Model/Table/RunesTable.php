@@ -16,7 +16,7 @@ class RunesTable extends Table
         $this->belongsTo('Types');
         $this->belongsTo('Users');
     }
-    public function addRuneToUser($user_id, $types = []) {
+    public function addRuneToUser($user_id, $types = [], $level = 0) {
         if(empty($types)) {
             $types = [1,2,3,5,6,8,10];
         }
@@ -26,7 +26,7 @@ class RunesTable extends Table
 			[
 				'user_id' => $user_id,
                 'type_id' => $type_id,
-                'level' => 0
+                'level' => $level
 			],
 			['validate' => false]
 		);

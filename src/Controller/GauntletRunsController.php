@@ -515,36 +515,20 @@ class GauntletRunsController extends AppController
 		for($i=0; $i<max(1,round($total_options / 3)); $i++) {
 			if($rarity == 'Legendary') {
 				$options[] = [
-					'type' => 'Gems',
-					'amount' => 100
-				];
-				$options[] = [
 					'type' => 'Rune Shards',
 					'amount' => 5000
 				];
 			}elseif($rarity == 'Epic') {
-				$options[] = [
-					'type' => 'Gems',
-					'amount' => 25
-				];
 				$options[] = [
 					'type' => 'Rune Shards',
 					'amount' => 1250
 				];
 			}elseif($rarity == 'Rare') {
 				$options[] = [
-					'type' => 'Gems',
-					'amount' => 5
-				];
-				$options[] = [
 					'type' => 'Rune Shards',
 					'amount' => 250
 				];
 			}elseif($rarity == 'Uncommon') {
-				$options[] = [
-					'type' => 'Gems',
-					'amount' => 1
-				];
 				$options[] = [
 					'type' => 'Rune Shards',
 					'amount' => 50
