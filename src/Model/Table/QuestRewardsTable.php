@@ -101,6 +101,61 @@ class QuestRewardsTable extends Table
                     $user_quest_reward->skill_id = $random_skill->id;
                 }
             }
+        }elseif($quest_reward->reward_type == 'Ultimate') {
+            if(!empty($quest_reward->ultimate->id)) {
+                $result = TableRegistry::getTableLocator()->get('UserUltimates')->addUltimateToUser($user->id, $quest_reward->ultimate->id);
+                if(empty($result)) {
+                    $random_ultimate = TableRegistry::getTableLocator()->get('UserUltimates')->addRandomUltimateToUser($user->id, $quest_reward->rarity);
+                    if(empty($random_ultimate->id)) {
+                        //change reward to gold
+                        $amount = TableRegistry::getTableLocator()->get('Users')->giveGoldToUserByRarity($user->id, $quest_reward->rarity);
+                        $user_quest_reward->reward_type = 'Gold';
+                        $user_quest_reward->amount = $amount;
+                    }else{
+                        $user_quest_reward->ultimate_id = $random_ultimate->id;
+                    }
+                }
+            }elseif(!empty($quest_reward->type->id)) {
+                $random_ultimate = TableRegistry::getTableLocator()->get('UserUltimates')->addRandomUltimateToUser($user->id, $quest_reward->rarity, [$quest_reward->type->id]);
+                if(empty($random_ultimate->id)) {
+                    $random_ultimate = TableRegistry::getTableLocator()->get('UserUltimates')->addRandomUltimateToUser($user->id, $quest_reward->rarity);
+                    if(empty($random_ultimate->id)) {
+                        //change reward to gold
+                        $amount = TableRegistry::getTableLocator()->get('Users')->giveGoldToUserByRarity($user->id, $quest_reward->rarity);
+                        $user_quest_reward->reward_type = 'Gold';
+                        $user_quest_reward->amount = $amount;
+                    }else{
+                        $user_quest_reward->ultimate_id = $random_ultimate->id;
+                    }
+                }else{
+                    $user_quest_reward->ultimate_id = $random_ultimate->id;
+                }
+            }elseif($quest_reward->usable) {
+                $random_ultimate = TableRegistry::getTableLocator()->get('UserUltimates')->addRandomUltimateToUser($user->id, $quest_reward->rarity, $user->usable_types);
+                if(empty($random_ultimate->id)) {
+                    $random_ultimate = TableRegistry::getTableLocator()->get('UserUltimates')->addRandomUltimateToUser($user->id, $quest_reward->rarity);
+                    if(empty($random_ultimate->id)) {
+                        //change reward to gold
+                        $amount = TableRegistry::getTableLocator()->get('Users')->giveGoldToUserByRarity($user->id, $quest_reward->rarity);
+                        $user_quest_reward->reward_type = 'Gold';
+                        $user_quest_reward->amount = $amount;
+                    }else{
+                        $user_quest_reward->ultimate_id = $random_ultimate->id;
+                    }
+                }else{
+                    $user_quest_reward->ultimate_id = $random_ultimate->id;
+                }
+            }else{
+                $random_ultimate = TableRegistry::getTableLocator()->get('UserUltimates')->addRandomUltimateToUser($user->id, $quest_reward->rarity);
+                if(empty($random_ultimate->id)) {
+                    //change reward to gold
+                    $amount = TableRegistry::getTableLocator()->get('Users')->giveGoldToUserByRarity($user->id, $quest_reward->rarity);
+                    $user_quest_reward->reward_type = 'Gold';
+                    $user_quest_reward->amount = $amount;
+                }else{
+                    $user_quest_reward->ultimate_id = $random_ultimate->id;
+                }
+            }
         }elseif($quest_reward->reward_type == 'Rune') {
             if(!empty($quest_reward->type->id)) {
                 $rune = TableRegistry::getTableLocator()->get('Runes')->addRuneToUser($user->id, [$quest_reward->type->id], $quest_reward->amount);

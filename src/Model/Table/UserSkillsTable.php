@@ -16,6 +16,15 @@ class UserSkillsTable extends Table
     }
     
     public function addSkillToUser($user_id, $skill_id) {
+        $already_own = $this
+            ->find()
+            ->where([
+                'UserSkills.skill_id' => $skill_id,
+                'UserSkills.user_id' => $user_id
+            ])
+            ->first();
+        if(!empty($already_own->id))
+            return null;
 
 		$user_skill = $this->newEntity(
 			[
