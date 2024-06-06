@@ -1,22 +1,21 @@
 <?php $this->extend('../layout/dashboard'); ?>
 <div class="quests form">
-<h2><?php echo __('Quest'); ?></h2>
+	<h2><?= $quest->title ?></h2>
+	<div class="alert alert-label alert-success" style="text-align: left"><?= $quest->description ?></div>
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Quest</th>
+				<th>Monsters</th>
 				<th>Required Rest</th>
 				<th>Persistent?</th>
-				<th>Monsters</th>
 				<th>Rewards</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td><?= $quest->title ?><br><?= $quest->description ?></td>
+				<td><?= $quest->get('monsters') ?></td>
 				<td><?= $quest->get('required_rest_verbose') ?></td>
                 <td><?= ($quest->persistent ? 'Yes' : 'No') ?></td>
-				<td><?= $quest->get('monsters') ?></td>
 				<td><?= $quest->get('rewards') ?></td>
 			</tr>
 		</tbody>
