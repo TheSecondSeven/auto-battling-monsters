@@ -4,7 +4,7 @@
  */
 use Cake\Core\Configure;
 
-$this->Html->css('BootstrapUI.dashboard.css?t=920823', ['block' => true]);
+$this->Html->css('BootstrapUI.dashboard.css?t=06052024', ['block' => true]);
 $this->Html->script('BootstrapUI.bootstrap.bundle');
 $this->prepend(
     'tb_body_attrs',
