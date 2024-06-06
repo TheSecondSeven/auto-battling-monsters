@@ -16,7 +16,7 @@
         <tbody>
         <?php foreach ($available_quests as $quest): ?>
             <tr>
-                <td><?= $quest->title ?></td>
+                <td><?= ($quest->side_quest ? 'Side Quest: ' : '').$quest->title ?></td>
                 <td><?= $quest->get('required_rest_verbose') ?></td>
                 <td><?= ($quest->persistent ? 'Yes' : 'No') ?></td>
                 <td><?= $quest->get('monsters') ?></td>

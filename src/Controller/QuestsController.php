@@ -100,6 +100,10 @@ class QuestsController extends AppController
                     'SecondaryTypes'
                 ]
             ])
+            ->order([
+                'Quests.side_quest' => 'ASC',
+                'Quests.name' => 'ASC'
+            ])
             ->all();
         
         $available_monsters = $this->fetchTable('Monsters')
