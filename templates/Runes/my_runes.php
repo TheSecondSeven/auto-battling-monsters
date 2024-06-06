@@ -12,7 +12,7 @@
                 <th><?php echo $this->Paginator->sort('type_id'); ?></th>
                 <th><?php echo $this->Paginator->sort('level'); ?></th>
                 <th><?php echo $this->Paginator->sort('in_use_by_monster_id', 'Used By'); ?></th>
-                <th><?php echo $this->Paginator->sort('unlock_type', 'Unlock Type'); ?></th>
+                <th><?php echo $this->Paginator->sort('unlock_type', 'Unlock Skills'); ?></th>
                 <th><?php echo $this->Paginator->sort('damage_level', 'Damage Increase'); ?></th>
                 <th><?php echo $this->Paginator->sort('healing_level', 'Healing Increase'); ?></th>
                 <th><?php echo $this->Paginator->sort('critical_chance_level', 'Critical Chance Increase'); ?></th>
