@@ -248,11 +248,11 @@
 								left: Math.floor(Math.random() * diameter - diameter / 2),
 								top: Math.floor(Math.random() * diameter - diameter / 2)
 							}, {
-								duration: 400,
+								duration: 600,
 								easing: 'linear',
 								complete: function() {
 									$(this)
-									.fadeOut(100, function() {
+									.fadeOut(150, function() {
 										$(this).remove();
 									});
 								}
@@ -271,11 +271,11 @@
 								left: Math.floor(Math.random() * diameter - diameter / 2),
 								top: Math.floor(Math.random() * diameter - diameter / 2)
 							}, {
-								duration: 400,
+								duration: 600,
 								easing: 'linear',
 								complete: function() {
 									$(this)
-									.fadeOut(100, function() {
+									.fadeOut(150, function() {
 										$(this).remove();
 									});
 								}

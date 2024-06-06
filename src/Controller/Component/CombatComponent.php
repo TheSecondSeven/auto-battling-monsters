@@ -70,6 +70,7 @@ class CombatComponent extends Component
 						'max_health' => (int)$snapshot->max_health,
 						'current_health' => (int)$snapshot->current_health,
 						'team' => (int)$snapshot->team,
+						'type' => strtolower($snapshot->type->name),
 						'statuses' => (array)$snapshot->statuses,
 						'debuffs' => (array)$snapshot->debuffs,
 						'buffs' => (array)$snapshot->buffs

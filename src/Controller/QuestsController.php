@@ -201,7 +201,7 @@ class QuestsController extends AppController
                 ])
                 ->firstOrFail();
             $opponents = [];
-            if($quest->persistent) {
+            if(!empty($quest->persistent)) {
                 //get state of monsters from before
                 $quests_user = $this->fetchTable('QuestsUsers')
                     ->find()

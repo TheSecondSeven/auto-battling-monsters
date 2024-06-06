@@ -55,7 +55,43 @@
 	}
 
 	.portrait.fire {
-		background-color: #e6194b;
+		background-image: url("/img/monster-thumbnails/fire.jpeg");
+		background-size: 200px;
+	}
+
+	.portrait.earth {
+		background-image: url("/img/monster-thumbnails/earth.jpeg");
+		background-size: 200px;
+	}
+
+	.portrait.water {
+		background-image: url("/img/monster-thumbnails/water.jpeg");
+		background-size: 200px;
+	}
+
+	.portrait.electric {
+		background-image: url("/img/monster-thumbnails/electric.jpeg");
+		background-size: 200px;
+	}
+
+	.portrait.fighting {
+		background-image: url("/img/monster-thumbnails/fighting.jpeg");
+		background-size: 200px;
+	}
+
+	.portrait.poison {
+		background-image: url("/img/monster-thumbnails/poison.jpeg");
+		background-size: 200px;
+	}
+
+	.portrait.undead {
+		background-image: url("/img/monster-thumbnails/undead.jpeg");
+		background-size: 200px;
+	}
+
+	.portrait.neutral {
+		background-image: url("/img/monster-thumbnails/neutral.jpeg");
+		background-size: 200px;
 	}
 	
 	.clear-fix {
@@ -76,22 +112,25 @@
 		margin: 0 0 0 5px;
 		width: 20px;
 		height: 20px;
-		font-size: 12px;
-		font-weight: bold;
+		font-size: 16px;
 		color: white;
 		line-height: 20px;
 		text-align: center;
-  		transition: transform 0.5s;
+  		transition: transform 0.75s;
 		position: absolute;
+		-webkit-text-stroke-width: 0.5px;
+		font-family: Arial, Helvetica, sans-serif;
 	}
 	.combatTextItem.grow {
   		transform: scale(3);
 	}
 	.combatText .heal {
 		color: #3cb44b;
+		-webkit-text-stroke-color: #00a604;
 	}
 	.combatText .damage {
-		color: #e6194b;
+		color: #ff0000;
+		-webkit-text-stroke-color: #bd0000;
 	}
 	.info {
 		width: 100%;
@@ -102,9 +141,16 @@
 		left: 0px;
 	}
 	.name {
+		font-size:20px;
+		font-weight: bold;
+		color: white;
+		-webkit-text-fill-color: white;
+		-webkit-text-stroke-width: 0.75px;
+		-webkit-text-stroke-color: black;
 		margin: 0 auto;
 		height: 20px;
 		line-height: 20px;
+		font-family: Arial, Helvetica, sans-serif;
 	}
 	.statuses {
 		line-height: 30px;

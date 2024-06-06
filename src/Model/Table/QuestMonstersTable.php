@@ -12,6 +12,7 @@ class QuestMonstersTable extends Table
     {
         parent::initialize($config);
         $this->addBehavior('Timestamp');
+		$this->belongsTo('Types');
 		$this->belongsTo('Quests');
         $this->belongsTo('Skill1')
 			->setForeignKey('skill_1_id')
@@ -30,6 +31,7 @@ class QuestMonstersTable extends Table
 	public function findForBattle(SelectQuery $query)
     {
         return $query->contain([
+            'Types',
             'Skill1' => [
                 'SkillEffects' => [
                     'SecondarySkillEffects',

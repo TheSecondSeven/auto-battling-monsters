@@ -243,7 +243,11 @@ class QuestsController extends AppController
             ])
             ->all()
             ->toArray();
-        $this->set(compact('quest_monster','skills','ultimates'));
+        
+		$types = $this->fetchTable('Types')->find('list')
+            ->where([])
+            ->all();
+        $this->set(compact('quest_monster','skills','ultimates','types'));
 	}
 	public function updateQuestMonster($quest_id, $quest_monster_id) {
 		$quest_monster = $this->Quests->QuestMonsters
@@ -277,7 +281,11 @@ class QuestsController extends AppController
             ])
             ->all()
             ->toArray();
-        $this->set(compact('quest_monster','skills','ultimates'));
+        
+		$types = $this->fetchTable('Types')->find('list')
+            ->where([])
+            ->all();
+        $this->set(compact('quest_monster','skills','ultimates','types'));
 	}
 
 	public function deleteQuestMonster($quest_id, $id = null) {

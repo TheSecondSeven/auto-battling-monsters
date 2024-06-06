@@ -4,6 +4,7 @@
 	<?= $this->Form->create($quest_monster) ?>
 	<?= $this->Form->control('name'); ?>
 	<?= $this->Form->control('clone'); ?>
+	<?= $this->Form->control('type_id', ['options' => $types]); ?>
 	<?= $this->Form->control('skill_1_id', ['label' => '1st Skill', 'options' => $skills]); ?>
 	<?= $this->Form->control('skill_2_id', ['label' => '2nd Skill', 'options' => $skills]); ?>
 	<?= $this->Form->control('skill_3_id', ['label' => '3rd Skill', 'options' => $skills]); ?>
