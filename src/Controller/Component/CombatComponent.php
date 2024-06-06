@@ -362,6 +362,22 @@ class CombatComponent extends Component
 			$this->handleDeath(0, $monster);
 		}
 	}
+	
+	private function createStats($monster) {
+		$stats = (object) [];
+		$stats->physicalAttackModifier = 1 + 0.05 * ($monster->strength - 1);
+		$stats->physicalDefenseModifier = 1 + 0.025 * ($monster->strength - 1);
+		$stats->evadeModifier = 0.00 + 0.01 * ($monster->dexterity - 1);
+		$stats->speed = 1.0 + 0.03 * ($monster->dexterity - 1);
+		$stats->hitModifier = 0.00 + 0.01 * ($monster->dexterity - 1);
+		$stats->magicalAttackModifier = 1 + 0.05 * ($monster->intelligence - 1);
+		$stats->magicalDefenseModifier = 1 + 0.025 * ($monster->intelligence - 1);
+		$stats->criticalChance = 0.00 + 0.02 * ($monster->luck - 1);
+		$stats->rerollChance = 0.00 + 0.03 * ($monster->luck - 1);
+		$stats->health = 100.0 + 2.0 * ($monster->vitality - 1);
+		return $stats;
+	}
+
 	private function cloneSkill($skill) {
 		$cloned_skill = clone $skill;
 		$skill_effects = [];
@@ -2125,7 +2141,7 @@ class CombatComponent extends Component
 	
 	private function applyBubble($time, &$action_message, $skill_effect, $monster) {
 		if(empty($this->monsters[$monster->id]->buffs['bubble'])) {
-			$this->addActionMessage($action_message, 'buff_lost', $this->monsters[$monster->id]->name.' is protected in a Bubble.');
+			$this->addActionMessage($action_message, 'buff_gained', $this->monsters[$monster->id]->name.' is protected in a Bubble.');
 			$this->monsters[$monster->id]->buffs['bubble'] = true;
 		}
 	}
@@ -2228,21 +2244,6 @@ class CombatComponent extends Component
 		$this->addActionMessage($action_message, 'debuff_gained', $this->monsters[$monster->id]->name.' stutters.');
 		$amount = rand((int)$skill_effect->amount_min * 1000, (int)$skill_effect->amount_max * 1000) / 1000;
 		$this->monsters[$monster->id]->next_action_time += $amount;
-	}
-	
-	private function createStats($monster) {
-		$stats = (object) [];
-		$stats->physicalAttackModifier = 1 + 0.05 * ($monster->strength - 1);
-		$stats->physicalDefenseModifier = 1 + 0.025 * ($monster->strength - 1);
-		$stats->evadeModifier = 0.00 + 0.01 * ($monster->dexterity - 1);
-		$stats->speed = 1.0 + 0.03 * ($monster->dexterity - 1);
-		$stats->hitModifier = 0.00 + 0.01 * ($monster->dexterity - 1);
-		$stats->magicalAttackModifier = 1 + 0.05 * ($monster->intelligence - 1);
-		$stats->magicalDefenseModifier = 1 + 0.025 * ($monster->intelligence - 1);
-		$stats->criticalChance = 0.00 + 0.02 * ($monster->luck - 1);
-		$stats->rerollChance = 0.00 + 0.03 * ($monster->luck - 1);
-		$stats->health = 100.0 + 2.0 * ($monster->vitality - 1);
-		return $stats;
 	}
 	
 

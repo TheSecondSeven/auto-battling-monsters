@@ -32,9 +32,7 @@
 			<tr>
 				<th colspan="2"><?php echo __('Effect'); ?></th>
 				<th><?php echo __('Chance'); ?></th>
-				<th><?php echo __('Amount'); ?></th>
 				<th><?php echo __('Targets'); ?></th>
-				<th><?php echo __('Duration'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -42,31 +40,27 @@
 				if($skillEffect->effect != 'Random Amount') {
 			?>
 			<tr>
-				<td colspan="2"><?php echo $skillEffect->effect; if($skillEffect->effect == 'Consume') { echo ' Status: '.$status_options[$skillEffect->status]; } ?></td>
+				<td colspan="2"><?= $skillEffect->get('effect_verbose') ?></td>
 				<td><?php echo $skillEffect->chance; ?>%</td>
-				<td><?php if($skillEffect->amount_min != 0.00 || $skillEffect->amount_max != 0.00) { if($skillEffect->amount_min == $skillEffect->amount_max) { echo $skillEffect->amount_min; }else{ echo $skillEffect->amount_min.'-'.$skillEffect->amount_max; } if(in_array($skillEffect->effect, ['Attack Up', 'Attack Down', 'Defense Up', 'Defense Down', 'Speed Up', 'Speed Down', 'Evade Up', 'Evade Down',])) echo '%'; }else{ echo 'N/A'; } ?></td>
 				<td><?php echo $skillEffect->targets; ?></td>
-				<td><?php if($skillEffect->duration == 0) { echo 'N/A'; }else{ echo $skillEffect->duration; } ?></td>
 			</tr>
 			<?php 
 			} //end not random amount
 			if(!empty($skillEffect->secondary_skill_effects)) {
 				if($skillEffect->effect == 'Random Amount') {
-					echo '<tr><td></td><td colspan="5">Will do the following '.round($skillEffect->amount_min).' - '.round($skillEffect->amount_max).' times:</td></tr>';
+					echo '<tr><td colspan="4">Will do the following '.round($skillEffect->amount_min).'-'.round($skillEffect->amount_max).' times:</td></tr>';
 				}elseif($skillEffect->effect == 'Consume') {
-					echo '<tr><td></td><td colspan="5">For each stack consumed:</td></tr>';
+					echo '<tr><td></td><td colspan="3">For each stack consumed:</td></tr>';
 				}else{
-					echo '<tr><td></td><td colspan="5">If this Effect succeeds it will trigger:</td></tr>';
+					echo '<tr><td></td><td colspan="3">If this Effect succeeds it will trigger:</td></tr>';
 				}
 			}
 			foreach($skillEffect->secondary_skill_effects as $secondarySkillEffect) { ?>
 				<tr>
 					<td></td>
-					<td><?php echo $secondarySkillEffect->effect; ?></td>
+					<td><?= $secondarySkillEffect->get('effect_verbose') ?>	</td>
 					<td><?php echo $secondarySkillEffect->chance; ?>%</td>
-					<td><?php if($secondarySkillEffect->amount_min != 0.00 || $secondarySkillEffect->amount_min != 0.00) { if($secondarySkillEffect->amount_min == $secondarySkillEffect->amount_max) { echo $secondarySkillEffect->amount_min; }else{ echo $secondarySkillEffect->amount_min.'-'.$secondarySkillEffect->amount_max; } if(in_array($secondarySkillEffect->effect, ['Attack Up', 'Attack Down', 'Defense Up', 'Defense Down', 'Speed Up', 'Speed Down', 'Evade Up', 'Evade Down',])) echo '%'; }else{ echo 'N/A'; } ?></td>
 					<td><?php echo $secondarySkillEffect->targets; ?></td>
-					<td><?php if($secondarySkillEffect->duration == 0) { echo 'N/A'; }else{ echo $secondarySkillEffect->duration; } ?></td>
 				</tr>
 			<?php
 			}

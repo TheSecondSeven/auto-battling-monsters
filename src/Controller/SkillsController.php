@@ -137,9 +137,10 @@ class SkillsController extends AppController
                     ]);
             })
             ->firstOrFail();
-        
-        $skill->user_skills[0]->new = 0;
-        $this->Skills->UserSkills->save($skill->user_skills[0]);
+        if(!empty($skill->user_skills[0]->new)) {
+            $skill->user_skills[0]->new = 0;
+            $this->Skills->UserSkills->save($skill->user_skills[0]);
+        }
 		$this->set('skill', $skill);
         $status_effects = $this->fetchTable('Statuses')
             ->find()

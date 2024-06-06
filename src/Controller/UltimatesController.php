@@ -118,8 +118,10 @@ class UltimatesController extends AppController
                     ]);
             })
             ->firstOrFail();
-        $ultimate->user_ultimates[0]->new = 0;
-        $this->Ultimates->UserUltimates->save($ultimate->user_ultimates[0]);
+        if(!empty($ultimate->user_ultimates[0]->new)) {
+            $ultimate->user_ultimates[0]->new = 0;
+            $this->Ultimates->UserUltimates->save($ultimate->user_ultimates[0]);
+        }
 		$this->set('ultimate', $ultimate);
         $status_effects = $this->fetchTable('Statuses')
             ->find()
