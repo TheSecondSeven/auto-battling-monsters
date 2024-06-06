@@ -102,7 +102,7 @@ class QuestsController extends AppController
             ])
             ->order([
                 'Quests.side_quest' => 'ASC',
-                'Quests.name' => 'ASC'
+                'Quests.title' => 'ASC'
             ])
             ->all();
         
