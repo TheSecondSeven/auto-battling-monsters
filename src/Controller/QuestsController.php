@@ -340,6 +340,9 @@ class QuestsController extends AppController
                     'SecondaryTypes'
                 ]);
             })
+            ->contain([
+                'ChildQuests'
+            ])
             ->firstOrFail();
         $this->set('quest', $quest);
 		$this->set('battlesJSON',$quest->_matchingData['QuestsUsers']->result_json_data);

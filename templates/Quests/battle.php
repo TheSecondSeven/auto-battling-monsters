@@ -24,13 +24,18 @@
 	<div id="rewards" style="display:none;width:300px;margin:0 auto;">
 		<h3>You Won!</h3>
 		For a reward you have received:
-		<div class="list-group">
+		<div class="list-group" style="width: 300px; margin: 0 auto;">
 		<?php foreach($quest->user_quest_rewards as $reward) { ?>
 			<span class="list-group-item"><?= $reward->get('reward') ?></span>
 		<?php } ?>
 		</div>
 		<br>
-		<?= $this->Html->link('Back to Campaign', ['controller' => 'quests', 'action' => 'index'], ['class' => 'btn btn-success']); ?>
+		<div>
+			<?= $this->Html->link('Back to Campaign', ['controller' => 'quests', 'action' => 'index'], ['class' => 'btn btn-success']); ?>
+			<?php if(!empty($quest->child_quests) && count($quest->child_quests) == 1) { ?>
+				<?= $this->Html->link('Next Quest', ['controller' => 'quests', 'action' => 'view',$quest->child_quests[0]->id], ['class' => 'btn btn-primary']); ?>
+			<?php } ?>
+		</div>
 	</div>
 	<?php }else{ ?>
 		<br>
