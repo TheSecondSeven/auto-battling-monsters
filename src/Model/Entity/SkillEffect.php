@@ -45,7 +45,7 @@ class SkillEffect extends Entity
                 ])
                 ->all()
                 ->toList();
-            $status_effects_list = [];
+            $status_effects_list = ['random_buff' => 'Random Buff','all_buffs' => 'All Buffs', 'random_debuff' => 'Random Debuff', 'all_debuffs' => 'All Debuffs', 'random_buff_debuff' => 'Random Buff or Debuff', 'all_buffs_debuffs' => 'All Buffs and Debuffs'];
             foreach($status_effects as $status_effect) {
                 $status_effects_list[$status_effect->class] = $status_effect->name;
             }
