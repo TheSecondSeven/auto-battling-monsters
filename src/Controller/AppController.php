@@ -100,6 +100,22 @@ class AppController extends Controller
                 ])
                 ->all()
                 ->count();
+            $this->user->new_skills = $this->fetchTable('UserSkills')
+                ->find()
+                ->where([
+                    'UserSkills.user_id' => $this->user->id,
+                    'UserSkills.new' => 1
+                ])
+                ->all()
+                ->count();
+            $this->user->new_ultimates = $this->fetchTable('UserUltimates')
+                ->find()
+                ->where([
+                    'UserUltimates.user_id' => $this->user->id,
+                    'UserUltimates.new' => 1
+                ])
+                ->all()
+                ->count();
             $this->set('user', $this->user);
 
             $this->user->usable_types = [];

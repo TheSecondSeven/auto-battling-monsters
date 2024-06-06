@@ -69,6 +69,18 @@ class UltimatesController extends AppController
 	
 	public function myUltimates() {
         $user_id = $this->user->id;
+
+        $this->paginate = [
+            'sortableFields' => [
+                'UserUltimates.new', 'rarity', 'name', 'type_id', 'cast_time', 'down_time'
+            ],
+            'order' => [
+                'UserUltimates.new' => 'DESC',
+                'rarity' => 'DESC',
+                'Types.name' => 'ASC',
+                'name' => 'ASC',
+            ]
+		];
 		$this->set('ultimates', $this->paginate($this->Ultimates
             ->find()
             ->matching('UserUltimates', function ($q) use ($user_id) {
@@ -106,6 +118,8 @@ class UltimatesController extends AppController
                     ]);
             })
             ->firstOrFail();
+        $ultimate->user_ultimates[0]->new = 0;
+        $this->Ultimates->UserUltimates->save($ultimate->user_ultimates[0]);
 		$this->set('ultimate', $ultimate);
         $status_effects = $this->fetchTable('Statuses')
             ->find()
