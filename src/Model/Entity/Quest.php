@@ -8,12 +8,18 @@ class Quest extends Entity
 
     protected function _getRewards()
     {
+        $any_mystery = false;
         if(!empty($this->quest_rewards)) {
             $rewards = '';
             foreach($this->quest_rewards  as $index=>$reward) {
+                if($reward->mystery) {
+                    $any_mystery = true;
+                    break;
+                }
                 if($index > 0) $rewards .= '<br>';
                 $rewards .= $reward->get('reward');
             }
+            if($any_mystery) return '???';
             return $rewards;
         }
         return 'No Rewards';
