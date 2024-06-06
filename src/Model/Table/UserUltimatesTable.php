@@ -11,6 +11,8 @@ class UserUltimatesTable extends Table
     {
         parent::initialize($config);
         $this->addBehavior('Timestamp');
+        $this->belongsTo('Users');
+        $this->belongsTo('Ultimates');
     }
     public function addUltimateToUser($user_id, $ultimate_id) {
         $already_own = $this
