@@ -5,7 +5,20 @@ use Cake\ORM\Entity;
 
 class Rune extends Entity
 {
-    public static function upgrades($type) {
+    public static function upgrades($type = null) {
+		if(empty($type)) {
+
+			$upgrades =  [
+				'unlock_type' => 'Unlock Skills',
+				'damage_level' => 'Increase Damage by '.RUNE_DAMAGE_INCREASE.'%',
+				'healing_level' => 'Increase Healing by '.RUNE_HEALING_INCREASE.'%',
+				'critical_chance_level' => 'Increase Critical Chance by '.RUNE_CRITICAL_CHANCE_INCREASE.'%',
+				'cast_again_level' => 'Increase Overload Chance by '.RUNE_CAST_AGAIN_INCREASE.'%',
+				'casting_speed_level' => 'Increase Casting Speed by '.RUNE_CASTING_SPEED_INCREASE.'%',
+				'health_level' => 'Increase Monster Health by '.RUNE_HEALTH_INCREASE.'%'
+			];
+			return $upgrades;
+		}
 		$upgrades = [];
 		if($type != 'Neutral') {
 			$upgrades =  [
