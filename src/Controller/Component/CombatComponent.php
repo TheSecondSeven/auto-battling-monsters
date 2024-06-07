@@ -1145,7 +1145,7 @@ class CombatComponent extends Component
 				if($ultimateData->id == 'End of the World') {
 					$this->addActionMessage($action_message, 'skill_result', $monster->name.' ends the World.');
 					foreach($monster->enemies as $enemy) {
-						$this->markForDeath($time, $action_message, $enemy);
+						$this->markForDeath($enemy);
 					}
 				}
 				if($ultimateData->id == 18) {
