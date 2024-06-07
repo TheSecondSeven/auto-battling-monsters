@@ -1339,6 +1339,18 @@ class CombatComponent extends Component
 					$this->addActionMessage($action_message, 'skill_result', $skill->name.' had no effect on '.$this->monsters[$target->id]->name.'.');
 				}
 			}
+		}elseif($skill_effect->effect == 'Kill') {
+			foreach($targets as $target) {
+				//check for hit
+				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
+					$this->markForDeath($target);
+					$this->addActionMessage($action_message, 'skill_result', $skill->name.' kills '.$this->monsters[$target->id]->name.'.');
+					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
+				}elseif(!$secondary) {
+					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
+					$skill_effect->missed = true;
+				}
+			}
 		}elseif($skill_effect->effect == 'Physical Damage') {
 			foreach($targets as $target) {
 				$damage = $this->calculateAmount($time, $skill_effect, $monster, $target);

@@ -343,6 +343,8 @@ class SkillsController extends AppController
 			$total_points = $this->skillEffectTargetValue($skill_effect) * $this->skillEffectChance($skill_effect) * $this->skillEffectAverageAmount($skill_effect) * (1 + $this->healing_value);
 		}elseif($skill_effect->effect == 'Heal') {
 			$total_points = $this->healing_value * $this->skillEffectTargetValue($skill_effect) * $this->skillEffectChance($skill_effect) * $this->skillEffectAverageAmount($skill_effect);
+		}elseif($skill_effect->effect == 'Kill') {
+			$total_points = 50 * $this->skillEffectTargetValue($skill_effect) * $this->skillEffectChance($skill_effect);
 		}elseif($skill_effect->effect == 'Heal Over Time') {
 			$total_points = $this->healing_value * $this->skillEffectTargetValue($skill_effect) * $this->skillEffectChance($skill_effect) * $this->skillEffectAverageAmount($skill_effect) * $skill_effect->duration;
 		}elseif($skill_effect->effect == 'Poison') {

@@ -19,7 +19,7 @@ class SkillEffect extends Entity
             return $this->get('amount_verbose').' Poison Damage for '.$this->duration.' second'.($this->duration > 1 ? 's' : '');
         }elseif(in_array($this->effect, ['Attack Up', 'Attack Down', 'Defense Up', 'Defense Down', 'Speed Up', 'Speed Down', 'Evade Up', 'Evade Down'])) {
             return $this->effect.' '.$this->get('amount_verbose').' for '.$this->duration.' turn'.($this->duration > 1 ? 's' : '');
-        }elseif(in_array($this->effect, ['Bubble','Confuse'])) {
+        }elseif(in_array($this->effect, ['Bubble','Confuse','Kill'])) {
             return $this->effect;
         }elseif(in_array($this->effect, ['Stun','Sleep','Freeze'])) {
             if($this->duration > 0) {

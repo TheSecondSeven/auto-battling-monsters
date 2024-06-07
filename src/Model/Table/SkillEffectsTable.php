@@ -49,6 +49,7 @@ class SkillEffectsTable extends Table
 			'Consume',
 			'Undying',
 			'Random Amount',
+			'Kill',
 			'Blind',
 			'Reflect'
 			//'Delay'
