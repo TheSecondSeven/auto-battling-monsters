@@ -888,7 +888,12 @@ class CombatComponent extends Component
 				$this->monsters[$monster->id]->next_action_time += round($ultimateData->down_time * 1000 + GLOBAL_DOWN_TIME);
 				
 				$action_message = [];
-				$this->addActionMessage($action_message, 'skill_use', $this->monsters[$monster->id]->name.' uses '.$ultimateData->name.'.');
+				if($ultimate->id == 2) {
+					$this->addActionMessage($action_message, 'ultimate_charging', $monster->name.' finds the Mind Stone.');
+					$this->addActionMessage($action_message, 'event', $this->monsters[$monster->id]->name.' snaps.');
+				}else{
+					$this->addActionMessage($action_message, 'skill_use', $this->monsters[$monster->id]->name.' uses '.$ultimateData->name.'.');
+				}
 				foreach($ultimateData->skill_effects as $skill_effect) {
 					$targets = $this->getTargets($monster, $skill_effect->targets);
 					$this->processEffect($time, $action_message, $monster, $ultimateData, $ultimateData->type->name, $skill_effect, $targets);
@@ -1198,7 +1203,20 @@ class CombatComponent extends Component
 				if($skill == $ultimate) {
 					$this->monsters[$monster->id]->skills[$index]->starting_charges++;
 					$action_message = [];
-					$this->addActionMessage($action_message, 'ultimate_charging', $ultimate->name.' is charging up. ('.$this->monsters[$monster->id]->skills[$index]->starting_charges.'/'.($ultimate->charges_needed).')');
+					if($skill->id == 2) {
+						$stones = [
+							'',
+							'Power',
+							'Space',
+							'Reality',
+							'Soul',
+							'Time',
+							'Mind'
+						];
+						$this->addActionMessage($action_message, 'ultimate_charging', $monster->name.' finds the '.$stones[$this->monsters[$monster->id]->skills[$index]->starting_charges].' Stone.');
+					}else{
+						$this->addActionMessage($action_message, 'ultimate_charging', $ultimate->name.' is charging up. ('.$this->monsters[$monster->id]->skills[$index]->starting_charges.'/'.($ultimate->charges_needed).')');
+					}
 					$this->tickStatuses($time, $action_message, $monster);
 					if(!empty($action_message))
 						$this->action_log[$time]['messages']['monster-'.$this->monsters[$monster->id]->id][] = $action_message;
