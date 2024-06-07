@@ -1362,10 +1362,18 @@ class CombatComponent extends Component
 				//check for hit
 				if($this->hit($type, $skill_effect, $monster, $target, $secondary)) {
 					$this->markForDeath($target);
-					$this->addActionMessage($action_message, 'skill_result', $skill->name.' kills '.$this->monsters[$target->id]->name.'.');
+					if($skill->id == 2 && $skill->ultimate) {
+						$this->addActionMessage($action_message, 'skill_result', $this->monsters[$target->id]->name.' turns to dust.');
+					}else{
+						$this->addActionMessage($action_message, 'skill_result', $skill->name.' kills '.$this->monsters[$target->id]->name.'.');
+					}
 					$this->checkSecondaryEffectsForSameTarget($time, $action_message, $monster, $skill, $type, $skill_effect, $target);
 				}elseif(!$secondary) {
-					$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
+					if($skill->id == 2 && $skill->ultimate) {
+
+					}else{
+						$this->addActionMessage($action_message, 'miss', $skill->name.' misses '.$this->monsters[$target->id]->name.'.');
+					}
 					$skill_effect->missed = true;
 				}
 			}
