@@ -30,11 +30,11 @@ class UserQuestReward extends Entity
             }
         }elseif($this->reward_type == 'Rune') {
             if(!empty($this->type->id)) {
-                return $this->type->name.' Rune';
+                return 'Level '.$this->amount.' '.$this->type->name.' Rune';
             }elseif($this->usable) {
-                return 'Random Rune';
+                return 'Random Level '.$this->amount.' Rune';
             }else{
-                return 'Random Rune';
+                return 'Random Level '.$this->amount.' Rune';
             }
         }elseif($this->reward_type == 'Monster') {
             if(!empty($this->type->id)) {
