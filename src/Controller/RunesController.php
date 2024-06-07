@@ -57,9 +57,7 @@ class RunesController extends AppController
 			}
 		}
 		$types = $this->Runes->Types->find('list')
-            ->where([
-				'Types.name != "Neutral"'
-			])
+            ->where()
             ->all();
 		$upgrade_options = $rune->upgrades();
 		$this->set(compact('rune','types','upgrade_options'));
@@ -103,9 +101,7 @@ class RunesController extends AppController
 			}
 		}
 		$types = $this->Runes->Types->find('list')
-            ->where([
-				'Types.name != "Neutral"'
-			])
+            ->where()
             ->all();
 		$upgrades = $rune->upgrades($rune->type->name);
         $upgrade_options = [];
